@@ -9,12 +9,12 @@ $dir = Get-Location
 
 # Write-Output "Currently in: '$dir'"
 
-# Make a copy of the current 'Program.cs' file
-Copy-Item -Path $dir\Program.cs -Destination $dir\Program.cs.orig
+# Make a copy of the current 'Program.BuildDate.cs' file
+Copy-Item -Path $dir\Program.BuildDate.cs -Destination $dir\Program.BuildDate.cs.orig
 Write-Output "Original 'Program.cs' saved..."
 
 # Rewrite the file, injecting the above timestamp
-$fileLocation = Join-Path $dir -ChildPath "Program.cs" 
+$fileLocation = Join-Path $dir -ChildPath "Program.BuildDate.cs" 
 $placeHolder = "BUILD-DATE-ATTRIBUTE"
 (get-content $fileLocation) | foreach-object {$_ -replace $placeHolder, $buildDateAttribute} | set-content $fileLocation
 

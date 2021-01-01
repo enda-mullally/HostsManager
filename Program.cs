@@ -1,11 +1,7 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
-using HostsManager.Attributes;
 using HostsManager.Forms;
-
-// BuildDate
-[assembly: BuildDate("BUILD-DATE-ATTRIBUTE")]
 
 namespace HostsManager
 {
