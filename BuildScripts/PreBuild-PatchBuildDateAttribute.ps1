@@ -7,7 +7,7 @@ Write-Output "Using: '$buildDateAttribute'"
 
 $dir = Get-Location
 
-# Write-Output "Currently in: '$dir'"
+Write-Output "Currently in: '$dir'"
 
 # Make a copy of the current 'Program.BuildDate.cs' file
 Copy-Item -Path $dir\Program.BuildDate.cs -Destination $dir\Program.BuildDate.cs.orig

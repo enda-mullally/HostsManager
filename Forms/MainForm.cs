@@ -74,9 +74,11 @@ namespace HostsManager.Forms
                         uxlblSep.Visible = false;
 
                 uxbtnEdit.Enabled =
-                    uxbtnDisableHostsFile.Enabled = uxbtnFlushDNS.Enabled = hostsEnabled;
+                    uxbtnDisableHostsFile.Enabled = hostsEnabled;
                 
                 uxbtnEnableHostsFile.Enabled = !hostsEnabled;
+
+                uxbtnFlushDNS.Enabled = true;
             }
             else
             {
@@ -130,6 +132,7 @@ namespace HostsManager.Forms
         private void uxbtnEnableHostsFile_Click(object sender, EventArgs e)
         {
             HostsFile.EnableHostsFile();
+            
             UxRefresh();
         }
 
@@ -274,6 +277,8 @@ namespace HostsManager.Forms
 
             if (restarting)
             {
+                ShowInTaskbar = true;
+                
                 return;
             }
 

@@ -4,11 +4,11 @@ Write-Output "==================================================================
 
 $dir = Get-Location
 
-# Write-Output "Currently in: '$dir'"
+Write-Output "Currently in: '$dir'"
 
-# Restore originsl 'Program.BuildDate.cs' file
+# Restore original 'Program.BuildDate.cs' file
 Copy-Item -Path $dir\Program.BuildDate.cs.orig -Destination $dir\Program.BuildDate.cs
-Write-Output "Original 'Program.BuailDate.cs' recovered..."
+Write-Output "Original 'Program.BuildDate.cs' recovered..."
 
 del $dir\Program.BuildDate.cs.orig
 

@@ -7,16 +7,20 @@
     <Nullable>enable</Nullable>
     <ApplicationIcon>Icon_01.ico</ApplicationIcon>
     <StartupObject>HostsManager.Program</StartupObject>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
-    <Version>1.0.4</Version>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <Version>1.0.5</Version>
     <Authors>Enda Mullally</Authors>
     <Company />
     <PackageIcon>Icon_01.ico</PackageIcon>
-    <Description>Simple Hosts File Manager</Description>
-    <Copyright>2021 Enda Mullally</Copyright>
+    <Description>A simple Windows Hosts File Manager</Description>
+    <Copyright>© 2021 Enda Mullally</Copyright>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>HostsManager.snk</AssemblyOriginatorKeyFile>
+    <Product>Hosts Manager</Product>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/enda-mullally/hostsmanager</RepositoryUrl>
+    <PackageTags>1.0.5</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

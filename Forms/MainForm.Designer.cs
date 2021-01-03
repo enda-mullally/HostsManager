@@ -175,9 +175,9 @@ namespace HostsManager.Forms
             this.uxlblHostNames.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.uxlblHostNames.Location = new System.Drawing.Point(89, 54);
             this.uxlblHostNames.Name = "uxlblHostNames";
-            this.uxlblHostNames.Size = new System.Drawing.Size(52, 15);
+            this.uxlblHostNames.Size = new System.Drawing.Size(41, 15);
             this.uxlblHostNames.TabIndex = 5;
-            this.uxlblHostNames.Text = "Host(s) :";
+            this.uxlblHostNames.Text = "Hosts:";
             // 
             // uxlblHostsCount
             // 
@@ -239,7 +239,7 @@ namespace HostsManager.Forms
             this.uxbtnEnableHostsFile.Name = "uxbtnEnableHostsFile";
             this.uxbtnEnableHostsFile.Size = new System.Drawing.Size(75, 75);
             this.uxbtnEnableHostsFile.TabIndex = 2;
-            this.uxbtnEnableHostsFile.Text = "|&Ensable Hosts File";
+            this.uxbtnEnableHostsFile.Text = "|&Enable Hosts File";
             this.uxbtnEnableHostsFile.UseCompatibleTextRendering = true;
             this.uxbtnEnableHostsFile.UseVisualStyleBackColor = false;
             this.uxbtnEnableHostsFile.Click += new System.EventHandler(this.uxbtnEnableHostsFile_Click);
@@ -299,6 +299,7 @@ namespace HostsManager.Forms
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hosts Manager";
             this.Activated += new System.EventHandler(this.MainForm_Activated);
