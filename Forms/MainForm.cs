@@ -101,11 +101,13 @@ namespace HostsManager.Forms
 
             MessageBox.Show(
                 this,
-                @"Hosts Manager" +
+                $@"==Hosts Manager =={Environment.NewLine}{Environment.NewLine}" +
+                @"https://github.com/enda-mullally/hostsmanager" +
                 $@"{Environment.NewLine}{Environment.NewLine}" +
                 $@"Version: { appVersion.GetAppVersion() }{Environment.NewLine}" +
-                $@"Date: { appVersion.GetBuildDate() }{Environment.NewLine}{Environment.NewLine}" +
-                $@"Copyright © 2021 Enda Mullally",
+                $@"Build Date: { appVersion.GetBuildDate() }" +
+                $@"{Environment.NewLine}{Environment.NewLine}" +
+                @"Copyright © 2021 Enda Mullally",
                 @"About",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
@@ -119,7 +121,7 @@ namespace HostsManager.Forms
 
         private void uxbtnRunAsAdmin_Click(object sender, EventArgs e)
         {
-            Elevated.RestartElevated("/show");
+            Elevated.RestartElevated("/uac");
         }
 
         private void uxbtnDisableHostsFile_Click(object sender, EventArgs e)
@@ -223,8 +225,10 @@ namespace HostsManager.Forms
 
         private void uxMenuItemShow_Click(object sender, EventArgs e)
         {
-            Visible = true;
-            ShowInTaskbar = true;
+            Visible =
+                ShowIcon =
+                    ShowInTaskbar = true;
+            
             Opacity = 100;
             WindowState = FormWindowState.Normal;
         }
@@ -273,8 +277,9 @@ namespace HostsManager.Forms
         {
             var restarting =
                 Environment.GetCommandLineArgs().Length > 1 &&
-                Environment.GetCommandLineArgs()[1] == "/show";
-
+                (Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/show" ||
+                 Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/uac");
+                
             if (restarting)
             {
                 ShowInTaskbar = true;
