@@ -38,6 +38,11 @@ namespace HostsManager.Forms
         
         private void UxFixButtonText()
         {
+            if (!Elevated.IsElevated())
+            {
+                uxbtnEdit.Text = @"|Open &Hosts File";
+            }
+
             uxbtnEdit.Text = uxbtnEdit.Text.Replace("|", Environment.NewLine);
             uxbtnDisableHostsFile.Text = uxbtnDisableHostsFile.Text.Replace("|", Environment.NewLine);
             uxbtnEnableHostsFile.Text = uxbtnEnableHostsFile.Text.Replace("|", Environment.NewLine);
@@ -79,15 +84,23 @@ namespace HostsManager.Forms
                 uxbtnEnableHostsFile.Enabled = !hostsEnabled;
 
                 uxbtnFlushDNS.Enabled = true;
+
+                // Indicate that we are running as admin.
+                if (!Text.Contains("[Administrator]"))
+                {
+                    Text += @" [Administrator]";
+                }
             }
             else
             {
                 // Not elevated, disable all except Run As Admin
-                uxbtnEdit.Enabled =
-                    uxbtnDisableHostsFile.Enabled =
+                uxbtnDisableHostsFile.Enabled =
                         uxbtnEnableHostsFile.Enabled =
                             uxMenuEnableHostsFile.Enabled =
                                 uxbtnFlushDNS.Enabled = false;
+
+                // When Not elevated "edit/open" should only be available when the hosts file itself is enabled
+                uxbtnEdit.Enabled = hostsEnabled;
 
                 Elevated.AddShieldToButton(uxbtnRunAsAdmin);
             }
@@ -236,6 +249,7 @@ namespace HostsManager.Forms
         private void uxMenuExit_Click(object sender, EventArgs e)
         {
             _requestingClose = true;
+
             Close();
         }
 
