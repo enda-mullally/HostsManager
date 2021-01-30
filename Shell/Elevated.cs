@@ -36,7 +36,10 @@ namespace HostsManager.Shell
                 Verb = "runas"
             };
 
-            if (startInfo.FileName.ToLowerInvariant().EndsWith(".dll"))
+            if (startInfo
+                .FileName
+                .ToLowerInvariant()
+                .EndsWith(".dll"))
             {
                 startInfo.FileName = startInfo
                     .FileName

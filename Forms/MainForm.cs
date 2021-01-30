@@ -55,16 +55,23 @@ namespace HostsManager.Forms
                 ? "enabled."
                 : "disabled.");
 
-            uxlblHostsFileSize.Text = HostsFile.HostsFileSize().ToString("##,###0") + @" byte(s)";
+            uxlblHostsFileSize.Text = HostsFile
+                .HostsFileSize()
+                .ToString("##,###0") + @" byte(s)";
 
             uxlblHostsCount.Text =
-                HostsFile.HostsCount().ToString("##,###0");
+                HostsFile
+                    .HostsCount()
+                    .ToString("##,###0");
 
             var hostsEnabled = HostsFile.IsEnabled();
 
             uxMenuEnableHostsFile.Checked = hostsEnabled;
 
-            var hostOrHosts = HostsFile.HostsCount() > 1 ? "hosts" : "host";
+            var hostOrHosts = HostsFile
+                .HostsCount() > 1 
+                ? "hosts"
+                : "host";
             
             uxNotifyIcon.Text = @"Hosts Manager" + (hostsEnabled
                 ? " (" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
