@@ -7,9 +7,9 @@
     <Nullable>enable</Nullable>
     <ApplicationIcon>Icon_01.ico</ApplicationIcon>
     <StartupObject>HostsManager.Program</StartupObject>
-    <AssemblyVersion>1.0.7.0</AssemblyVersion>
-    <FileVersion>1.0.7.0</FileVersion>
-    <Version>1.0.7</Version>
+    <AssemblyVersion>1.0.8.0</AssemblyVersion>
+    <FileVersion>1.0.8.0</FileVersion>
+    <Version>1.0.8</Version>
     <Authors>Enda Mullally</Authors>
     <Company />
     <PackageIcon>Icon_01.ico</PackageIcon>
