@@ -87,6 +87,9 @@ steps:
       $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.App.dll
       $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.App.runtimeconfig.json
     TargetFolder: '$(Build.BinariesDirectory)\Deploy'
+    CleanTargetFolder: true
+    OverWrite: true
+    flattenFolders: true
 
 - task: ArchiveFiles@2
   displayName: Build Artifact (Zip)
