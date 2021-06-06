@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
-using EM.HostsManager.App.Forms;
+using EM.HostsManager.App.UI;
 
 namespace EM.HostsManager.App
 {

@@ -7,7 +7,7 @@ using EM.HostsManager.App.Hosts;
 using EM.HostsManager.App.Shell;
 using EM.HostsManager.App.Version;
 
-namespace EM.HostsManager.App.Forms
+namespace EM.HostsManager.App.UI
 {
     public partial class MainForm : Form
     {
@@ -121,7 +121,7 @@ namespace EM.HostsManager.App.Forms
 
             MessageBox.Show(
                 this,
-                $@"==Hosts Manager =={Environment.NewLine}{Environment.NewLine}" +
+                $@"== Hosts Manager =={Environment.NewLine}{Environment.NewLine}" +
                 @"https://github.com/enda-mullally/hostsmanager" +
                 $@"{Environment.NewLine}{Environment.NewLine}" +
                 $@"Version: { appVersion.GetAppVersion() }{Environment.NewLine}" +

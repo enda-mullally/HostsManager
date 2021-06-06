@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace EM.HostsManager.App.Forms
+namespace EM.HostsManager.App.UI
 {
     partial class MainForm
     {
