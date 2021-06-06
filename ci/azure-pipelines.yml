@@ -79,7 +79,6 @@ steps:
     CleanTargetFolder: true
     OverWrite: true
 
-steps:
 - task: CopyFiles@2
   displayName: Copy Build Files (2 of 2)
   inputs:
