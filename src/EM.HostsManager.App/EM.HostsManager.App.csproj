@@ -59,8 +59,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="if &quot;$(ConfigurationName)&quot; == &quot;Release&quot; powershell -File $(ProjectDir)BuildScripts\PreBuild-PatchBuildDateAttribute.ps1" />
-  </Target>
-
 </Project>

@@ -28,6 +28,24 @@ steps:
     versionSpec: '5.x'
     updateAssemblyInfo: true
 
+- task: PowerShell@2
+  displayName: Patch BuildDateAttribute
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Output "==============================================================================================================================================="
+      Write-Output "Pre build. Patching BuildDate Attribute..."
+      Write-Output "==============================================================================================================================================="
+      $buildDateAttribute = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+      Write-Output "Using: '$buildDateAttribute'"
+      $dir = "$(Build.SourcesDirectory)\src\EM.HostsManager.App"
+      Write-Output "Currently in: '$dir'"
+      $fileLocation = Join-Path $dir -ChildPath "Program.BuildDate.cs" 
+      $placeHolder = "BUILD-DATE-ATTRIBUTE"
+      (get-content $fileLocation) | foreach-object {$_ -replace $placeHolder, $buildDateAttribute} | set-content $fileLocation
+      Write-Output "BuildDateAttribute written..."
+      Write-Output "==============================================================================================================================================="
+
 - task: VSBuild@1
   displayName: Build
   inputs:
