@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<OutputType>WinExe</OutputType>
@@ -12,7 +12,7 @@
     <PackageIcon>Icon_01.ico</PackageIcon>
     <Description>Just another simple Windows Hosts File Manager</Description>
     <Copyright>© 2021 Enda Mullally</Copyright>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>HostsManager.snk</AssemblyOriginatorKeyFile>
     <Product>Hosts Manager</Product>
     <RepositoryType>git</RepositoryType>

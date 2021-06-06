@@ -78,7 +78,7 @@ namespace EM.HostsManager.App.Hosts
                 {
                     continue;
                 }
-                
+
                 if (nextLine
                     .Trim()
                     .ToLowerInvariant()
@@ -117,7 +117,7 @@ namespace EM.HostsManager.App.Hosts
             {
                 return true;
             }
-            
+
             var disabledHostsFileName = GetDisabledHostsFilename();
             IO.File.CopyFileTo(disabledHostsFileName, GetHostsFilename());
             IO.File.DeleteIfExists(disabledHostsFileName);
@@ -132,18 +132,18 @@ namespace EM.HostsManager.App.Hosts
             var windowsSysDir =
                 Environment.GetFolderPath(
                     Environment.SpecialFolder.System);
-            
+
             return Path.Combine(windowsSysDir, HostsDirLoc,
-                   enabledHostsFile
-                       ? HostsFileName
-                       : DisabledHostFileName);
+                enabledHostsFile
+                    ? HostsFileName
+                    : DisabledHostFileName);
         }
 
         private static string GetDisabledHostsFilename()
         {
             return GetEnabledOrDisabledHostsFilename(false);
         }
-        
+
         #endregion
     }
 }

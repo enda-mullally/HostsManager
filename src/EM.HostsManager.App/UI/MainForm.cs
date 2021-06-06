@@ -160,10 +160,17 @@ namespace EM.HostsManager.App.UI
 
         private void uxbtnEdit_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
+
+            if (workingDirectory == null)
+            {
+                return;
+            }
+            
+            var startInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
-                WorkingDirectory = Directory.GetParent(HostsFile.GetHostsFilename()).FullName,
+                WorkingDirectory = workingDirectory,
                 FileName = "notepad.exe",
                 Arguments = HostsFile.GetHostsFilename(),
                 Verb = "open"
