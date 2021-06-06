@@ -69,3 +69,28 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: CopyFiles@2
+  displayName: Copy Build Files
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows'
+    Contents: '**'
+    TargetFolder: '$(Build.BinariesDirectory)'
+    CleanTargetFolder: true
+    OverWrite: true
+
+- task: ArchiveFiles@2
+  displayName: Build Zip Archive
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EM.HostaManager-$(GitVersion.SemVer)-$(Build.BuildId).zip'
+    replaceExistingArchive: true
+    verbose: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'EM.HostaManager-$(GitVersion.SemVer)-$(Build.BuildId).zip'
+    publishLocation: 'Container'
