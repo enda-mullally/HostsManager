@@ -71,7 +71,7 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: CopyFiles@2
-  displayName: Copy Build Files
+  displayName: Copy Build Files (1 of 2)
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows'
     Contents: '**'
@@ -79,8 +79,18 @@ steps:
     CleanTargetFolder: true
     OverWrite: true
 
+steps:
+- task: CopyFiles@2
+  displayName: Copy Build Files (2 of 2)
+  inputs:
+    Contents: |
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.App.exe
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.dll
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.App.runtimeconfig.json
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\Deploy'
+
 - task: ArchiveFiles@2
-  displayName: Build Zip Archive
+  displayName: Build Artifact (Zip)
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
