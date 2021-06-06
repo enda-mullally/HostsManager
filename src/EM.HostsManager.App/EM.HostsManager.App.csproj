@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+	<OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>Icon_01.ico</ApplicationIcon>
+    <StartupObject>EM.HostsManager.App.Program</StartupObject>
+    <AssemblyVersion>1.0.8.0</AssemblyVersion>
+    <FileVersion>1.0.8.0</FileVersion>
+    <Version>1.0.8</Version>
+    <Authors>Enda Mullally</Authors>
+    <Company />
+    <PackageIcon>Icon_01.ico</PackageIcon>
+    <Description>Just another simple Windows Hosts File Manager</Description>
+    <Copyright>© 2021 Enda Mullally</Copyright>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>HostsManager.snk</AssemblyOriginatorKeyFile>
+    <Product>Hosts Manager</Product>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/enda-mullally/hostsmanager</RepositoryUrl>
+    <PackageTags>1.0.8</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Icons\Icon_01.ico">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="if &quot;$(ConfigurationName)&quot; == &quot;Release&quot; powershell -File $(ProjectDir)BuildScripts\PreBuild-PatchBuildDateAttribute.ps1" />
+  </Target>
+
+</Project>
