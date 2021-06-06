@@ -53,8 +53,4 @@
     <Exec Command="if &quot;$(ConfigurationName)&quot; == &quot;Release&quot; powershell -File $(ProjectDir)BuildScripts\PreBuild-PatchBuildDateAttribute.ps1" />
   </Target>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if &quot;$(ConfigurationName)&quot; == &quot;Release&quot; powershell -File $(ProjectDir)BuildScripts\PostBuild-PatchBuildDateAttribute.ps1" />
-  </Target>
-
 </Project>
