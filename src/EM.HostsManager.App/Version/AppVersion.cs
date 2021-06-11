@@ -32,5 +32,15 @@ namespace EM.HostsManager.App.Version
 
             return buildDateAttr?.BuildDate;
         }
+
+        public string? GetCommitId()
+        {
+            var commitIdAttr = _assembly
+                .GetCustomAttributes(typeof(CommitIdAttribute), false)
+                .Cast<CommitIdAttribute>()
+                .FirstOrDefault();
+
+            return commitIdAttr?.CommitId;
+        }
     }
 }

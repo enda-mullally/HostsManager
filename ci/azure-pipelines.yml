@@ -46,6 +46,24 @@ steps:
       Write-Output "BuildDateAttribute written..."
       Write-Output "==============================================================================================================================================="
 
+- task: PowerShell@2
+  displayName: Patch CommitIdAttribute
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Output "==============================================================================================================================================="
+      Write-Output "Pre build. Patching CommitId Attribute..."
+      Write-Output "==============================================================================================================================================="
+      $commitIdAttribute = git log --format="%H" -n 1
+      Write-Output "Using: '$commitIdAttribute'"
+      $dir = "$(Build.SourcesDirectory)\src\EM.HostsManager.App"
+      Write-Output "Currently in: '$dir'"
+      $fileLocation = Join-Path $dir -ChildPath "Program.CommitId.cs" 
+      $placeHolder = "COMMIT-ID-ATTRIBUTE"
+      (get-content $fileLocation) | foreach-object {$_ -replace $placeHolder, $commitIdAttribute} | set-content $fileLocation
+      Write-Output "CommitIdAttribute written..."
+      Write-Output "==============================================================================================================================================="
+
 - task: VSBuild@1
   displayName: Build
   inputs:

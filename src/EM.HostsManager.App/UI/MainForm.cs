@@ -125,7 +125,8 @@ namespace EM.HostsManager.App.UI
                 @"https://github.com/enda-mullally/hostsmanager" +
                 $@"{Environment.NewLine}{Environment.NewLine}" +
                 $@"Version: { appVersion.GetAppVersion() }{Environment.NewLine}" +
-                $@"Build Date: { appVersion.GetBuildDate() }" +
+                $@"Commit: { appVersion.GetCommitId() }{Environment.NewLine}" +
+                $@"Date: { appVersion.GetBuildDate() }" +
                 $@"{Environment.NewLine}{Environment.NewLine}" +
                 @"Copyright © 2021 Enda Mullally",
                 @"About",
