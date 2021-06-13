@@ -64,6 +64,15 @@ steps:
       Write-Output "CommitIdAttribute written..."
       Write-Output "==============================================================================================================================================="
 
+- task: SonarCloudPrepare@1
+  displayName: SonarCloud [Prepare]
+  inputs:
+    SonarCloud: 'sonarcloud.svc'
+    organization: 'endamullally'
+    scannerMode: 'MSBuild'
+    projectKey: 'endamullally_GitHub-Public'
+    projectName: 'GitHub Public'
+
 - task: VSBuild@1
   displayName: Build
   inputs:
@@ -87,6 +96,14 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: SonarCloudAnalyze@1
+  displayName: SonarCloud [Analysis]
+
+- task: SonarCloudPublish@1
+  displayName: SonarCloud [Publish]
+  inputs:
+    pollingTimeoutSec: '300'
 
 - task: CopyFiles@2
   displayName: Copy Build Files (1 of 2)
