@@ -70,8 +70,8 @@ steps:
     SonarCloud: 'sonarcloud.svc'
     organization: 'endamullally'
     scannerMode: 'MSBuild'
-    projectKey: 'endamullally_GitHub-Public'
-    projectName: 'GitHub Public'
+    projectKey: 'endamullally_github.hostsmanager'
+    projectName: 'github.hostsmanager'
 
 - task: VSBuild@1
   displayName: Build
