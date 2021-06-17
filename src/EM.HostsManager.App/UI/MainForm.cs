@@ -11,11 +11,10 @@ namespace EM.HostsManager.App.UI
 {
     public partial class MainForm : Form
     {
-        private static bool _aboutShown;
-        private static bool _requestingClose;
+        private bool _aboutShown;
+        private bool _requestingClose;
 
-        // Id for the About menu item in the System Menu
-        public static int SysMenuAboutId = 0x1; 
+        private const int SysMenuAboutId = 0x1; 
 
         public MainForm()
         {
