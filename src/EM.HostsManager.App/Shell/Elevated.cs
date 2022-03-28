@@ -27,7 +27,7 @@ namespace EM.HostsManager.App.Shell
 
         public static void RestartElevated(string args = "")
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
                 WorkingDirectory = Environment.CurrentDirectory,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -158,6 +159,7 @@ namespace EM.HostsManager.App.UI
             UxRefresh();
         }
 
+        [SuppressMessage("SonarCloud", "S4036", Justification = "Fixed command")]
         private void uxbtnEdit_Click(object sender, EventArgs e)
         {
             var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
@@ -186,6 +188,7 @@ namespace EM.HostsManager.App.UI
             }
         }
 
+        [SuppressMessage("SonarCloud", "S4036", Justification = "Fixed command")]
         private void uxbtnFlushDNS_Click(object sender, EventArgs e)
         {
             try
@@ -323,6 +326,7 @@ namespace EM.HostsManager.App.UI
             base.OnLoad(e);
         }
 
+        [SuppressMessage("SonarCloud", "S2589", Justification = "Using a compiler directive here so this will not always be false")]
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             // ReSharper disable once RedundantAssignment

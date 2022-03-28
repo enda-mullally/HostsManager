@@ -7,7 +7,7 @@ namespace EM.HostsManager.App
 {
     internal static class Program
     {
-        private static readonly Mutex AppMutex = new Mutex(false, "Enda-Mullally|Hosts-Manager|2021|V1|Single.Instance");
+        private static readonly Mutex AppMutex = new(false, "Enda-Mullally|Hosts-Manager|2021|V1|Single.Instance");
 
         [STAThread]
         private static void Main()

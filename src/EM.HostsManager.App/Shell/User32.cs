@@ -10,14 +10,46 @@ namespace EM.HostsManager.App.Shell
         public const int MfString = 0x0;
         public const int MfSeparator = 0x800;
 
+        // Public
+        public static uint SendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam)
+        {
+            if (hWnd != IntPtr.Zero && msg > 0)
+            {
+                return sendMessage(hWnd, msg, wParam, lParam);
+            }
+
+            return 0;
+        }
+
+        public static IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert)
+        {
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (hWnd != IntPtr.Zero)
+            {
+                return getSystemMenu(hWnd, bRevert);
+            }
+
+            return IntPtr.Zero;
+        }
+
+        public static bool AppendMenu(IntPtr hMenu, int uFlags, int uIdNewItem, string lpNewItem)
+        {
+            if (hMenu != IntPtr.Zero && uFlags > 0 && uIdNewItem > 0 && !string.IsNullOrWhiteSpace(lpNewItem))
+            {
+                return appendMenu(hMenu, uFlags, uIdNewItem, lpNewItem);
+            }
+
+            return false;
+        }
+
         // P/Invoke declarations
-        [DllImport("user32")]
-        public static extern uint SendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam);
+        [DllImport("user32", EntryPoint = "SendMessage")]
+        private static extern uint sendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam);
 
-        [DllImport("user32")]
-        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        [DllImport("user32", EntryPoint = "GetSystemMenu")]
+        private static extern IntPtr getSystemMenu(IntPtr hWnd, bool bRevert);
 
-        [DllImport("user32")]
-        public static extern bool AppendMenu(IntPtr hMenu, int uFlags, int uIdNewItem, string lpNewItem);
+        [DllImport("user32", EntryPoint = "AppendMenu")]
+        private static extern bool appendMenu(IntPtr hMenu, int uFlags, int uIdNewItem, string lpNewItem);
     }
 }

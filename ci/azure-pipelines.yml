@@ -7,12 +7,13 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2022'
 
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  targetFramework: 'net6.0-windows'
   GitVersion.SemVer: ''
 
 steps:
@@ -77,7 +78,7 @@ steps:
   displayName: Build
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    msbuildArgs: '/p:DeployOnBuild=false /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\App.zip"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     versioningScheme: byEnvVar
@@ -108,7 +109,7 @@ steps:
 - task: CopyFiles@2
   displayName: Copy Build Files (1 of 2)
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows'
+    SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)'
     Contents: '**'
     TargetFolder: '$(Build.BinariesDirectory)'
     CleanTargetFolder: true
@@ -118,9 +119,9 @@ steps:
   displayName: Copy Build Files (2 of 2)
   inputs:
     Contents: |
-      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.App.exe
-      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.App.dll
-      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\net5.0-windows\EM.HostsManager.App.runtimeconfig.json
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)\EM.HostsManager.App.exe
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)\EM.HostsManager.App.dll
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)\EM.HostsManager.App.runtimeconfig.json
     TargetFolder: '$(Build.BinariesDirectory)\Deploy'
     CleanTargetFolder: true
     OverWrite: true
