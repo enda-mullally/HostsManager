@@ -23,7 +23,13 @@ namespace EM.HostsManager.App.Shell
 
         public static IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert)
         {
-            return hWnd != IntPtr.Zero ? getSystemMenu(hWnd, bRevert) : IntPtr.Zero;
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (hWnd != IntPtr.Zero)
+            {
+                return getSystemMenu(hWnd, bRevert);
+            }
+
+            return IntPtr.Zero;
         }
 
         public static bool AppendMenu(IntPtr hMenu, int uFlags, int uIdNewItem, string lpNewItem)
