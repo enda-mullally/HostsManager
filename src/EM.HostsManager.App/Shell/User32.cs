@@ -21,10 +21,20 @@ namespace EM.HostsManager.App.Shell
             return 0;
         }
 
-        public static IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert) => getSystemMenu(hWnd, bRevert);
+        public static IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert)
+        {
+            return hWnd != IntPtr.Zero ? getSystemMenu(hWnd, bRevert) : IntPtr.Zero;
+        }
 
-        public static bool AppendMenu(IntPtr hMenu, int uFlags, int uIdNewItem, string lpNewItem) =>
-            appendMenu(hMenu, uFlags, uIdNewItem, lpNewItem);
+        public static bool AppendMenu(IntPtr hMenu, int uFlags, int uIdNewItem, string lpNewItem)
+        {
+            if (hMenu != IntPtr.Zero && uFlags > 0 && uIdNewItem > 0 && !string.IsNullOrWhiteSpace(lpNewItem))
+            {
+                return appendMenu(hMenu, uFlags, uIdNewItem, lpNewItem);
+            }
+
+            return false;
+        }
 
         // P/Invoke declarations
         [DllImport("user32", EntryPoint = "SendMessage")]
