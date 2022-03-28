@@ -132,12 +132,12 @@ steps:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/EM.HostaManager-$(GitVersion.SemVer)-$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EM.HostsManager-$(GitVersion.SemVer)-$(Build.BuildId).zip'
     replaceExistingArchive: true
     verbose: true
 
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'EM.HostaManager-$(GitVersion.SemVer)-$(Build.BuildId).zip'
+    ArtifactName: 'EM.HostsManager-$(GitVersion.SemVer)-$(Build.BuildId).zip'
     publishLocation: 'Container'
