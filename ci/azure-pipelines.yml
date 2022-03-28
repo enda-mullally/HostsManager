@@ -93,10 +93,12 @@ steps:
       Write-Output "Version : $(GitVersion.SemVer)"
       Write-Output "==============================================================================================================================================="
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+# Re-add when we have some tests to run.
+#
+#- task: VSTest@2
+#  inputs:
+#    platform: '$(buildPlatform)'
+#    configuration: '$(buildConfiguration)'
 
 - task: SonarCloudAnalyze@1
   displayName: SonarCloud [Analysis]
