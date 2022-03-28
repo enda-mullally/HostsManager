@@ -11,8 +11,15 @@ namespace EM.HostsManager.App.Shell
         public const int MfSeparator = 0x800;
 
         // Public
-        public static uint SendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam) =>
-            sendMessage(hWnd, msg, wParam, lParam);
+        public static uint SendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam)
+        {
+            if (hWnd != IntPtr.Zero && msg > 0)
+            {
+                return sendMessage(hWnd, msg, wParam, lParam);
+            }
+
+            return 0;
+        }
 
         public static IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert) => getSystemMenu(hWnd, bRevert);
 
