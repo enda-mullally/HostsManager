@@ -11,7 +11,7 @@
     <Company />
     <PackageIcon>Icon_01.ico</PackageIcon>
     <Description>Just another simple Windows Hosts File Manager</Description>
-    <Copyright>© 2021 Enda Mullally</Copyright>
+    <Copyright>© 2021-2022 Enda Mullally</Copyright>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>HostsManager.snk</AssemblyOriginatorKeyFile>
     <Product>Hosts Manager</Product>

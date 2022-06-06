@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace EM.HostsManager.App.Attributes;
 
-namespace EM.HostsManager.App.Attributes
+[AttributeUsage(AttributeTargets.Assembly)]
+public class CommitIdAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Assembly)]
-    public class CommitIdAttribute : Attribute
-    {
-        public string CommitId { get; set; }
+    public string CommitId { get; set; }
 
-        public CommitIdAttribute(string commitId)
-        {
-            CommitId = commitId;
-        }
+    public CommitIdAttribute(string commitId)
+    {
+        CommitId = commitId;
     }
 }

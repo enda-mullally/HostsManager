@@ -1,70 +1,67 @@
-﻿using System.IO;
-using SysFile=System.IO.File;
+﻿using SysFile=System.IO.File;
 
-namespace EM.HostsManager.App.IO
+namespace EM.HostsManager.App.IO;
+
+public static class File
 {
-    public static class File
+    public static bool CopyFileTo(
+        string sourceFileName,
+        string destFileName,
+        bool append = false)
     {
-        public static bool CopyFileTo(
-            string sourceFileName,
-            string destFileName,
-            bool append = false)
+        try
         {
-            try
-            {
-                using var sr = new StreamReader(sourceFileName);
-                using var sw = new StreamWriter(destFileName, append);
-                var currentHostsFileContent = sr.ReadToEnd();
-                sw.Write(currentHostsFileContent);
-            }
-            catch
-            {
-                return false;
-            }
+            using var sr = new StreamReader(sourceFileName);
+            using var sw = new StreamWriter(destFileName, append);
+            var currentHostsFileContent = sr.ReadToEnd();
+            sw.Write(currentHostsFileContent);
+        }
+        catch
+        {
+            return false;
+        }
             
-            return true;
-        }
+        return true;
+    }
 
-        public static long FileSize(string fileName)
+    public static long FileSize(string fileName)
+    {
+        return SysFile.Exists(fileName)
+            ? new FileInfo(fileName).Length
+            : 0;
+    }
+
+    public static bool ReplaceContentWith(
+        string destFileName,
+        string newContent)
+    {
+        try
         {
-            return SysFile.Exists(fileName)
-                ? new FileInfo(fileName).Length
-                : 0;
+            using var sw = new StreamWriter(destFileName, false);
+            sw.Write(newContent);
         }
-
-        public static bool ReplaceContentWith(
-            string destFileName,
-            string newContent)
+        catch
         {
-            try
-            {
-                using var sw = new StreamWriter(destFileName, false);
-                sw.Write(newContent);
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
 
-        public static bool DeleteIfExists(
-            string fileName)
+        return true;
+    }
+
+    public static bool DeleteIfExists(string fileName)
+    {
+        try
         {
-            try
+            if (SysFile.Exists(fileName))
             {
-                if (SysFile.Exists(fileName))
-                {
-                    SysFile.Delete(fileName);
-                }
+                SysFile.Delete(fileName);
             }
-            catch
-            {
-                return false;
-            }
-
-            return true;
         }
+        catch
+        {
+            return false;
+        }
+
+        return true;
     }
 }
