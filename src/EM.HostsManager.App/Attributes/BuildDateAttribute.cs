@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace EM.HostsManager.App.Attributes;
 
-namespace EM.HostsManager.App.Attributes
+[AttributeUsage(AttributeTargets.Assembly)]
+public class BuildDateAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Assembly)]
-    public class BuildDateAttribute : Attribute
-    {
-        public string BuildDate { get; set; }
+    public string BuildDate { get; set; }
 
-        public BuildDateAttribute(string buildDateString)
-        {
-            BuildDate = buildDateString;
-        }
+    public BuildDateAttribute(string buildDateString)
+    {
+        BuildDate = buildDateString;
     }
 }
