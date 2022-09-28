@@ -67,7 +67,7 @@ namespace EM.HostsManager.App.UI
             this.uxbtnRunAsAdmin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uxbtnRunAsAdmin.Name = "uxbtnRunAsAdmin";
             this.uxbtnRunAsAdmin.Size = new System.Drawing.Size(175, 34);
-            this.uxbtnRunAsAdmin.TabIndex = 4;
+            this.uxbtnRunAsAdmin.TabIndex = 10;
             this.uxbtnRunAsAdmin.Text = " Run as &Administrator";
             this.uxbtnRunAsAdmin.UseCompatibleTextRendering = true;
             this.uxbtnRunAsAdmin.UseVisualStyleBackColor = false;
@@ -143,7 +143,7 @@ namespace EM.HostsManager.App.UI
             this.uxlblSep.Location = new System.Drawing.Point(0, 261);
             this.uxlblSep.Name = "uxlblSep";
             this.uxlblSep.Size = new System.Drawing.Size(516, 3);
-            this.uxlblSep.TabIndex = 2;
+            this.uxlblSep.TabIndex = 9;
             // 
             // uxAppIcon
             // 
@@ -162,7 +162,7 @@ namespace EM.HostsManager.App.UI
             this.uxlblEnabled.Location = new System.Drawing.Point(86, 14);
             this.uxlblEnabled.Name = "uxlblEnabled";
             this.uxlblEnabled.Size = new System.Drawing.Size(188, 25);
-            this.uxlblEnabled.TabIndex = 4;
+            this.uxlblEnabled.TabIndex = 0;
             this.uxlblEnabled.Text = "Hosts file is [status].";
             // 
             // uxlblHostNames
@@ -173,7 +173,7 @@ namespace EM.HostsManager.App.UI
             this.uxlblHostNames.Location = new System.Drawing.Point(89, 54);
             this.uxlblHostNames.Name = "uxlblHostNames";
             this.uxlblHostNames.Size = new System.Drawing.Size(41, 15);
-            this.uxlblHostNames.TabIndex = 5;
+            this.uxlblHostNames.TabIndex = 1;
             this.uxlblHostNames.Text = "Hosts:";
             // 
             // uxlblHostsCount
@@ -184,7 +184,7 @@ namespace EM.HostsManager.App.UI
             this.uxlblHostsCount.Location = new System.Drawing.Point(184, 54);
             this.uxlblHostsCount.Name = "uxlblHostsCount";
             this.uxlblHostsCount.Size = new System.Drawing.Size(105, 15);
-            this.uxlblHostsCount.TabIndex = 6;
+            this.uxlblHostsCount.TabIndex = 2;
             this.uxlblHostsCount.Text = "[hostname count]";
             // 
             // uxlblHostsFileSize
@@ -195,7 +195,7 @@ namespace EM.HostsManager.App.UI
             this.uxlblHostsFileSize.Location = new System.Drawing.Point(184, 78);
             this.uxlblHostsFileSize.Name = "uxlblHostsFileSize";
             this.uxlblHostsFileSize.Size = new System.Drawing.Size(63, 15);
-            this.uxlblHostsFileSize.TabIndex = 8;
+            this.uxlblHostsFileSize.TabIndex = 4;
             this.uxlblHostsFileSize.Text = "[0 byte(s)]";
             // 
             // uxlblFileSize
@@ -206,7 +206,7 @@ namespace EM.HostsManager.App.UI
             this.uxlblFileSize.Location = new System.Drawing.Point(89, 78);
             this.uxlblFileSize.Name = "uxlblFileSize";
             this.uxlblFileSize.Size = new System.Drawing.Size(53, 15);
-            this.uxlblFileSize.TabIndex = 7;
+            this.uxlblFileSize.TabIndex = 3;
             this.uxlblFileSize.Text = "File size:";
             // 
             // uxbtnDisableHostsFile
@@ -219,7 +219,7 @@ namespace EM.HostsManager.App.UI
             this.uxbtnDisableHostsFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uxbtnDisableHostsFile.Name = "uxbtnDisableHostsFile";
             this.uxbtnDisableHostsFile.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnDisableHostsFile.TabIndex = 1;
+            this.uxbtnDisableHostsFile.TabIndex = 6;
             this.uxbtnDisableHostsFile.Text = "|&Disable Hosts File";
             this.uxbtnDisableHostsFile.UseCompatibleTextRendering = true;
             this.uxbtnDisableHostsFile.UseVisualStyleBackColor = false;
@@ -235,7 +235,7 @@ namespace EM.HostsManager.App.UI
             this.uxbtnEnableHostsFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uxbtnEnableHostsFile.Name = "uxbtnEnableHostsFile";
             this.uxbtnEnableHostsFile.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnEnableHostsFile.TabIndex = 2;
+            this.uxbtnEnableHostsFile.TabIndex = 7;
             this.uxbtnEnableHostsFile.Text = "|&Enable Hosts File";
             this.uxbtnEnableHostsFile.UseCompatibleTextRendering = true;
             this.uxbtnEnableHostsFile.UseVisualStyleBackColor = false;
@@ -251,7 +251,7 @@ namespace EM.HostsManager.App.UI
             this.uxbtnEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uxbtnEdit.Name = "uxbtnEdit";
             this.uxbtnEdit.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnEdit.TabIndex = 0;
+            this.uxbtnEdit.TabIndex = 5;
             this.uxbtnEdit.Text = "|Edit &Hosts File";
             this.uxbtnEdit.UseCompatibleTextRendering = true;
             this.uxbtnEdit.UseVisualStyleBackColor = false;
@@ -267,7 +267,7 @@ namespace EM.HostsManager.App.UI
             this.uxbtnFlushDNS.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.uxbtnFlushDNS.Name = "uxbtnFlushDNS";
             this.uxbtnFlushDNS.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnFlushDNS.TabIndex = 3;
+            this.uxbtnFlushDNS.TabIndex = 8;
             this.uxbtnFlushDNS.Text = "|&Flush DNS Cache";
             this.uxbtnFlushDNS.UseCompatibleTextRendering = true;
             this.uxbtnFlushDNS.UseVisualStyleBackColor = false;

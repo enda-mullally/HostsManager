@@ -63,13 +63,13 @@ public partial class MainForm : Form
         uxMenuEnableHostsFile.Checked = hostsEnabled;
 
         var hostOrHosts = HostsFile
-            .HostsCount() > 1 
-            ? "hosts"
-            : "host";
+            .HostsCount() == 1 
+            ? "host"
+            : "hosts";
             
-        uxNotifyIcon.Text = @"Hosts Manager" + (hostsEnabled
-            ? " (" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
-            : " (disabled)");
+        uxNotifyIcon.Text = @"Hosts Manager" + Environment.NewLine + (hostsEnabled
+            ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
+            : "(all hosts disabled)");
 
         // button state
         if (Elevated.IsElevated())
