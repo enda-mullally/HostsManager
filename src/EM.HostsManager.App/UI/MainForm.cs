@@ -136,7 +136,7 @@ public partial class MainForm : Form
 
     private void uxbtnRunAsAdmin_Click(object sender, EventArgs e)
     {
-        Elevated.RestartElevated("/uac");
+        Elevated.RestartElevated();
     }
 
     private void uxbtnDisableHostsFile_Click(object sender, EventArgs e)
@@ -300,15 +300,16 @@ public partial class MainForm : Form
 
     protected override void OnLoad(EventArgs e)
     {
-        var restarting =
+        base.OnLoad(e);
+
+        var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
-            (Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/show" ||
-             Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/uac");
+            (Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/min");
                 
-        if (restarting)
+        if (!minimized)
         {
             ShowInTaskbar = true;
-                
+
             return;
         }
 
@@ -317,8 +318,6 @@ public partial class MainForm : Form
         Visible = false;
         ShowInTaskbar = false;
         Opacity = 0;
-
-        base.OnLoad(e);
     }
 
     [SuppressMessage("SonarCloud", "S2589", Justification = "Using a compiler directive here so this will not always be false")]

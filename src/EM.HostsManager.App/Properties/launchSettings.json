@@ -1,8 +1,7 @@
 {
   "profiles": {
     "HostsManager": {
-      "commandName": "Project",
-      "commandLineArgs": "/show"
+      "commandName": "Project"
     }
   }
 }

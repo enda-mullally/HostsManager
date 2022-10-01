@@ -10,7 +10,7 @@
 	<Authors>Enda Mullally</Authors>
     <Company />
     <PackageIcon>Icon_01.ico</PackageIcon>
-    <Description>Just another simple Windows Hosts File Manager</Description>
+    <Description>Just another Windows hosts file manager</Description>
     <Copyright>© 2021-2022 Enda Mullally</Copyright>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>HostsManager.snk</AssemblyOriginatorKeyFile>
