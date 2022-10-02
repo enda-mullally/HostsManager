@@ -4,10 +4,7 @@ namespace EM.HostsManager.App.IO;
 
 public static class File
 {
-    public static bool CopyFileTo(
-        string sourceFileName,
-        string destFileName,
-        bool append = false)
+    public static bool CopyFileTo(string sourceFileName, string destFileName, bool append = false)
     {
         try
         {
@@ -31,9 +28,7 @@ public static class File
             : 0;
     }
 
-    public static bool ReplaceContentWith(
-        string destFileName,
-        string newContent)
+    public static bool ReplaceContentWith(string destFileName, string newContent)
     {
         try
         {

@@ -10,3 +10,4 @@ global using System.Runtime.InteropServices;
 global using System.Security.Principal;
 global using System.Threading;
 global using System.Windows.Forms;
+global using System.Collections.Generic;

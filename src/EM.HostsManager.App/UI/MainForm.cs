@@ -1,8 +1,10 @@
 ﻿using EM.HostsManager.App.Hosts;
+using EM.HostsManager.App.Process;
 using EM.HostsManager.App.Shell;
 using EM.HostsManager.App.Version;
-
 namespace EM.HostsManager.App.UI;
+
+using Process = System.Diagnostics.Process;
 
 public partial class MainForm : Form
 {
@@ -363,10 +365,19 @@ public partial class MainForm : Form
     {
         base.WndProc(ref m);
 
-        // Test if the About item was selected from the system menu
-        if (m.Msg == User32.WmSysCommand && (int)m.WParam == SysMenuAboutId)
+        switch (m.Msg)
         {
-            uxMenuAbout_Click(null!, EventArgs.Empty);
+            case User32.WmSysCommand when (int)m.WParam == SysMenuAboutId:
+                uxMenuAbout_Click(null!, EventArgs.Empty);
+                break;
+
+            case SingleInstance.WmActivateApp:
+                uxMenuItemShow_Click(null!, EventArgs.Empty);
+                break;
+
+            case SingleInstance.WmQuitApp:
+                uxMenuExit_Click(null!, EventArgs.Empty);
+                break;
         }
     }
 

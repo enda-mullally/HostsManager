@@ -1,5 +1,7 @@
 ﻿namespace EM.HostsManager.App.Shell;
 
+using Process=System.Diagnostics.Process;
+
 public static class Elevated
 {
     // Normal button
@@ -17,6 +19,7 @@ public static class Elevated
     public static void AddShieldToButton(Button b)
     {
         b.FlatStyle = FlatStyle.System;
+
         User32.SendMessage(b.Handle, BcmSetShield, 0, 0xFFFFFFFF);
     }
 
