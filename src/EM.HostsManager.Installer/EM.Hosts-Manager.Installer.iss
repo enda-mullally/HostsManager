@@ -1,5 +1,6 @@
 ;
 ; Hosts Maneger InnoSetup Installer Script.
+; Copyright (c) 2022 Enda Mullally.
 ;
 
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
@@ -42,14 +43,12 @@ Name: "{group}\Hosts Manager"; Filename: "{app}\EM.HostsManager.App.exe"
 Root: HKLM; SubKey: "Software\Enda Mullally"; ValueType: string; ValueName: ""; ValueData: ""; Flags: uninsdeletekey
 Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "App"; ValueData: "{app}\EM.HostsManager.App.exe"; Flags: uninsdeletekey
 Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "Version"; ValueData: "{#InstallerVersion}"; Flags: uninsdeletekey
+Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "FirstRun"; ValueData: "true"; Flags: uninsdeletekey
 
 [Files]
-; Files from Installer and local folders (shared)
-; Note any dll files merged via ILMerge.exe do not need to be added here. 
 Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "HostsManager.ico"; DestDir: {app}; Flags: ignoreversion noencryption  
 Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
-Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.pdb"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
 
@@ -68,17 +67,28 @@ Filename: "{app}\EM.HostsManager.App.exe"; Parameters:"/quit"; RunOnceId: "Hosts
 [Code]
 function InitializeSetup: Boolean;
 begin
+  // We depend on the .NET 6.0 Desktop runtime so install it if needed (x64).
+  // Note:
+  //   This is an embedded offline install, see how 'dotnet60desktop_x64.exe' is
+  //   packed above and extracted below.
+  //   This will make our installer much larger in size, but,
+  //   will work well on machines that are offline or behind paranoid corporate firewalls.
+  // Note:
+  //   This may be obvious, but, if the user already has a compatible .NET 6.0 Desktop runtime
+  //   installed everything above will be skipped and the installer will just install Hosts Manager.
+  //
+  // Special thanks to all the contributors @ https://github.com/DomGries/InnoDependencyInstaller !
+
   ExtractTemporaryFile('dotnet60desktop_x64.exe');
 
-  // add the dependencies you need
   Dependency_AddDotNet60Desktop;
+  
   // ...
 
   Result := True;
 end;
 
-// Added to ensure that uninstall asks to restart, needed to cleanup the
-// ShellExtensions successfully.
+// Added to ensure that uninstall doesn't ask to restart
 function UninstallNeedRestart(): Boolean;
 begin
   Result := False;
