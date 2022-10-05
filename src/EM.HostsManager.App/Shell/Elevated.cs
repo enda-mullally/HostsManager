@@ -23,7 +23,7 @@ public static class Elevated
         User32.SendMessage(b.Handle, BcmSetShield, 0, 0xFFFFFFFF);
     }
 
-    public static void RestartElevated(string args = "")
+    public static void RestartElevated(string args = "/elevate")
     {
         var startInfo = new ProcessStartInfo
         {

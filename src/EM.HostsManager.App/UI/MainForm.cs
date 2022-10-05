@@ -251,14 +251,31 @@ public partial class MainForm : Form
 
     private void uxMenuItemShow_Click(object sender, EventArgs e)
     {
+        DoShow();
+    }
+
+    private void DoShow(bool external = false)
+    {
+        // This is a trick to force the app back on top in some cases when
+        // invoked via PostMessage/WndProc and our custom WmActivateApp
+        // message
+        if (external)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+        
+        BringToFront();
+        TopLevel = true;
+        Activate();
+
         Visible =
             ShowIcon =
                 ShowInTaskbar = true;
-            
+
         Opacity = 100;
         WindowState = FormWindowState.Normal;
     }
-        
+
     private void uxMenuExit_Click(object sender, EventArgs e)
     {
         _requestingClose = true;
@@ -372,7 +389,7 @@ public partial class MainForm : Form
                 break;
 
             case SingleInstance.WmActivateApp:
-                uxMenuItemShow_Click(null!, EventArgs.Empty);
+                DoShow(true);
                 break;
 
             case SingleInstance.WmQuitApp:

@@ -64,7 +64,7 @@ public sealed class SingleInstance : IDisposable
             }
 
             PostMessageToProcessWindows(process.MainWindowHandle, message);
-
+            
             break;
         }
     }

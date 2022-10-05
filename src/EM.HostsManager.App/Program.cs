@@ -9,21 +9,37 @@ internal static class Program
     private static void Main(string[] args)
     {
         using var si = new SingleInstance("Enda-Mullally|Hosts-Manager|2021-2022|V1|Single.Instance");
-        if (!si.IsSingleInstance())
-        {
-            var requestingQuit =
-                args.Length > 0 && args[0].ToLowerInvariant().Equals("/quit");  // uninstall script quit request
+        
+        var arg = args.Length > 0 ? args[0].ToLowerInvariant() : string.Empty;
 
-            if (requestingQuit)
+        switch (arg)
+        {
+            case "/quit":
             {
-                si.QuitOtherProcess();
+                if (!si.IsSingleInstance())
+                {
+                    si.QuitOtherProcess();
+                }
 
                 return;
             }
 
-            si.ActivateOtherProcess();
+            case "/elevate":
+            {
+                break;
+            }
 
-            return;
+            default:
+            {
+                if (!si.IsSingleInstance())
+                {
+                    si.ActivateOtherProcess();
+
+                    return;
+                }
+
+                break;
+            }
         }
 
         Application.SetHighDpiMode(HighDpiMode.SystemAware);
