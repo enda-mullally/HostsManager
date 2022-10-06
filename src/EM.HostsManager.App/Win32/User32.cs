@@ -1,6 +1,6 @@
 ﻿using static EM.HostsManager.App.Process.WindowEnumerator;
 
-namespace EM.HostsManager.App.Shell;
+namespace EM.HostsManager.App.Win32;
 
 public static class User32
 {

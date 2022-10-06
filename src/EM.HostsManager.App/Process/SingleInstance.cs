@@ -2,7 +2,7 @@
 // Copyright © 2009-2022 Enda Mullally.
 //
 
-using EM.HostsManager.App.Shell;
+using EM.HostsManager.App.Win32;
 
 namespace EM.HostsManager.App.Process;
 

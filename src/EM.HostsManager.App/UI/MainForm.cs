@@ -1,7 +1,8 @@
 ﻿using EM.HostsManager.App.Hosts;
 using EM.HostsManager.App.Process;
-using EM.HostsManager.App.Shell;
 using EM.HostsManager.App.Version;
+using EM.HostsManager.App.Win32;
+
 namespace EM.HostsManager.App.UI;
 
 using static User32;

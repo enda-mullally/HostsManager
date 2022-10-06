@@ -1,4 +1,4 @@
-﻿using EM.HostsManager.App.Shell;
+﻿using EM.HostsManager.App.Win32;
 
 namespace EM.HostsManager.App.Process
 {

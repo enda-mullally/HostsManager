@@ -1,4 +1,4 @@
-﻿namespace EM.HostsManager.App.Shell;
+﻿namespace EM.HostsManager.App.Win32;
 
 using Process=System.Diagnostics.Process;
 
