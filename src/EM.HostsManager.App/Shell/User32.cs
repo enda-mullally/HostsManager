@@ -9,6 +9,11 @@ public static class User32
     public const int MfString = 0x0;
     public const int MfSeparator = 0x800;
 
+    public enum ChangeWindowMessageFilterExAction : uint
+    {
+        Allow = 1,
+    };
+
     // Public
     public static uint SendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam)
     {
@@ -59,6 +64,16 @@ public static class User32
         return enumChildWindows(window, callback, i);
     }
 
+    public static bool ChangeWindowMessageFilterEx(IntPtr hWnd, uint msg, ChangeWindowMessageFilterExAction action)
+    {
+        if (hWnd != IntPtr.Zero && msg > 0)
+        {
+            return changeWindowMessageFilterEx(hWnd, msg, action, IntPtr.Zero);
+        }
+
+        return false;
+    }
+
     // P/Invoke declarations
     [DllImport("user32", EntryPoint = "SendMessage")]
     private static extern uint sendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam);
@@ -75,4 +90,7 @@ public static class User32
     [DllImport("user32", EntryPoint = "EnumChildWindows")]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool enumChildWindows(IntPtr window, EnumWindowProc callback, IntPtr i);
+
+    [DllImport("user32", EntryPoint = "ChangeWindowMessageFilterEx")]
+    private static extern bool changeWindowMessageFilterEx(IntPtr hWnd, uint msg, ChangeWindowMessageFilterExAction action, IntPtr filterStatus);
 }

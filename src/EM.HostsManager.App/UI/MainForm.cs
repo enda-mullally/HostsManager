@@ -4,6 +4,7 @@ using EM.HostsManager.App.Shell;
 using EM.HostsManager.App.Version;
 namespace EM.HostsManager.App.UI;
 
+using static User32;
 using Process = System.Diagnostics.Process;
 
 public partial class MainForm : Form
@@ -376,6 +377,18 @@ public partial class MainForm : Form
 
         // Add the About menu item
         User32.AppendMenu(hSysMenu, User32.MfString, SysMenuAboutId, "&About");
+
+        if (Elevated.IsElevated())
+        {
+            // UIPI bypass for our custom messages if the app is elevated.
+            User32.ChangeWindowMessageFilterEx(Handle,
+                SingleInstance.WmActivateApp,
+                ChangeWindowMessageFilterExAction.Allow);
+
+            User32.ChangeWindowMessageFilterEx(Handle,
+                SingleInstance.WmQuitApp,
+                ChangeWindowMessageFilterExAction.Allow);
+        }
     }
 
     protected override void WndProc(ref Message m)
