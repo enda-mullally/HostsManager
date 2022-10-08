@@ -18,7 +18,7 @@ internal static class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.QuitOtherProcess();
+                    si.QuitOtherProcess(MainForm.WmQuitApp);
                 }
 
                 return;
@@ -33,7 +33,7 @@ internal static class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.ActivateOtherProcess();
+                    si.ActivateOtherProcess(MainForm.WmActivateApp);
 
                     return;
                 }

@@ -15,7 +15,7 @@ public static class User32
     };
 
     // Public
-    public static uint SendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam)
+    public static uint SendMessage(IntPtr hWnd, int msg, uint wParam, uint lParam)
     {
         if (hWnd != IntPtr.Zero && msg > 0)
         {
@@ -51,7 +51,7 @@ public static class User32
         return false;
     }
 
-    public static void PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam)
+    public static void PostMessage(IntPtr hWnd, int msg, uint wParam, uint lParam)
     {
         if (hWnd != IntPtr.Zero && msg > 0)
         {
@@ -64,7 +64,7 @@ public static class User32
         return enumChildWindows(window, callback, i);
     }
 
-    public static bool ChangeWindowMessageFilterEx(IntPtr hWnd, uint msg, ChangeWindowMessageFilterExAction action)
+    public static bool ChangeWindowMessageFilterEx(IntPtr hWnd, int msg, ChangeWindowMessageFilterExAction action)
     {
         if (hWnd != IntPtr.Zero && msg > 0)
         {
@@ -76,7 +76,7 @@ public static class User32
 
     // P/Invoke declarations
     [DllImport("user32", EntryPoint = "SendMessage")]
-    private static extern uint sendMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam);
+    private static extern uint sendMessage(IntPtr hWnd, int msg, uint wParam, uint lParam);
 
     [DllImport("user32", EntryPoint = "GetSystemMenu")]
     private static extern IntPtr getSystemMenu(IntPtr hWnd, bool bRevert);
@@ -85,12 +85,12 @@ public static class User32
     private static extern bool appendMenu(IntPtr hMenu, int uFlags, int uIdNewItem, string lpNewItem);
 
     [DllImport("user32", EntryPoint = "PostMessage")]
-    private static extern bool postMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+    private static extern bool postMessage(IntPtr hWnd, int msg, uint wParam, uint lParam);
 
     [DllImport("user32", EntryPoint = "EnumChildWindows")]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool enumChildWindows(IntPtr window, EnumWindowProc callback, IntPtr i);
 
     [DllImport("user32", EntryPoint = "ChangeWindowMessageFilterEx")]
-    private static extern bool changeWindowMessageFilterEx(IntPtr hWnd, uint msg, ChangeWindowMessageFilterExAction action, IntPtr filterStatus);
+    private static extern bool changeWindowMessageFilterEx(IntPtr hWnd, int msg, ChangeWindowMessageFilterExAction action, IntPtr filterStatus);
 }

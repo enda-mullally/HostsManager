@@ -1,5 +1,4 @@
 ﻿using EM.HostsManager.App.Hosts;
-using EM.HostsManager.App.Process;
 using EM.HostsManager.App.Version;
 using EM.HostsManager.App.Win32;
 
@@ -13,7 +12,11 @@ public partial class MainForm : Form
     private bool _aboutShown;
     private bool _requestingClose;
 
-    private const int SysMenuAboutId = 0x1; 
+    private const int SysMenuAboutId = 0x1;
+
+    private const int WmUser = 0x0400;
+    public const int WmActivateApp = WmUser + 55;
+    public const int WmQuitApp = WmUser + 56;
 
     public MainForm()
     {
@@ -383,11 +386,11 @@ public partial class MainForm : Form
         {
             // UIPI bypass for our custom messages if the app is elevated.
             User32.ChangeWindowMessageFilterEx(Handle,
-                SingleInstance.WmActivateApp,
+                WmActivateApp,
                 ChangeWindowMessageFilterExAction.Allow);
 
             User32.ChangeWindowMessageFilterEx(Handle,
-                SingleInstance.WmQuitApp,
+                WmQuitApp,
                 ChangeWindowMessageFilterExAction.Allow);
         }
     }
@@ -402,11 +405,11 @@ public partial class MainForm : Form
                 uxMenuAbout_Click(null!, EventArgs.Empty);
                 break;
 
-            case SingleInstance.WmActivateApp:
+            case WmActivateApp:
                 DoShow(true);
                 break;
 
-            case SingleInstance.WmQuitApp:
+            case WmQuitApp:
                 uxMenuExit_Click(null!, EventArgs.Empty);
                 break;
         }

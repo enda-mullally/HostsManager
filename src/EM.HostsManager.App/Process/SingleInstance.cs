@@ -10,10 +10,6 @@ using Procs=System.Diagnostics.Process;
 
 public sealed class SingleInstance : IDisposable
 {
-    public const int WmUser = 0x0400;
-    public const int WmActivateApp = WmUser + 55;
-    public const int WmQuitApp = WmUser + 56;
-
     private readonly Mutex _processSync;
     private bool _owned;
 
@@ -30,26 +26,25 @@ public sealed class SingleInstance : IDisposable
         Release();
     }
 
-    public bool IsSingleInstance(bool autoActivateOtherApp = false)
+    public bool IsSingleInstance()
     {
-        var result = _owned;
+        return _owned;
+    }
 
-        if (autoActivateOtherApp && !_owned)
+    public void ActivateOtherProcess(int message)
+    {
+        if (message > 0)
         {
-            ActivateOtherProcess();
+            PostMessageToOtherProcess(message);
         }
-
-        return result;
     }
 
-    public void ActivateOtherProcess()
+    public void QuitOtherProcess(int message)
     {
-        PostMessageToOtherProcess(WmActivateApp);
-    }
-
-    public void QuitOtherProcess()
-    {
-        PostMessageToOtherProcess(WmQuitApp);
+        if (message > 0)
+        {
+            PostMessageToOtherProcess(message);
+        }
     }
 
     private static void PostMessageToOtherProcess(int message)
@@ -73,10 +68,10 @@ public sealed class SingleInstance : IDisposable
     {
         foreach (var childWindow in WindowEnumerator.GetChildWindows(windowToShow))
         {
-            User32.PostMessage(childWindow, message, IntPtr.Zero, IntPtr.Zero);
+            User32.PostMessage(childWindow, message, 0, 0);
         }
 
-        User32.PostMessage(windowToShow, message, IntPtr.Zero, IntPtr.Zero);
+        User32.PostMessage(windowToShow, message, 0, 0);
     }
 
     private void Release()
