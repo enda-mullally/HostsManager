@@ -16,7 +16,7 @@
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 AppId=Hosts_Manager_10e26e4d
-AppVerName=Hosts Manager - Version: {#InstallerVersion}
+AppVerName=Hosts Manager {#InstallerVersion}
 OutputBaseFilename=EM.HostsManager.Installer.{#InstallerVersion}
 UninstallDisplayIcon={app}\EM.HostsManager.App.exe
 WizardStyle=modern
@@ -69,7 +69,7 @@ Filename: "{app}\EM.HostsManager.App.exe"; Parameters:"/quit"; RunOnceId: "Hosts
 
 [CustomMessages]
 AppName=Hosts Manager
-LaunchProgram=Start Hosts Manager v{#InstallerVersion} now
+LaunchProgram=Start Hosts Manager {#InstallerVersion} now
 
 [Code]
 function InitializeSetup: Boolean;

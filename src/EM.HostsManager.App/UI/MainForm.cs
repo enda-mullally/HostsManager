@@ -1,6 +1,7 @@
 ﻿using EM.HostsManager.App.Hosts;
 using EM.HostsManager.App.Version;
 using EM.HostsManager.App.Win32;
+using Microsoft.Win32;
 
 namespace EM.HostsManager.App.UI;
 
@@ -257,6 +258,8 @@ public partial class MainForm : Form
     private void uxMenuItemShow_Click(object sender, EventArgs e)
     {
         DoShow();
+
+        ShowMessageOnFirstRun();
     }
 
     private void DoShow(bool external = false)
@@ -416,4 +419,73 @@ public partial class MainForm : Form
     }
 
     #endregion
+
+    private void MainForm_Shown(object sender, EventArgs e)
+    {
+        ShowMessageOnFirstRun();
+    }
+
+    private void ShowMessageOnFirstRun()
+    {
+        if (WindowState != FormWindowState.Normal)
+        {
+            return;
+        }
+
+        var firstRun = false;
+        RegistryKey? hostsManagerKey = null;
+        try
+        {
+            hostsManagerKey = Registry.CurrentUser.OpenSubKey(@"Software\Enda Mullally\Hosts Manager");
+            if (hostsManagerKey == null)
+            {
+                return;
+            }
+
+            var o = hostsManagerKey.GetValue("FirstRun");
+            if (o != null)
+            {
+                var firstRunString = (o as string)!.ToLowerInvariant();
+
+                firstRun = firstRunString.Equals("true")
+                           || firstRunString.Equals("1");
+            }
+
+            if (firstRun)
+            {
+                // Reset
+                hostsManagerKey.Close();
+                hostsManagerKey = Registry.CurrentUser.OpenSubKey(@"Software\Enda Mullally\Hosts Manager", true);
+                hostsManagerKey?.SetValue("FirstRun", "false", RegistryValueKind.String);
+            }
+        }
+        catch
+        {
+            // ignore
+        }
+        finally
+        {
+            hostsManagerKey?.Close();
+        }
+
+        if (!firstRun)
+        {
+            return;
+        }
+
+        var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
+
+        MessageBox.Show(
+            this,
+            $@"== Hosts Manager {appVersion.GetAppVersion()} ==" +
+            $@"{Environment.NewLine}{Environment.NewLine}" +
+            $@"Welcome!" +
+            $@"{Environment.NewLine}{Environment.NewLine}" +
+            @"Hosts Manager is a system tray application which will automatically minimize to your system tray when closed/minimized." +
+            @$"{Environment.NewLine}{Environment.NewLine}Please note: By default, Hosts Manager will start (minimized) when you start Windows. You can disable auto start in Windows Task Manager (Startup apps). To exit Hosts Manager, right click the system tray icon and select Exit." +
+            @$"{Environment.NewLine}{Environment.NewLine}Thank you for installing Hosts Manager. Enjoy!",
+            @"Welcome",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information);
+    }
 }
