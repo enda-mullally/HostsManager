@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿//
+// Copyright © 2021-2022 Enda Mullally.
+//
+
+using Microsoft.Win32;
 using Reg=Microsoft.Win32.Registry;
 
 namespace EM.HostsManager.App.Registry

@@ -1,3 +1,7 @@
+//
+// Copyright © 2021-2022 Enda Mullally.
+//
+
 using EM.HostsManager.App.Process;
 using EM.HostsManager.App.UI;
 

@@ -1,4 +1,8 @@
-﻿using SysFile=System.IO.File;
+﻿//
+// Copyright © 2021-2022 Enda Mullally.
+//
+
+using SysFile =System.IO.File;
 
 namespace EM.HostsManager.App.IO;
 

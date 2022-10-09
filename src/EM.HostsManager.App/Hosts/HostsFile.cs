@@ -1,4 +1,8 @@
-﻿namespace EM.HostsManager.App.Hosts;
+﻿//
+// Copyright © 2021-2022 Enda Mullally.
+//
+
+namespace EM.HostsManager.App.Hosts;
 
 public static class HostsFile
 {

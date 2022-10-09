@@ -1,4 +1,8 @@
-﻿using EM.HostsManager.App.Hosts;
+﻿//
+// Copyright © 2021-2022 Enda Mullally.
+//
+
+using EM.HostsManager.App.Hosts;
 using EM.HostsManager.App.Version;
 using EM.HostsManager.App.Win32;
 using Reg=EM.HostsManager.App.Registry.Registry;
