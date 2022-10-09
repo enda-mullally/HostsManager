@@ -40,10 +40,13 @@ Name: "{group}\Hosts Manager"; Filename: "{app}\EM.HostsManager.App.exe"
 
 [Registry]
 ; AppName
-Root: HKLM; SubKey: "Software\Enda Mullally"; ValueType: string; ValueName: ""; ValueData: ""; Flags: uninsdeletekey
-Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "App"; ValueData: "{app}\EM.HostsManager.App.exe"; Flags: uninsdeletekey
-Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "Version"; ValueData: "{#InstallerVersion}"; Flags: uninsdeletekey
-Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "FirstRun"; ValueData: "true"; Flags: uninsdeletekey
+Root: HKCU; SubKey: "Software\Enda Mullally"; ValueType: string; ValueName: ""; ValueData: ""; Flags: uninsdeletekey
+Root: HKCU; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "App"; ValueData: "{app}\EM.HostsManager.App.exe"; Flags: uninsdeletekey
+Root: HKCU; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "Version"; ValueData: "{#InstallerVersion}"; Flags: uninsdeletekey
+Root: HKCU; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "FirstRun"; ValueData: "true"; Flags: uninsdeletekey
+
+; Start the app on current user startup (minimized to the system tray)
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Hosts Manager"; ValueData: """{app}\EM.HostsManager.App.exe"" /min"; Flags: uninsdeletekey
 
 [Files]
 Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
@@ -59,10 +62,14 @@ Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
 Source: "dotnet60desktop_x64.exe"; Flags: dontcopy noencryption
 
 [Run]
-;Filename: "{app}\{#AppExe}"; Parameters:"/installsilent"; Description: ""; Flags: shellexec skipifsilent
+Filename: {app}\EM.HostsManager.App.exe; Description: {cm:LaunchProgram,{cm:AppName}}; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 Filename: "{app}\EM.HostsManager.App.exe"; Parameters:"/quit"; RunOnceId: "Hosts_Manager_10e26e4d"; Flags: waituntilterminated
+
+[CustomMessages]
+AppName=Hosts Manager
+LaunchProgram=Start Hosts Manager v{#InstallerVersion} now
 
 [Code]
 function InitializeSetup: Boolean;
