@@ -1,7 +1,7 @@
 ﻿using EM.HostsManager.App.Hosts;
 using EM.HostsManager.App.Version;
 using EM.HostsManager.App.Win32;
-using Microsoft.Win32;
+using Reg=EM.HostsManager.App.Registry.Registry;
 
 namespace EM.HostsManager.App.UI;
 
@@ -427,51 +427,24 @@ public partial class MainForm : Form
 
     private void ShowMessageOnFirstRun()
     {
+        const string firstRunRegPath = @"Software\Enda Mullally\Hosts Manager";
+        const string firstRunRegKey = @"FirstRun";
+
         if (WindowState != FormWindowState.Normal)
         {
             return;
         }
 
-        var firstRun = false;
-        RegistryKey? hostsManagerKey = null;
-        try
-        {
-            hostsManagerKey = Registry.CurrentUser.OpenSubKey(@"Software\Enda Mullally\Hosts Manager");
-            if (hostsManagerKey == null)
-            {
-                return;
-            }
-
-            var o = hostsManagerKey.GetValue("FirstRun");
-            if (o != null)
-            {
-                var firstRunString = (o as string)!.ToLowerInvariant();
-
-                firstRun = firstRunString.Equals("true")
-                           || firstRunString.Equals("1");
-            }
-
-            if (firstRun)
-            {
-                // Reset
-                hostsManagerKey.Close();
-                hostsManagerKey = Registry.CurrentUser.OpenSubKey(@"Software\Enda Mullally\Hosts Manager", true);
-                hostsManagerKey?.SetValue("FirstRun", "false", RegistryValueKind.String);
-            }
-        }
-        catch
-        {
-            // ignore
-        }
-        finally
-        {
-            hostsManagerKey?.Close();
-        }
+        var firstRun =
+            Reg.GetCurrentUserRegString(firstRunRegPath, firstRunRegKey, "false")
+                .ToLowerInvariant().Equals("true");
 
         if (!firstRun)
         {
             return;
         }
+
+        Reg.SetCurrentUserRegString(firstRunRegPath, firstRunRegKey, "false");
 
         var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
 
