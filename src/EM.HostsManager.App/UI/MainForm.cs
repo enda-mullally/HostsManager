@@ -1,15 +1,27 @@
-﻿using EM.HostsManager.App.Hosts;
-using EM.HostsManager.App.Shell;
+﻿//
+// Copyright © 2021-2022 Enda Mullally.
+//
+
+using EM.HostsManager.App.Hosts;
 using EM.HostsManager.App.Version;
+using EM.HostsManager.App.Win32;
+using Reg=EM.HostsManager.App.Registry.Registry;
 
 namespace EM.HostsManager.App.UI;
+
+using static User32;
+using Process = System.Diagnostics.Process;
 
 public partial class MainForm : Form
 {
     private bool _aboutShown;
     private bool _requestingClose;
 
-    private const int SysMenuAboutId = 0x1; 
+    private const int SysMenuAboutId = 0x1;
+
+    private const int WmUser = 0x0400;
+    public const int WmActivateApp = WmUser + 55;
+    public const int WmQuitApp = WmUser + 56;
 
     public MainForm()
     {
@@ -136,7 +148,7 @@ public partial class MainForm : Form
 
     private void uxbtnRunAsAdmin_Click(object sender, EventArgs e)
     {
-        Elevated.RestartElevated("/uac");
+        Elevated.RestartElevated();
     }
 
     private void uxbtnDisableHostsFile_Click(object sender, EventArgs e)
@@ -249,14 +261,33 @@ public partial class MainForm : Form
 
     private void uxMenuItemShow_Click(object sender, EventArgs e)
     {
+        DoShow();
+
+        ShowMessageOnFirstRun();
+    }
+
+    private void DoShow(bool external = false)
+    {
+        // This is a trick to force the app back on top in some cases when
+        // invoked via PostMessage/WndProc and our custom WmActivateApp
+        // message
+        if (external)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+        
+        BringToFront();
+        TopLevel = true;
+        Activate();
+
         Visible =
             ShowIcon =
                 ShowInTaskbar = true;
-            
+
         Opacity = 100;
         WindowState = FormWindowState.Normal;
     }
-        
+
     private void uxMenuExit_Click(object sender, EventArgs e)
     {
         _requestingClose = true;
@@ -300,15 +331,16 @@ public partial class MainForm : Form
 
     protected override void OnLoad(EventArgs e)
     {
-        var restarting =
+        base.OnLoad(e);
+
+        var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
-            (Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/show" ||
-             Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/uac");
+            (Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/min");
                 
-        if (restarting)
+        if (!minimized)
         {
             ShowInTaskbar = true;
-                
+
             return;
         }
 
@@ -317,8 +349,6 @@ public partial class MainForm : Form
         Visible = false;
         ShowInTaskbar = false;
         Opacity = 0;
-
-        base.OnLoad(e);
     }
 
     [SuppressMessage("SonarCloud", "S2589", Justification = "Using a compiler directive here so this will not always be false")]
@@ -358,18 +388,81 @@ public partial class MainForm : Form
 
         // Add the About menu item
         User32.AppendMenu(hSysMenu, User32.MfString, SysMenuAboutId, "&About");
+
+        if (Elevated.IsElevated())
+        {
+            // UIPI bypass for our custom messages if the app is elevated.
+            User32.ChangeWindowMessageFilterEx(Handle,
+                WmActivateApp,
+                ChangeWindowMessageFilterExAction.Allow);
+
+            User32.ChangeWindowMessageFilterEx(Handle,
+                WmQuitApp,
+                ChangeWindowMessageFilterExAction.Allow);
+        }
     }
 
     protected override void WndProc(ref Message m)
     {
         base.WndProc(ref m);
 
-        // Test if the About item was selected from the system menu
-        if (m.Msg == User32.WmSysCommand && (int)m.WParam == SysMenuAboutId)
+        switch (m.Msg)
         {
-            uxMenuAbout_Click(null!, EventArgs.Empty);
+            case User32.WmSysCommand when (int)m.WParam == SysMenuAboutId:
+                uxMenuAbout_Click(null!, EventArgs.Empty);
+                break;
+
+            case WmActivateApp:
+                DoShow(true);
+                break;
+
+            case WmQuitApp:
+                uxMenuExit_Click(null!, EventArgs.Empty);
+                break;
         }
     }
 
     #endregion
+
+    private void MainForm_Shown(object sender, EventArgs e)
+    {
+        ShowMessageOnFirstRun();
+    }
+
+    private void ShowMessageOnFirstRun()
+    {
+        const string firstRunRegPath = @"Software\Enda Mullally\Hosts Manager";
+        const string firstRunRegKey = @"FirstRun";
+
+        if (WindowState != FormWindowState.Normal)
+        {
+            return;
+        }
+
+        var firstRun =
+            Reg.GetCurrentUserRegString(firstRunRegPath, firstRunRegKey, "false")
+                .ToLowerInvariant().Equals("true");
+
+        if (!firstRun)
+        {
+            return;
+        }
+
+        Reg.SetCurrentUserRegString(firstRunRegPath, firstRunRegKey, "false");
+
+        var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
+
+        MessageBox.Show(
+            this,
+            $@"== Hosts Manager {appVersion.GetAppVersion()} ==" +
+            $@"{Environment.NewLine}{Environment.NewLine}" +
+            $@"Welcome!" +
+            $@"{Environment.NewLine}{Environment.NewLine}" +
+            @"Hosts Manager is a system tray application which will automatically minimize to your system tray when closed/minimized." +
+            @$"{Environment.NewLine}{Environment.NewLine}Please note: By default, Hosts Manager will start (minimized) when you start Windows. You can disable auto start in Windows Task Manager (Startup apps). To exit Hosts Manager, right click the system tray icon and select Exit." +
+            @$"{Environment.NewLine}{Environment.NewLine}Thank you for installing Hosts Manager. Enjoy!",
+            @"Welcome",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information);
+    }
 }

@@ -65,15 +65,6 @@ steps:
       Write-Output "CommitIdAttribute written..."
       Write-Output "==============================================================================================================================================="
 
-- task: SonarCloudPrepare@1
-  displayName: SonarCloud [Prepare]
-  inputs:
-    SonarCloud: 'sonarcloud.svc'
-    organization: 'endamullally'
-    scannerMode: 'MSBuild'
-    projectKey: 'endamullally_github.hostsmanager'
-    projectName: 'github.hostsmanager'
-
 - task: VSBuild@1
   displayName: Build
   inputs:
@@ -93,21 +84,29 @@ steps:
       Write-Output "Version : $(GitVersion.SemVer)"
       Write-Output "==============================================================================================================================================="
 
-- task: VSTest@2
+# Install Inno Setup with chocolatey
+- task: PowerShell@2
+  displayName: 'Install Inno Setup'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    targetType: 'inline'
+    script: 'choco install innosetup'
 
-- task: SonarCloudAnalyze@1
-  displayName: SonarCloud [Analysis]
-
-- task: SonarCloudPublish@1
-  displayName: SonarCloud [Publish]
+# Install Inno Setup (idp plugin) with chocolatey
+- task: PowerShell@2
+  displayName: 'Install Inno Download Plugin (idp)'
   inputs:
-    pollingTimeoutSec: '300'
+    targetType: 'inline'
+    script: 'choco install inno-download-plugin'
+
+# Execute Inno Setup Install script
+- task: PowerShell@2
+  displayName: 'Build Installer (Inno Setup)'
+  inputs:
+    targetType: 'inline'
+    script: 'iscc.exe $(Build.SourcesDirectory)\src\EM.HostsManager.Installer\EM.Hosts-Manager.Installer.iss /DInstallerVersion=$(GitVersion.SemVer)'
 
 - task: CopyFiles@2
-  displayName: Copy Build Files (1 of 2)
+  displayName: Copy Build Files (1 of 3)
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)'
     Contents: '**'
@@ -116,7 +115,7 @@ steps:
     OverWrite: true
 
 - task: CopyFiles@2
-  displayName: Copy Build Files (2 of 2)
+  displayName: Copy Build Files (2 of 3)
   inputs:
     Contents: |
       $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)\EM.HostsManager.App.exe
@@ -126,6 +125,16 @@ steps:
     CleanTargetFolder: true
     OverWrite: true
     flattenFolders: true
+
+- task: CopyFiles@2
+  displayName: Copy build files (3 of 3)
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.Installer\Output'
+    Contents: |
+      *
+    TargetFolder: '$(Build.BinariesDirectory)\Installer'
+    CleanTargetFolder: false
+    OverWrite: true
 
 - task: ArchiveFiles@2
   displayName: Build Artifact (Zip)

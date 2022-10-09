@@ -10,7 +10,7 @@
 	<Authors>Enda Mullally</Authors>
     <Company />
     <PackageIcon>Icon_01.ico</PackageIcon>
-    <Description>Just another simple Windows Hosts File Manager</Description>
+    <Description>Just another Windows hosts file manager</Description>
     <Copyright>© 2021-2022 Enda Mullally</Copyright>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>HostsManager.snk</AssemblyOriginatorKeyFile>
@@ -20,6 +20,7 @@
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>0.0.0.0</FileVersion>
     <Version>0.0.0</Version>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

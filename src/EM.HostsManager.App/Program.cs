@@ -1,29 +1,54 @@
+//
+// Copyright © 2021-2022 Enda Mullally.
+//
+
+using EM.HostsManager.App.Process;
 using EM.HostsManager.App.UI;
 
 namespace EM.HostsManager.App;
 
 internal static class Program
 {
-    private static readonly Mutex AppMutex = new(false, "Enda-Mullally|Hosts-Manager|2021-2022|V1|Single.Instance");
-
     [STAThread]
-    private static void Main()
+    private static void Main(string[] args)
     {
-        if (!AppMutex.WaitOne(TimeSpan.FromSeconds(2), false))
+        using var si = new SingleInstance("Enda-Mullally|Hosts-Manager|2021-2022|V1|Single.Instance");
+        
+        var arg = args.Length > 0 ? args[0].ToLowerInvariant() : string.Empty;
+
+        switch (arg)
         {
-            return;
+            case "/quit":
+            {
+                if (!si.IsSingleInstance())
+                {
+                    si.QuitOtherProcess(MainForm.WmQuitApp);
+                }
+
+                return;
+            }
+
+            case "/elevate":
+            {
+                break;
+            }
+
+            default:
+            {
+                if (!si.IsSingleInstance())
+                {
+                    si.ActivateOtherProcess(MainForm.WmActivateApp);
+
+                    return;
+                }
+
+                break;
+            }
         }
 
-        try
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
-        }
-        finally
-        {
-            AppMutex.ReleaseMutex();
-        }
+        Application.SetHighDpiMode(HighDpiMode.SystemAware);
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new MainForm());
     }
 }

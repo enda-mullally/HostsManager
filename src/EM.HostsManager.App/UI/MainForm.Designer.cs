@@ -301,6 +301,7 @@ namespace EM.HostsManager.App.UI
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hosts Manager";
             this.Activated += new System.EventHandler(this.MainForm_Activated);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.uxTrayMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uxAppIcon)).EndInit();
