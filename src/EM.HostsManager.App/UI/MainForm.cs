@@ -255,6 +255,11 @@ public partial class MainForm : Form
         ShowInTaskbar = WindowState != FormWindowState.Minimized;
     }
 
+    private void MainForm_Shown(object sender, EventArgs e)
+    {
+        ShowMessageOnFirstRun();
+    }
+
     #endregion
 
     #region Menu Events
@@ -264,28 +269,6 @@ public partial class MainForm : Form
         DoShow();
 
         ShowMessageOnFirstRun();
-    }
-
-    private void DoShow(bool external = false)
-    {
-        // This is a trick to force the app back on top in some cases when
-        // invoked via PostMessage/WndProc and our custom WmActivateApp
-        // message
-        if (external)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-        
-        BringToFront();
-        TopLevel = true;
-        Activate();
-
-        Visible =
-            ShowIcon =
-                ShowInTaskbar = true;
-
-        Opacity = 100;
-        WindowState = FormWindowState.Normal;
     }
 
     private void uxMenuExit_Click(object sender, EventArgs e)
@@ -424,9 +407,28 @@ public partial class MainForm : Form
 
     #endregion
 
-    private void MainForm_Shown(object sender, EventArgs e)
+    #region Private
+
+    private void DoShow(bool external = false)
     {
-        ShowMessageOnFirstRun();
+        // This is a trick to force the app back on top in some cases when
+        // invoked via PostMessage/WndProc and our custom WmActivateApp
+        // message
+        if (external)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+
+        BringToFront();
+        TopLevel = true;
+        Activate();
+
+        Visible =
+            ShowIcon =
+                ShowInTaskbar = true;
+
+        Opacity = 100;
+        WindowState = FormWindowState.Normal;
     }
 
     private void ShowMessageOnFirstRun()
@@ -440,7 +442,7 @@ public partial class MainForm : Form
         }
 
         var firstRun =
-            Reg.GetCurrentUserRegString(firstRunRegPath, firstRunRegKey, "false")
+            Reg.GetRegString(Microsoft.Win32.Registry.CurrentUser, firstRunRegPath, firstRunRegKey, "false")
                 .ToLowerInvariant().Equals("true");
 
         if (!firstRun)
@@ -448,7 +450,7 @@ public partial class MainForm : Form
             return;
         }
 
-        Reg.SetCurrentUserRegString(firstRunRegPath, firstRunRegKey, "false");
+        Reg.SetRegString(Microsoft.Win32.Registry.CurrentUser, firstRunRegPath, firstRunRegKey, "false");
 
         var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
 
@@ -459,7 +461,7 @@ public partial class MainForm : Form
             $@"Welcome to Hosts Manager! Just another Windows hosts file manager." +
             $@"{Environment.NewLine}{Environment.NewLine}" +
             @"Hosts Manager is a system tray application, it will automatically minimize to your system tray." +
-            @$"{Environment.NewLine}{Environment.NewLine}Startup app: By default, Hosts Manager will start (minimized) automatically. You can disable auto-start in Windows Task Manager (Ctrl+Alt+Esc -> Startup apps)."+
+            @$"{Environment.NewLine}{Environment.NewLine}Startup app: By default, Hosts Manager will start (minimized) automatically. You can disable auto-start in Windows Task Manager (Ctrl+Alt+Esc -> Startup apps)." +
             @$"{Environment.NewLine}{Environment.NewLine}To exit Hosts Manager, right click the system tray icon and select Exit." +
             @$"{Environment.NewLine}{Environment.NewLine}Thank you for installing Hosts Manager." +
             @$"{Environment.NewLine}{Environment.NewLine}Enjoy!",
@@ -467,4 +469,6 @@ public partial class MainForm : Form
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
     }
+
+    #endregion
 }
