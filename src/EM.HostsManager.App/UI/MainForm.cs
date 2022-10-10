@@ -458,8 +458,8 @@ public partial class MainForm : Form
             $@"{Environment.NewLine}{Environment.NewLine}" +
             $@"Welcome to Hosts Manager! Just another Windows hosts file manager." +
             $@"{Environment.NewLine}{Environment.NewLine}" +
-            @"Hosts Manager is a system tray application that will automatically minimize to your system tray." +
-            @$"{Environment.NewLine}{Environment.NewLine}Startup app: By default, Hosts Manager will start (minimized) automatically. You can disable auto start in Windows Task Manager (Ctrl+Alt+Esc -> Startup apps)."+
+            @"Hosts Manager is a system tray application, it will automatically minimize to your system tray." +
+            @$"{Environment.NewLine}{Environment.NewLine}Startup app: By default, Hosts Manager will start (minimized) automatically. You can disable auto-start in Windows Task Manager (Ctrl+Alt+Esc -> Startup apps)."+
             @$"{Environment.NewLine}{Environment.NewLine}To exit Hosts Manager, right click the system tray icon and select Exit." +
             @$"{Environment.NewLine}{Environment.NewLine}Thank you for installing Hosts Manager." +
             @$"{Environment.NewLine}{Environment.NewLine}Enjoy!",
