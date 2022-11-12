@@ -412,6 +412,18 @@ begin
   end;
 end;
 
+procedure Dependency_AddDotNet70Desktop;
+begin
+  // https://dotnet.microsoft.com/download/dotnet/7.0
+  if not Dependency_IsNetCoreInstalled('Microsoft.WindowsDesktop.App 7.0.0') then begin
+    Dependency_Add('windowsdesktop-runtime-7.0.0' + Dependency_ArchSuffix + '.exe',
+      '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
+      '.NET Desktop Runtime 7.0.0' + Dependency_ArchTitle,
+      Dependency_String('https://download.visualstudio.microsoft.com/download/pr/5b2fbe00-507e-450e-8b52-43ab052aadf2/79d54c3a19ce3fce314f2367cf4e3b21/windowsdesktop-runtime-7.0.0-win-x64.exe'),
+      '', False, False);
+  end;
+end;
+
 procedure Dependency_AddVC2005;
 begin
   // https://www.microsoft.com/en-us/download/details.aspx?id=26347
@@ -622,6 +634,7 @@ end;
   #define UseDotNet60
   #define UseDotNet60Asp
   #define UseDotNet60Desktop
+  #define UseDotNet70Desktop
 #endif
 
 #define UseVC2005
@@ -750,6 +763,9 @@ begin
 #endif
 #ifdef UseDotNet60Desktop
   Dependency_AddDotNet60Desktop;
+#endif
+#ifdef UseDotNet70Desktop
+  Dependency_AddDotNet70Desktop;
 #endif
 
 #ifdef UseVC2005
