@@ -12,6 +12,8 @@
 #define public Dependency_NoExampleSetup
 #include "CodeDependencies.iss"
 
+#define DotNetVersionBuildDir "net7.0-windows"
+
 [Setup]
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
@@ -53,15 +55,15 @@ Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 [Files]
 Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "HostsManager.ico"; DestDir: {app}; Flags: ignoreversion noencryption  
-Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
-Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
-Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
 
 ; Deps
 Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
 
-; Currently 6.0.9
-Source: "dotnet60desktop_x64.exe"; Flags: dontcopy noencryption
+; Currently 7.0.0
+Source: "windowsdesktop-runtime-7.0.0-win_x64.exe"; Flags: dontcopy noencryption
 
 [Run]
 Filename: {app}\EM.HostsManager.App.exe; Description: {cm:LaunchProgram,{cm:AppName}}; Flags: nowait postinstall skipifsilent
@@ -76,21 +78,21 @@ LaunchProgram=Start Hosts Manager v{#InstallerVersion}
 [Code]
 function InitializeSetup: Boolean;
 begin
-  // We depend on the .NET 6.0 Desktop runtime so install it if needed (x64).
+  // We depend on the .NET 7.0 Desktop runtime so install it if needed (x64).
   // Note:
-  //   This is an embedded offline install, see how 'dotnet60desktop_x64.exe' is
+  //   This is an embedded offline install, see how 'windowsdesktop-runtime-7.0.0-win_x64.exe' is
   //   packed above and extracted below.
   //   This will make our installer much larger in size, but,
   //   will work well on machines that are offline or behind paranoid corporate firewalls.
   // Note:
-  //   This may be obvious, but, if the user already has a compatible .NET 6.0 Desktop runtime
+  //   This may be obvious, but, if the user already has a compatible .NET 7.0 Desktop runtime
   //   installed everything above will be skipped and the installer will just install Hosts Manager.
   //
   // Special thanks to all the contributors @ https://github.com/DomGries/InnoDependencyInstaller !
 
-  ExtractTemporaryFile('dotnet60desktop_x64.exe');
+  ExtractTemporaryFile('windowsdesktop-runtime-7.0.0-win_x64.exe');
 
-  Dependency_AddDotNet60Desktop;
+  Dependency_AddDotNet70Desktop;
   
   // ...
 
