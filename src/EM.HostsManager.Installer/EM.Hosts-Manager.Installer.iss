@@ -63,7 +63,7 @@ Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsMan
 Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
 
 ; Currently 7.0.0
-Source: "windowsdesktop-runtime-7.0.0-win-x64.exe"; Flags: dontcopy noencryption
+Source: "windowsdesktop-runtime-7.0.0-win_x64.exe"; Flags: dontcopy noencryption
 
 [Run]
 Filename: {app}\EM.HostsManager.App.exe; Description: {cm:LaunchProgram,{cm:AppName}}; Flags: nowait postinstall skipifsilent
@@ -80,7 +80,7 @@ function InitializeSetup: Boolean;
 begin
   // We depend on the .NET 7.0 Desktop runtime so install it if needed (x64).
   // Note:
-  //   This is an embedded offline install, see how 'windowsdesktop-runtime-7.0.0-win-x64.exe' is
+  //   This is an embedded offline install, see how 'windowsdesktop-runtime-7.0.0-win_x64.exe' is
   //   packed above and extracted below.
   //   This will make our installer much larger in size, but,
   //   will work well on machines that are offline or behind paranoid corporate firewalls.
@@ -90,7 +90,7 @@ begin
   //
   // Special thanks to all the contributors @ https://github.com/DomGries/InnoDependencyInstaller !
 
-  ExtractTemporaryFile('windowsdesktop-runtime-7.0.0-win-x64.exe');
+  ExtractTemporaryFile('windowsdesktop-runtime-7.0.0-win_x64.exe');
 
   Dependency_AddDotNet70Desktop;
   
