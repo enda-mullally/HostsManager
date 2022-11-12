@@ -12,6 +12,8 @@
 #define public Dependency_NoExampleSetup
 #include "CodeDependencies.iss"
 
+#define DotNetVersionBuildDir "net7.0-windows"
+
 [Setup]
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
@@ -53,9 +55,9 @@ Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 [Files]
 Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "HostsManager.ico"; DestDir: {app}; Flags: ignoreversion noencryption  
-Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
-Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
-Source: "..\EM.HostsManager.App\bin\Release\net6.0-windows\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
 
 ; Deps
 Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
