@@ -13,7 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  targetFramework: 'net6.0-windows'
+  dotNetVersionBuildDir: 'net7.0-windows'
   GitVersion.SemVer: ''
 
 steps:
@@ -108,7 +108,7 @@ steps:
 - task: CopyFiles@2
   displayName: Copy Build Files (1 of 3)
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)'
+    SourceFolder: '$(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(dotNetVersionBuildDir)'
     Contents: '**'
     TargetFolder: '$(Build.BinariesDirectory)'
     CleanTargetFolder: true
@@ -118,9 +118,9 @@ steps:
   displayName: Copy Build Files (2 of 3)
   inputs:
     Contents: |
-      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)\EM.HostsManager.App.exe
-      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)\EM.HostsManager.App.dll
-      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(targetFramework)\EM.HostsManager.App.runtimeconfig.json
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(dotNetVersionBuildDir)\EM.HostsManager.App.exe
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(dotNetVersionBuildDir)\EM.HostsManager.App.dll
+      $(Build.SourcesDirectory)\src\EM.HostsManager.App\bin\$(BuildConfiguration)\$(dotNetVersionBuildDir)\EM.HostsManager.App.runtimeconfig.json
     TargetFolder: '$(Build.BinariesDirectory)\Deploy'
     CleanTargetFolder: true
     OverWrite: true
