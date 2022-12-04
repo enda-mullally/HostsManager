@@ -28,6 +28,18 @@ internal static class Program
                 return;
             }
 
+            case "/min":
+            {
+                if (!si.IsSingleInstance())
+                {
+                    // If started with the /min switch, but another instance is already active, we can ignore here.
+
+                    return;
+                }
+
+                break;  // continue to start minimized
+            }
+
             case "/elevate":
             {
                 break;

@@ -318,7 +318,7 @@ public partial class MainForm : Form
 
         var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
-            (Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/min");
+            Environment.GetCommandLineArgs()[1].Equals("/min", StringComparison.InvariantCultureIgnoreCase);
                 
         if (!minimized)
         {
