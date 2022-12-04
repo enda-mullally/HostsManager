@@ -51,7 +51,7 @@ internal static class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    logger.LogInformation("Application started with /min but another instance already active. Ignoring.");
+                    logger.LogInformation("Application started with /min witch but another instance is already active");
 
                     return;
                 }
@@ -79,7 +79,7 @@ internal static class Program
             }
         }
 
-        logger.LogInformation("Starting new instance.");
+        logger.LogInformation("Starting new instance");
 
         Application.SetHighDpiMode(HighDpiMode.SystemAware);
         Application.EnableVisualStyles();
