@@ -91,13 +91,6 @@ steps:
     targetType: 'inline'
     script: 'choco install innosetup'
 
-# Install Inno Setup (idp plugin) with chocolatey
-- task: PowerShell@2
-  displayName: 'Install Inno Download Plugin (idp)'
-  inputs:
-    targetType: 'inline'
-    script: 'choco install inno-download-plugin'
-
 # Execute Inno Setup Install script
 - task: PowerShell@2
   displayName: 'Build Installer (Inno Setup)'
