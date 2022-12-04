@@ -5,6 +5,7 @@
 using EM.HostsManager.App.Hosts;
 using EM.HostsManager.App.Version;
 using EM.HostsManager.App.Win32;
+using Microsoft.Extensions.Logging;
 using Reg=EM.HostsManager.App.Registry.Registry;
 
 namespace EM.HostsManager.App.UI;
@@ -14,6 +15,7 @@ using Process = System.Diagnostics.Process;
 
 public partial class MainForm : Form
 {
+    private readonly ILogger<MainForm> _logger;
     private bool _aboutShown;
     private bool _requestingClose;
 
@@ -23,8 +25,9 @@ public partial class MainForm : Form
     public const int WmActivateApp = WmUser + 55;
     public const int WmQuitApp = WmUser + 56;
 
-    public MainForm()
+    public MainForm(ILogger<MainForm> logger)
     {
+        _logger = logger;
         InitializeComponent();
 
         UxFixButtonText();
@@ -318,7 +321,7 @@ public partial class MainForm : Form
 
         var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
-            (Environment.GetCommandLineArgs()[1].ToLowerInvariant() == "/min");
+            Environment.GetCommandLineArgs()[1].Equals("/min", StringComparison.InvariantCultureIgnoreCase);
                 
         if (!minimized)
         {
@@ -396,10 +399,12 @@ public partial class MainForm : Form
                 break;
 
             case WmActivateApp:
+                _logger.LogInformation("WndProc: Received WmActivateApp");
                 DoShow(true);
                 break;
 
             case WmQuitApp:
+                _logger.LogInformation("WndProc: Received WmQuitApp");
                 uxMenuExit_Click(null!, EventArgs.Empty);
                 break;
         }

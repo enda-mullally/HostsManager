@@ -1,7 +1,8 @@
 {
   "profiles": {
     "HostsManager": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "/min"
     }
   }
 }
