@@ -80,7 +80,7 @@ jobs:
 
     - name: Build HostsManager with Version (Publish)
       if: github.ref == 'refs/heads/main'
-      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }}
+      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
     
     - name: Build HostsManager (Check)
       if: github.ref != 'refs/heads/main'
