@@ -78,13 +78,13 @@ jobs:
         Write-Output "CommitIdAttribute written..."
         Write-Output "==============================================================================================================================================="
 
-    - name: Build HostsManager with Version (Publish)
-      #if: github.ref == 'refs/heads/main'
-      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
-    
     - name: Build HostsManager (Check)
       #if: github.ref != 'refs/heads/main'
       run: dotnet build "./src" --configuration Release
+    
+    - name: Build HostsManager with Version (Publish)
+      #if: github.ref == 'refs/heads/main'
+      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
         
     - name: Install Inno Setup (Publish)
       #if: github.ref == 'refs/heads/main'
@@ -132,5 +132,5 @@ jobs:
       #if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v3
       with:
-        name: EM.HostsManager-${{ steps.gitversion.outputs.MajorMinorPatch }}.zip
+        name: EM.HostsManager-${{ steps.gitversion.outputs.MajorMinorPatch }}
         path: "./src/Binaries"
