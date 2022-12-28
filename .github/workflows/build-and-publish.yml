@@ -9,7 +9,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+    
     - name: Fetch all history for all tags and branches
+      if: github.ref == 'refs/heads/main'
       run: |
         git fetch --unshallow --prune
 
@@ -82,7 +84,7 @@ jobs:
     
     - name: Build HostsManager (Check)
       if: github.ref != 'refs/heads/main'
-      run: dotnet build "./src"  --configuration Release -p:Version=check
+      run: dotnet build "./src"  --configuration Release -p:Version=0.0.0-check
         
     - name: Install Inno Setup
       if: github.ref == 'refs/heads/main'
