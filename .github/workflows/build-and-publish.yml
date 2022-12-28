@@ -80,11 +80,11 @@ jobs:
 
     - name: Build HostsManager with Version (Publish)
       if: github.ref == 'refs/heads/main'
-      run: dotnet build "./src"  --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }}
+      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }}
     
     - name: Build HostsManager (Check)
       if: github.ref != 'refs/heads/main'
-      run: dotnet build "./src"  --configuration Release -p:Version=0.0.0
+      run: dotnet build "./src" --configuration Release -p:Version=9.9.9
         
     - name: Install Inno Setup (Publish)
       if: github.ref == 'refs/heads/main'
