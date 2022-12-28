@@ -3,8 +3,6 @@
 ; Copyright (c) 2022 Enda Mullally.
 ;
 
-#include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
-
 #ifndef InstallerVersion
   #define InstallerVersion "0.0.0"
 #endif

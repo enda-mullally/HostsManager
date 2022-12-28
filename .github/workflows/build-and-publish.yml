@@ -1,0 +1,92 @@
+name: Build & Publish
+
+on:
+  push:
+  pull_request:
+    branches: [ main, migrate-pipeline-to-github ]
+    
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Fetch all history for all tags and branches
+      run: |
+        git fetch --unshallow --prune
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.10
+      with:
+        versionSpec: '5.x'
+        includePrerelease: false
+  
+    - name: Write Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.10
+      with:
+        useConfigFile: true
+        configFilePath: 'GitVersion.yml'
+        additionalArguments: '-ensureassemblyinfo'
+
+    - name: Setup .NET 7.0
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Patch BuildDateAttribute
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Pre build. Patching BuildDate Attribute..."
+        Write-Output "==============================================================================================================================================="
+        $buildDateAttribute = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+        Write-Output "Using: '$buildDateAttribute'"
+        $dir = "./src/EM.HostsManager.App"
+        Write-Output "Currently in: '$dir'"
+        $fileLocation = Join-Path $dir -ChildPath "Program.BuildDate.cs" 
+        $placeHolder = "BUILD-DATE-ATTRIBUTE"
+        (get-content $fileLocation) | foreach-object {$_ -replace $placeHolder, $buildDateAttribute} | set-content $fileLocation
+        Write-Output "BuildDateAttribute written..."
+        Write-Output "==============================================================================================================================================="
+
+    - name: Patch CommitIdAttribute
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Pre build. Patching CommitId Attribute..."
+        Write-Output "==============================================================================================================================================="
+        $commitIdAttribute = git log --format="%H" -n 1
+        Write-Output "Using: '$commitIdAttribute'"
+        $dir = "./src/EM.HostsManager.App"
+        Write-Output "Currently in: '$dir'"
+        $fileLocation = Join-Path $dir -ChildPath "Program.CommitId.cs" 
+        $placeHolder = "COMMIT-ID-ATTRIBUTE"
+        (get-content $fileLocation) | foreach-object {$_ -replace $placeHolder, $commitIdAttribute} | set-content $fileLocation
+        Write-Output "CommitIdAttribute written..."
+        Write-Output "==============================================================================================================================================="
+
+    - name: Display Version
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
+        Write-Output "==============================================================================================================================================="
+
+    - name: Build HostsManager
+      run: dotnet build "./src"  --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }}
+    
+    - name: Install Inno Setup
+      shell: cmd
+      run: |
+        choco install innosetup
+
+    - name: Build Installer (Inno Setup)
+      working-directory: "./src/EM.HostsManager.Installer"
+      run: |
+        iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Package
+        path: "./src/EM.HostsManager.App/bin/Release/net7.0-windows"
