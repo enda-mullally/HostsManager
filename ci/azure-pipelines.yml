@@ -96,7 +96,7 @@ steps:
   displayName: 'Build Installer (Inno Setup)'
   inputs:
     targetType: 'inline'
-    script: 'iscc.exe $(Build.SourcesDirectory)\src\EM.HostsManager.Installer\EM.Hosts-Manager.Installer.iss /DInstallerVersion=$(GitVersion.SemVer)'
+    script: 'iscc.exe $(Build.SourcesDirectory)\src\EM.HostsManager.Installer\EM.HostsManager.Installer.iss /DInstallerVersion=$(GitVersion.SemVer)'
 
 - task: CopyFiles@2
   displayName: Copy Build Files (1 of 3)

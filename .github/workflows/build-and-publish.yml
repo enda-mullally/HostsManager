@@ -1,0 +1,146 @@
+name: Build & Publish
+
+on:
+  push:
+  pull_request:
+    
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Fetch all history and tags (Publish)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        git fetch --unshallow --prune
+
+    - name: Install GitVersion (Publish)
+      if: github.ref == 'refs/heads/main'
+      uses: gittools/actions/gitversion/setup@v0.9.10
+      with:
+        versionSpec: '5.x'
+        includePrerelease: false
+  
+    - name: Determine Version (Publish)
+      if: github.ref == 'refs/heads/main'
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.10
+      with:
+        useConfigFile: true
+        configFilePath: 'GitVersion.yml'
+        additionalArguments: '-ensureassemblyinfo'
+
+    - name: Display Version (Publish)
+      if: github.ref == 'refs/heads/main'
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
+        Write-Output "==============================================================================================================================================="
+
+    - name: Setup .NET 7.0
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Patch BuildDateAttribute (Publish)
+      if: github.ref == 'refs/heads/main'
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Pre build. Patching BuildDate Attribute..."
+        Write-Output "==============================================================================================================================================="
+        $buildDateAttribute = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+        Write-Output "Using: '$buildDateAttribute'"
+        $dir = "./src/EM.HostsManager.App"
+        Write-Output "Currently in: '$dir'"
+        $fileLocation = Join-Path $dir -ChildPath "Program.BuildDate.cs" 
+        $placeHolder = "BUILD-DATE-ATTRIBUTE"
+        (get-content $fileLocation) | foreach-object {$_ -replace $placeHolder, $buildDateAttribute} | set-content $fileLocation
+        Write-Output "BuildDateAttribute written..."
+        Write-Output "==============================================================================================================================================="
+
+    - name: Patch CommitIdAttribute (Publish)
+      if: github.ref == 'refs/heads/main'
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Pre build. Patching CommitId Attribute..."
+        Write-Output "==============================================================================================================================================="
+        $commitIdAttribute = git log --format="%H" -n 1
+        Write-Output "Using: '$commitIdAttribute'"
+        $dir = "./src/EM.HostsManager.App"
+        Write-Output "Currently in: '$dir'"
+        $fileLocation = Join-Path $dir -ChildPath "Program.CommitId.cs" 
+        $placeHolder = "COMMIT-ID-ATTRIBUTE"
+        (get-content $fileLocation) | foreach-object {$_ -replace $placeHolder, $commitIdAttribute} | set-content $fileLocation
+        Write-Output "CommitIdAttribute written..."
+        Write-Output "==============================================================================================================================================="
+
+    - name: Build HostsManager (Check)
+      if: github.ref != 'refs/heads/main'
+      run: dotnet build "./src" --configuration Release
+    
+    - name: Build HostsManager with Version (Publish)
+      if: github.ref == 'refs/heads/main'
+      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+        
+    - name: Install Inno Setup (Publish)
+      if: github.ref == 'refs/heads/main'
+      shell: cmd
+      run: |
+        choco install innosetup
+
+    - name: Build Installer (Publish)
+      if: github.ref == 'refs/heads/main'
+      working-directory: "./src/EM.HostsManager.Installer"
+      run: |
+        iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+
+    - name: Copy Build Files (1 of 3)
+      if: github.ref == 'refs/heads/main'
+      shell: cmd
+      working-directory: "./src"
+      run: |
+        if not exist Binaries mkdir Binaries
+        copy EM.HostsManager.App\bin\Release\net7.0-windows\*.* Binaries
+
+    - name: Copy Build Files (2 of 3)
+      if: github.ref == 'refs/heads/main'
+      shell: cmd
+      working-directory: "./src"
+      run: |
+        cd Binaries
+        if not exist Deploy mkdir Deploy
+        cd ..
+        copy EM.HostsManager.App\bin\Release\net7.0-windows\EM.HostsManager.App.exe Binaries\Deploy
+        copy EM.HostsManager.App\bin\Release\net7.0-windows\EM.HostsManager.App.dll Binaries\Deploy
+        copy EM.HostsManager.App\bin\Release\net7.0-windows\EM.HostsManager.App.runtimeconfig.json Binaries\Deploy
+
+    - name: Copy Build Files (3 of 3)
+      if: github.ref == 'refs/heads/main'
+      shell: cmd
+      working-directory: "./src"
+      run: |
+        cd Binaries
+        if not exist Installer mkdir Installer
+        cd ..
+        copy EM.HostsManager.Installer\Output Binaries\Installer
+
+    # Right now I'm manually tagging the repo for this project.
+    # This may change in the future.
+    #
+    #- name: Tag Repo
+    #  if: github.ref == 'refs/heads/main'
+    #  shell: powershell
+    #  run: |
+    #    git tag "v${{ steps.gitversion.outputs.MajorMinorPatch }}"
+    #    git push --force --tags origin
+
+    - name: Publish build artifacts
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v3
+      with:
+        name: EM.HostsManager-${{ steps.gitversion.outputs.MajorMinorPatch }}
+        path: "./src/Binaries"
