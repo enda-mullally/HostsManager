@@ -14,18 +14,28 @@ jobs:
         git fetch --unshallow --prune
 
     - name: Install GitVersion
+      if: github.ref == 'refs/heads/main'
       uses: gittools/actions/gitversion/setup@v0.9.10
       with:
         versionSpec: '5.x'
         includePrerelease: false
   
-    - name: Write Version
+    - name: Determine Version (GitVersion)
+      if: github.ref == 'refs/heads/main'
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.10
       with:
         useConfigFile: true
         configFilePath: 'GitVersion.yml'
         additionalArguments: '-ensureassemblyinfo'
+
+    - name: Display Version
+      if: github.ref == 'refs/heads/main'
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
+        Write-Output "==============================================================================================================================================="
 
     - name: Setup .NET 7.0
       uses: actions/setup-dotnet@v2
@@ -66,16 +76,14 @@ jobs:
         Write-Output "CommitIdAttribute written..."
         Write-Output "==============================================================================================================================================="
 
-    - name: Display Version
-      shell: powershell
-      run: |
-        Write-Output "==============================================================================================================================================="
-        Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
-        Write-Output "==============================================================================================================================================="
-
-    - name: Build HostsManager
+    - name: Build HostsManager (With Version)
+      if: github.ref == 'refs/heads/main'
       run: dotnet build "./src"  --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }}
     
+    - name: Build HostsManager (Check)
+      if: github.ref != 'refs/heads/main'
+      run: dotnet build "./src"  --configuration Release -p:Version=check
+        
     - name: Install Inno Setup
       if: github.ref == 'refs/heads/main'
       shell: cmd
