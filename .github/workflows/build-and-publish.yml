@@ -84,7 +84,7 @@ jobs:
     
     - name: Build HostsManager (Check)
       if: github.ref != 'refs/heads/main'
-      run: dotnet build "./src" --configuration Release -p:Version=9.9.9
+      run: dotnet build "./src" --configuration Release
         
     - name: Install Inno Setup (Publish)
       if: github.ref == 'refs/heads/main'
