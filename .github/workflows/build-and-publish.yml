@@ -7,6 +7,12 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      BUILD_CONFIG: "Release"
+      DOTNET_VER: "net7.0-windows"
+      APP_DIR: "EM.HostsManager.App"
+      INSTALLER_DIR: "EM.HostsManager.Installer"
+      
     steps:
     - uses: actions/checkout@v2
     
@@ -36,7 +42,7 @@ jobs:
       shell: powershell
       run: |
         Write-Output "==============================================================================================================================================="
-        Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
+        Write-Output "Version : ${{steps.gitversion.outputs.MajorMinorPatch}}"
         Write-Output "==============================================================================================================================================="
 
     - name: Setup .NET 7.0
@@ -53,7 +59,7 @@ jobs:
         Write-Output "==============================================================================================================================================="
         $buildDateAttribute = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
         Write-Output "Using: '$buildDateAttribute'"
-        $dir = "./src/EM.HostsManager.App"
+        $dir = "./src/${{env.APP_DIR}}"
         Write-Output "Currently in: '$dir'"
         $fileLocation = Join-Path $dir -ChildPath "Program.BuildDate.cs" 
         $placeHolder = "BUILD-DATE-ATTRIBUTE"
@@ -70,7 +76,7 @@ jobs:
         Write-Output "==============================================================================================================================================="
         $commitIdAttribute = git log --format="%H" -n 1
         Write-Output "Using: '$commitIdAttribute'"
-        $dir = "./src/EM.HostsManager.App"
+        $dir = "./src/${{env.APP_DIR}}"
         Write-Output "Currently in: '$dir'"
         $fileLocation = Join-Path $dir -ChildPath "Program.CommitId.cs" 
         $placeHolder = "COMMIT-ID-ATTRIBUTE"
@@ -84,7 +90,7 @@ jobs:
     
     - name: Build HostsManager with Version (Publish)
       if: github.ref == 'refs/heads/main'
-      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+      run: dotnet build "./src" --configuration Release -p:Version=${{steps.gitversion.outputs.MajorMinorPatch}} -p:FileVersion=${{steps.gitversion.outputs.MajorMinorPatch}}
         
     - name: Install Inno Setup (Publish)
       if: github.ref == 'refs/heads/main'
@@ -94,9 +100,9 @@ jobs:
 
     - name: Build Installer (Publish)
       if: github.ref == 'refs/heads/main'
-      working-directory: "./src/EM.HostsManager.Installer"
+      working-directory: "./src/${{env.INSTALLER_DIR}}"
       run: |
-        iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+        iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{steps.gitversion.outputs.MajorMinorPatch}}
 
     - name: Copy Build Files (1 of 3)
       if: github.ref == 'refs/heads/main'
@@ -104,7 +110,7 @@ jobs:
       working-directory: "./src"
       run: |
         if not exist Binaries mkdir Binaries
-        copy EM.HostsManager.App\bin\Release\net7.0-windows\*.* Binaries
+        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\*.*" "Binaries"
 
     - name: Copy Build Files (2 of 3)
       if: github.ref == 'refs/heads/main'
@@ -114,9 +120,9 @@ jobs:
         cd Binaries
         if not exist Deploy mkdir Deploy
         cd ..
-        copy EM.HostsManager.App\bin\Release\net7.0-windows\EM.HostsManager.App.exe Binaries\Deploy
-        copy EM.HostsManager.App\bin\Release\net7.0-windows\EM.HostsManager.App.dll Binaries\Deploy
-        copy EM.HostsManager.App\bin\Release\net7.0-windows\EM.HostsManager.App.runtimeconfig.json Binaries\Deploy
+        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\EM.HostsManager.App.exe" "Binaries\Deploy"
+        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\EM.HostsManager.App.dll" "Binaries\Deploy"
+        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
 
     - name: Copy Build Files (3 of 3)
       if: github.ref == 'refs/heads/main'
@@ -126,7 +132,7 @@ jobs:
         cd Binaries
         if not exist Installer mkdir Installer
         cd ..
-        copy EM.HostsManager.Installer\Output Binaries\Installer
+        copy "${{env.INSTALLER_DIR}}\Output" "Binaries\Installer"
 
     # Right now I'm manually tagging the repo for this project.
     # This may change in the future.
@@ -135,12 +141,12 @@ jobs:
     #  if: github.ref == 'refs/heads/main'
     #  shell: powershell
     #  run: |
-    #    git tag "v${{ steps.gitversion.outputs.MajorMinorPatch }}"
+    #    git tag "v${{steps.gitversion.outputs.MajorMinorPatch}}"
     #    git push --force --tags origin
 
     - name: Publish build artifacts
       if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v3
       with:
-        name: EM.HostsManager-${{ steps.gitversion.outputs.MajorMinorPatch }}
+        name: EM.HostsManager-${{steps.gitversion.outputs.MajorMinorPatch}}
         path: "./src/Binaries"
