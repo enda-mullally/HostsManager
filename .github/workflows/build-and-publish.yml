@@ -114,8 +114,8 @@ jobs:
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + $fileToSign + "'"
-          Write-Output $signArgsAndFile
-          "${{ env.SIGNTOOL }}" $signArgsAndFile
+          Write-Output "${{ env.CERT_FILENAME}}" + $signArgsAndFile
+          Invoke-Expression "${{ env.CERT_FILENAME}}" + $signArgsAndFile
         }
         
     - name: Install Inno Setup (Publish)
