@@ -116,7 +116,6 @@ jobs:
           $signArgsAndFile = $signArgs + $fileToSign + "'"
           $cmd = "'${{ env.SIGNTOOL }}' " + $signArgsAndFile
           Write-Output $cmd
-#          Invoke-Expression $cmd
         }
         
     - name: Install Inno Setup (Publish)
