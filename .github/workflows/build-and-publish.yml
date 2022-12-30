@@ -109,9 +109,9 @@ jobs:
       working-directory: "./src"
       shell: powershell
       run: |
-        $signArgs = "sign /f ${{ env.CERT_FILENAME }} /p ${{ secrets.Pfx_Key }} /t ${{ env.TIMESTAMP_URL }} /fd SHA256 "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
-        ${{ env.SIGNTOOL }} $signArgs"EM.HostsManager.dll"
-        ${{ env.SIGNTOOL }} $signArgs"EM.HostsManager.App.exe"
+        $signArgs = "sign /f ${{ env.CERT_FILENAME }} /p ${{ secrets.Pfx_Key }} /t ${{ env.TIMESTAMP_URL }} /fd SHA256 "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}"
+        ${{ env.SIGNTOOL }} "$signArgs\EM.HostsManager.dll"
+        ${{ env.SIGNTOOL }} "$signArgs\EM.HostsManager.App.exe"
         
     - name: Install Inno Setup (Publish)
       #if: github.ref == 'refs/heads/main'
@@ -125,13 +125,12 @@ jobs:
       run: |
         iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
 
-    # Remove Code-Signing pfx
-    - name: Clean up
+    - name: Clean up (Code Signing)
       if: success() || failure()
       #if: github.ref == 'refs/heads/main'
       shell: powershell
       working-directory: "./src"
-      run: Remove-Item -path ${{ env.CERT_FILENAME }}
+      run: Remove-Item -Verbose -Path ${{ env.CERT_FILENAME }}
 
     - name: Copy Build Files (1 of 3)
       #if: github.ref == 'refs/heads/main'
