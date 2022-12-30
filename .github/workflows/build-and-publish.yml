@@ -109,9 +109,14 @@ jobs:
       working-directory: "./src"
       shell: powershell
       run: |
-        $signArgs = "sign /f ${{ env.CERT_FILENAME }} /p ${{ secrets.Pfx_Key }} /t ${{ env.TIMESTAMP_URL }} /fd SHA256 "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}"
-        ${{ env.SIGNTOOL }} $signArgs+"\EM.HostsManager.dll"
-        ${{ env.SIGNTOOL }} $signArgs+"\EM.HostsManager.App.exe"
+        $signFiles = @("EM.HostsManager.App.exe", "EM.HostsManager.dll")
+        $signArgs = "sign /f ${{ env.CERT_FILENAME }} /p ${{ secrets.Pfx_Key }} /t ${{ env.TIMESTAMP_URL }} /fd SHA256 "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
+        Foreach ($fileToSign in $signFiles)
+        {
+          $signArgsAndFile = $signArgs + $fileToSign
+          Write-Output ${{ env.SIGNTOOL }} $signArgsAndFile
+          ${{ env.SIGNTOOL }} $signArgsAndFile
+        }
         
     - name: Install Inno Setup (Publish)
       #if: github.ref == 'refs/heads/main'
