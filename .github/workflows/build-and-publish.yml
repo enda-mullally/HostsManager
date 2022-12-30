@@ -6,13 +6,16 @@ on:
     
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     env:
       BUILD_CONFIG: "Release"
       DOTNET_VER: "net7.0-windows"
       APP_DIR: "EM.HostsManager.App"
       INSTALLER_DIR: "EM.HostsManager.Installer"
-      
+      SIGNTOOL: "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x86/signtool.exe"  # See list of installed Windows SDK's @ https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
+      TIMESTAMP_URL: "http://timestamp.digicert.com"
+      CERT_FILENAME: "Cert.pfx"
+
     steps:
     - uses: actions/checkout@v2
     
@@ -42,7 +45,7 @@ jobs:
       shell: powershell
       run: |
         Write-Output "==============================================================================================================================================="
-        Write-Output "Version : ${{steps.gitversion.outputs.MajorMinorPatch}}"
+        Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
         Write-Output "==============================================================================================================================================="
 
     - name: Setup .NET 7.0
@@ -59,7 +62,7 @@ jobs:
         Write-Output "==============================================================================================================================================="
         $buildDateAttribute = [DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
         Write-Output "Using: '$buildDateAttribute'"
-        $dir = "./src/${{env.APP_DIR}}"
+        $dir = "./src/${{ env.APP_DIR }}"
         Write-Output "Currently in: '$dir'"
         $fileLocation = Join-Path $dir -ChildPath "Program.BuildDate.cs" 
         $placeHolder = "BUILD-DATE-ATTRIBUTE"
@@ -76,7 +79,7 @@ jobs:
         Write-Output "==============================================================================================================================================="
         $commitIdAttribute = git log --format="%H" -n 1
         Write-Output "Using: '$commitIdAttribute'"
-        $dir = "./src/${{env.APP_DIR}}"
+        $dir = "./src/${{ env.APP_DIR }}"
         Write-Output "Currently in: '$dir'"
         $fileLocation = Join-Path $dir -ChildPath "Program.CommitId.cs" 
         $placeHolder = "COMMIT-ID-ATTRIBUTE"
@@ -90,7 +93,31 @@ jobs:
     
     - name: Build HostsManager with Version (Publish)
       if: github.ref == 'refs/heads/main'
-      run: dotnet build "./src" --configuration Release -p:Version=${{steps.gitversion.outputs.MajorMinorPatch}} -p:FileVersion=${{steps.gitversion.outputs.MajorMinorPatch}}
+      run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+
+    - name: Decode Code-Signing Pfx
+      if: github.ref == 'refs/heads/main'
+      working-directory: "./src"
+      shell: powershell
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
+        $certificatePath = Join-Path -Path . -ChildPath ${{ env.CERT_FILENAME}}
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    - name: Sign Application Files (Post Build)
+      if: github.ref == 'refs/heads/main'
+      working-directory: "./src"
+      shell: powershell
+      run: |
+        $signFiles = @("EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
+        $signDir = "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
+        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Key }}' /t '${{ env.TIMESTAMP_URL }}' /fd 'SHA256' "
+        Foreach ($fileToSign in $signFiles)
+        {
+          $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
+          $signCmd = "cmd /c '${{ env.SIGNTOOL }}' " + $signArgsAndFile
+          Invoke-Expression $signCmd
+        }
         
     - name: Install Inno Setup (Publish)
       if: github.ref == 'refs/heads/main'
@@ -100,9 +127,31 @@ jobs:
 
     - name: Build Installer (Publish)
       if: github.ref == 'refs/heads/main'
-      working-directory: "./src/${{env.INSTALLER_DIR}}"
+      working-directory: "./src/${{ env.INSTALLER_DIR }}"
       run: |
-        iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{steps.gitversion.outputs.MajorMinorPatch}}
+        iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+
+    - name: Sign Installer (Post Build)
+      if: github.ref == 'refs/heads/main'
+      working-directory: "./src"
+      shell: powershell
+      run: |
+        $signFiles = @("EM.HostsManager.Installer.${{ steps.gitversion.outputs.MajorMinorPatch }}.exe")
+        $signDir = "${{ env.INSTALLER_DIR }}\Output\"
+        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Key }}' /t '${{ env.TIMESTAMP_URL }}' /fd 'SHA256' "
+        Foreach ($fileToSign in $signFiles)
+        {
+          $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
+          $signCmd = "cmd /c '${{ env.SIGNTOOL }}' " + $signArgsAndFile
+          Invoke-Expression $signCmd
+        }
+
+    - name: Clean up (Code Signing Pfx)
+      if: (github.ref == 'refs/heads/main' && success() || failure())
+      shell: powershell
+      working-directory: "./src"
+      continue-on-error: true
+      run: Remove-Item -Verbose -Path ${{ env.CERT_FILENAME }}
 
     - name: Copy Build Files (1 of 3)
       if: github.ref == 'refs/heads/main'
@@ -110,7 +159,7 @@ jobs:
       working-directory: "./src"
       run: |
         if not exist Binaries mkdir Binaries
-        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\*.*" "Binaries"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\*.*" "Binaries"
 
     - name: Copy Build Files (2 of 3)
       if: github.ref == 'refs/heads/main'
@@ -120,9 +169,9 @@ jobs:
         cd Binaries
         if not exist Deploy mkdir Deploy
         cd ..
-        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\EM.HostsManager.App.exe" "Binaries\Deploy"
-        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\EM.HostsManager.App.dll" "Binaries\Deploy"
-        copy "${{env.APP_DIR}}\bin\${{env.BUILD_CONFIG}}\${{env.DOTNET_VER}}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
 
     - name: Copy Build Files (3 of 3)
       if: github.ref == 'refs/heads/main'
@@ -132,7 +181,7 @@ jobs:
         cd Binaries
         if not exist Installer mkdir Installer
         cd ..
-        copy "${{env.INSTALLER_DIR}}\Output" "Binaries\Installer"
+        copy "${{ env.INSTALLER_DIR }}\Output" "Binaries\Installer"
 
     # Right now I'm manually tagging the repo for this project.
     # This may change in the future.
