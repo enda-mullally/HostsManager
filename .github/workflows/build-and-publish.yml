@@ -110,8 +110,8 @@ jobs:
       shell: powershell
       run: |
         $signArgs = "sign /f ${{ env.CERT_FILENAME }} /p ${{ secrets.Pfx_Key }} /t ${{ env.TIMESTAMP_URL }} /fd SHA256 "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
-        ${{ env.SIGNTOOL }} $signArgs + "EM.HostsManager.dll"
-        ${{ env.SIGNTOOL }} $signArgs + "EM.HostsManager.App.exe"
+        ${{ env.SIGNTOOL }} $signArgs"EM.HostsManager.dll"
+        ${{ env.SIGNTOOL }} $signArgs"EM.HostsManager.App.exe"
         
     - name: Install Inno Setup (Publish)
       #if: github.ref == 'refs/heads/main'
