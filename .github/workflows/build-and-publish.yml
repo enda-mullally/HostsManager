@@ -129,7 +129,7 @@ jobs:
     - name: Clean up
       if: success() || failure()
       #if: github.ref == 'refs/heads/main'
-      shell: cmd
+      shell: powershell
       working-directory: "./src"
       run: Remove-Item -path ${{ env.CERT_FILENAME }}
 
