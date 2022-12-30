@@ -136,7 +136,7 @@ jobs:
       working-directory: "./src"
       shell: powershell
       run: |
-        $signFiles = @("EM.HostsManager.Installer." + ${{ steps.gitversion.outputs.MajorMinorPatch }} + ".exe")
+        $signFiles = @("EM.HostsManager.Installer.${{ steps.gitversion.outputs.MajorMinorPatch }}.exe")
         $signDir = "${{ env.INSTALLER_DIR }}\Output\"
         $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Key }}' /t '${{ env.TIMESTAMP_URL }}' /fd 'SHA256' "
         Foreach ($fileToSign in $signFiles)
