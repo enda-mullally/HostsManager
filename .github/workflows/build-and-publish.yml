@@ -114,7 +114,7 @@ jobs:
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + $fileToSign + "'"
-          $signCmd = "'${{ env.SIGNTOOL }}' " + $signArgsAndFile
+          $signCmd = "cmd.exe /c '${{ env.SIGNTOOL }}' " + $signArgsAndFile
           Write-Output $signCmd
           Invoke-Expression $signCmd
         }
