@@ -110,11 +110,11 @@ jobs:
       shell: powershell
       run: |
         $signFiles = @("EM.HostsManager.App.exe", "EM.HostsManager.dll")
-        $signArgs = "sign /f ${{ env.CERT_FILENAME }} /p ${{ secrets.Pfx_Key }} /t ${{ env.TIMESTAMP_URL }} /fd SHA256 "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
+        $signArgs = "sign /f ${{ env.CERT_FILENAME }} /p ${{ secrets.Pfx_Key }} /t ${{ env.TIMESTAMP_URL }} /fd SHA256 ${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + $fileToSign
-          Write-Output ${{ env.SIGNTOOL }} $signArgsAndFile
+          Write-Output $signArgsAndFile
           ${{ env.SIGNTOOL }} $signArgsAndFile
         }
         
