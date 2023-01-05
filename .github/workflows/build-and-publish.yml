@@ -111,7 +111,7 @@ jobs:
       run: |
         $signFiles = @("EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
         $signDir = "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
-        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Key }}' /t '${{ env.TIMESTAMP_URL }}' /fd 'sha256' "
+        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Key }}' /t '${{ env.TIMESTAMP_URL }}' /fd certHash "
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
