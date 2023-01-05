@@ -1,10 +1,10 @@
 ﻿//
-// Copyright © 2021-2022 Enda Mullally.
+// Copyright © 2021-2023 Enda Mullally.
 //
 
-using SysFile =System.IO.File;
+using SysFile=System.IO.File;
 
-namespace EM.HostsManager.App.IO;
+namespace EM.HostsManager.Infrastructure.IO;
 
 public static class File
 {

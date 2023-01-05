@@ -1,21 +1,23 @@
-﻿namespace EM.HostsManager.App.Win32;
+﻿//
+// Copyright © 2009-2023 Enda Mullally.
+//
 
-using Process=System.Diagnostics.Process;
+namespace EM.HostsManager.Infrastructure.Win32;
 
 public static class Elevated
 {
     // Normal button
     private const int BcmFirst = 0x1600;
-        
+
     // Elevated button
-    private const int BcmSetShield = (BcmFirst + 0x000C); 
+    private const int BcmSetShield = (BcmFirst + 0x000C);
 
     public static bool IsElevated()
     {
         return new WindowsPrincipal(WindowsIdentity.GetCurrent())
             .IsInRole(WindowsBuiltInRole.Administrator);
     }
-        
+
     public static void AddShieldToButton(Button b)
     {
         b.FlatStyle = FlatStyle.System;
@@ -36,18 +38,16 @@ public static class Elevated
 
         if (startInfo
             .FileName
-            .ToLowerInvariant()
-            .EndsWith(".dll"))
+            .EndsWith(".dll", StringComparison.CurrentCultureIgnoreCase))
         {
             startInfo.FileName = startInfo
                 .FileName
-                .ToLowerInvariant()
-                .Replace(".dll", ".exe"); // .NET Core re-direct
+                .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase); // .NET Core re-direct
         }
 
         try
         {
-            if (Process.Start(startInfo) != null)
+            if (System.Diagnostics.Process.Start(startInfo) != null)
             {
                 Application.Exit();
             }

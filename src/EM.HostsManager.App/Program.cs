@@ -1,9 +1,9 @@
 //
-// Copyright © 2021-2022 Enda Mullally.
+// Copyright © 2021-2023 Enda Mullally.
 //
 
-using EM.HostsManager.App.Process;
 using EM.HostsManager.App.UI;
+using EM.HostsManager.Infrastructure.Process;
 
 namespace EM.HostsManager.App;
 
@@ -12,7 +12,7 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        using var si = new SingleInstance("Enda-Mullally|Hosts-Manager|2021-2022|V1|Single.Instance");
+        using var si = new SingleInstance("Enda-Mullally|Hosts-Manager|2021-2023|V1|Single.Instance");
         
         var arg = args.Length > 0 ? args[0].ToLowerInvariant() : string.Empty;
 

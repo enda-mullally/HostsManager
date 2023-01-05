@@ -1,8 +1,8 @@
 ﻿//
-// Copyright © 2021-2022 Enda Mullally.
+// Copyright © 2021-2023 Enda Mullally.
 //
 
-using EM.HostsManager.App.Attributes;
+using EM.HostsManager.Infrastructure.Attributes;
 
 // CommitId
 [assembly: CommitId("COMMIT-ID-ATTRIBUTE")]
