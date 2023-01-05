@@ -1,8 +1,8 @@
 ﻿//
-// Copyright © 2021-2022 Enda Mullally.
+// Copyright © 2021-2023 Enda Mullally.
 //
 
-namespace EM.HostsManager.App.Attributes;
+namespace EM.HostsManager.Infrastructure.Attributes;
 
 [AttributeUsage(AttributeTargets.Assembly)]
 public class CommitIdAttribute : Attribute

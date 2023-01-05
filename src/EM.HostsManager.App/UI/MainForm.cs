@@ -1,16 +1,15 @@
 ﻿//
-// Copyright © 2021-2022 Enda Mullally.
+// Copyright © 2021-2023 Enda Mullally.
 //
 
-using EM.HostsManager.App.Hosts;
-using EM.HostsManager.App.Version;
-using EM.HostsManager.App.Win32;
-using Reg=EM.HostsManager.App.Registry.Registry;
+using EM.HostsManager.Infrastructure.Hosts;
+using EM.HostsManager.Infrastructure.Version;
+using EM.HostsManager.Infrastructure.Win32;
+using Reg=EM.HostsManager.Infrastructure.Registry.Registry;
 
 namespace EM.HostsManager.App.UI;
 
 using static User32;
-using Process = System.Diagnostics.Process;
 
 public partial class MainForm : Form
 {
@@ -134,7 +133,7 @@ public partial class MainForm : Form
             $@"Commit: { appVersion.GetCommitId() }{Environment.NewLine}" +
             $@"Date: { appVersion.GetBuildDate() }" +
             $@"{Environment.NewLine}{Environment.NewLine}" +
-            @"Copyright © 2021-2022 Enda Mullally",
+            @"Copyright © 2021-2023 Enda Mullally",
             @"About",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);

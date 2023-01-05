@@ -1,10 +1,10 @@
 //
-// Copyright © 2009-2022 Enda Mullally.
+// Copyright © 2009-2023 Enda Mullally.
 //
 
-using EM.HostsManager.App.Win32;
+using EM.HostsManager.Infrastructure.Win32;
 
-namespace EM.HostsManager.App.Process;
+namespace EM.HostsManager.Infrastructure.Process;
 
 using Procs=System.Diagnostics.Process;
 
@@ -17,7 +17,7 @@ public sealed class SingleInstance : IDisposable
     {
         _processSync = new Mutex(
             true,
-            Assembly.GetExecutingAssembly().GetName().Name + identifier,
+            Assembly.GetCallingAssembly().GetName().Name + identifier, 
             out _owned);
     }
 

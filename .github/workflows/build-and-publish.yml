@@ -111,7 +111,7 @@ jobs:
       run: |
         $signFiles = @("EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
         $signDir = "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
-        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Key }}' /t '${{ env.TIMESTAMP_URL }}' /fd 'SHA256' "
+        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
@@ -138,7 +138,7 @@ jobs:
       run: |
         $signFiles = @("EM.HostsManager.Installer.${{ steps.gitversion.outputs.MajorMinorPatch }}.exe")
         $signDir = "${{ env.INSTALLER_DIR }}\Output\"
-        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Key }}' /t '${{ env.TIMESTAMP_URL }}' /fd 'SHA256' "
+        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
@@ -171,6 +171,7 @@ jobs:
         cd ..
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
 
     - name: Copy Build Files (3 of 3)

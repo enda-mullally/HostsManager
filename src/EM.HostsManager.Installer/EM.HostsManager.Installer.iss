@@ -1,6 +1,6 @@
 ;
 ; Hosts Maneger InnoSetup Installer Script.
-; Copyright (c) 2022 Enda Mullally.
+; Copyright (c) 2022-2023 Enda Mullally.
 ;
 
 #ifndef InstallerVersion
@@ -27,7 +27,7 @@ DefaultGroupName=Hosts Manager
 PrivilegesRequired=admin
 LicenseFile=License.txt
 AppVersion={#InstallerVersion}
-AppCopyright=Copyright 2021-2022 Enda Mullally
+AppCopyright=Copyright 2021-2023 Enda Mullally
 DisableProgramGroupPage=true
 DisableDirPage=true
 Compression=lzma2
@@ -55,6 +55,7 @@ Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "HostsManager.ico"; DestDir: {app}; Flags: ignoreversion noencryption  
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.Infrastructure.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
 
 ; Deps
