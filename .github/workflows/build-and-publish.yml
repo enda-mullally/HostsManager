@@ -116,7 +116,6 @@ jobs:
         {
           $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
           $signCmd = "cmd /c '${{ env.SIGNTOOL }}' " + $signArgsAndFile
-          Write-Output $signCmd
           Invoke-Expression $signCmd
         }
         
