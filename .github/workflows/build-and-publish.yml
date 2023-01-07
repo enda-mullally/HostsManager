@@ -21,6 +21,7 @@ jobs:
       SIGNTOOL: "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x86/signtool.exe"  # See list of installed Windows SDK's @ https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
       TIMESTAMP_URL: "http://timestamp.digicert.com"
       CERT_FILENAME: "Cert.pfx"
+      ILMERGE_VER: 'ILMerge.3.0.41'  # Must match the version in packages.config
 
     steps:
     - uses: actions/checkout@v2
@@ -93,6 +94,11 @@ jobs:
         Write-Output "CommitIdAttribute written..."
         Write-Output "==============================================================================================================================================="
 
+    - name: Restore packages in build dir 
+      if: (github.ref != 'refs/heads/main' && !inputs.fullbuild)
+      working-directory: "./src"
+      run: dotnet restore --packages ./packages
+
     - name: Build HostsManager (Check)
       if: (github.ref != 'refs/heads/main' && !inputs.fullbuild)
       run: dotnet build "./src" --configuration Release
@@ -100,6 +106,31 @@ jobs:
     - name: Build HostsManager with Version (Full Build)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+
+    - name: ILMerge [Pack]
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      working-directory: "./src"
+      shell: powershell
+      run: |
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Starting ILMerge..."
+        Write-Output "==============================================================================================================================================="
+        md "Packed"
+        $ilMergeExe = "./packages/${{ env.ILMERGE_VER }}/tools/net452/ilmerge.exe"
+        Write-Output "ILMerge in: '$ilMergeExe'"
+        if ([System.IO.File]::Exists($ilMergeExe)) { Write-Output "IlMerge Exists!" } else { Write-Output "ILMerge not found!" }
+        $mOut = './Packed/EM.HostsManager.App.exe'
+        $mInputAssemblies = @()
+        $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe'
+        $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll'
+        $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll'
+        Write-Output "Merging..."
+        foreach ($mergeAssembly in $mInputAssemblies){ Write-Output " + $mergeAssembly"}
+        & $ilMergeExe /allowDup /target:winexe /out:$mOut $mInputAssemblies
+        Write-Output " => $mOut"
+        Write-Output "==============================================================================================================================================="
+        Write-Output "Done!"
+        Write-Output "==============================================================================================================================================="
 
     - name: Decode Code-Signing Pfx
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)

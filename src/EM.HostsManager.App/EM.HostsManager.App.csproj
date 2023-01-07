@@ -47,6 +47,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ilmerge" Version="3.0.41" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EM.HostsManager.Infrastructure\EM.HostsManager.Infrastructure.csproj" />
   </ItemGroup>
 
