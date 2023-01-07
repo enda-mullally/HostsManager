@@ -3,6 +3,12 @@ name: Build & Publish
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      fullbuild:
+        type: boolean
+        description: Perform a full build.
+        default: false
     
 jobs:
   build:
@@ -19,20 +25,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Fetch all history and tags (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Fetch all history and tags
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: |
         git fetch --unshallow --prune
 
-    - name: Install GitVersion (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Install GitVersion
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       uses: gittools/actions/gitversion/setup@v0.9.10
       with:
         versionSpec: '5.x'
         includePrerelease: false
   
-    - name: Determine Version (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Determine Version
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.10
       with:
@@ -40,8 +46,8 @@ jobs:
         configFilePath: 'GitVersion.yml'
         additionalArguments: '-ensureassemblyinfo'
 
-    - name: Display Version (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Display Version
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: powershell
       run: |
         Write-Output "==============================================================================================================================================="
@@ -53,8 +59,8 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
-    - name: Patch BuildDateAttribute (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Patch BuildDateAttribute
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: powershell
       run: |
         Write-Output "==============================================================================================================================================="
@@ -70,8 +76,8 @@ jobs:
         Write-Output "BuildDateAttribute written..."
         Write-Output "==============================================================================================================================================="
 
-    - name: Patch CommitIdAttribute (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Patch CommitIdAttribute
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: powershell
       run: |
         Write-Output "==============================================================================================================================================="
@@ -88,15 +94,15 @@ jobs:
         Write-Output "==============================================================================================================================================="
 
     - name: Build HostsManager (Check)
-      if: github.ref != 'refs/heads/main'
+      if: (github.ref != 'refs/heads/main' && !inputs.fullbuild)
       run: dotnet build "./src" --configuration Release
     
-    - name: Build HostsManager with Version (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Build HostsManager with Version (Full Build)
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
 
     - name: Decode Code-Signing Pfx
-      if: github.ref == 'refs/heads/main'
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: "./src"
       shell: powershell
       run: |
@@ -105,7 +111,7 @@ jobs:
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
     - name: Sign Application Files (Post Build)
-      if: github.ref == 'refs/heads/main'
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: "./src"
       shell: powershell
       run: |
@@ -119,20 +125,20 @@ jobs:
           Invoke-Expression $signCmd
         }
         
-    - name: Install Inno Setup (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Install Inno Setup
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       run: |
         choco install innosetup
 
-    - name: Build Installer (Publish)
-      if: github.ref == 'refs/heads/main'
+    - name: Build Installer
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: "./src/${{ env.INSTALLER_DIR }}"
       run: |
         iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
 
     - name: Sign Installer (Post Build)
-      if: github.ref == 'refs/heads/main'
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: "./src"
       shell: powershell
       run: |
@@ -147,14 +153,14 @@ jobs:
         }
 
     - name: Clean up (Code Signing Pfx)
-      if: (github.ref == 'refs/heads/main' && success() || failure())
+      if: ((github.ref == 'refs/heads/main' || inputs.fullbuild) && success() || failure())
       shell: powershell
       working-directory: "./src"
       continue-on-error: true
       run: Remove-Item -Verbose -Path ${{ env.CERT_FILENAME }}
 
     - name: Copy Build Files (1 of 3)
-      if: github.ref == 'refs/heads/main'
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       working-directory: "./src"
       run: |
@@ -162,7 +168,7 @@ jobs:
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\*.*" "Binaries"
 
     - name: Copy Build Files (2 of 3)
-      if: github.ref == 'refs/heads/main'
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       working-directory: "./src"
       run: |
@@ -175,7 +181,7 @@ jobs:
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
 
     - name: Copy Build Files (3 of 3)
-      if: github.ref == 'refs/heads/main'
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       working-directory: "./src"
       run: |
@@ -195,7 +201,7 @@ jobs:
     #    git push --force --tags origin
 
     - name: Publish build artifacts
-      if: github.ref == 'refs/heads/main'
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       uses: actions/upload-artifact@v3
       with:
         name: EM.HostsManager-${{steps.gitversion.outputs.MajorMinorPatch}}
