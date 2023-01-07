@@ -116,17 +116,20 @@ jobs:
         Write-Output "Starting ILMerge..."
         Write-Output "==============================================================================================================================================="
         md "Packed"
-        $ilMergeExe = "${{ github.workspace }}/src/packages/${{ env.ILMERGE_VER }}/tools/net452/ilmerge.exe"
+        $ilMergeExe = "${{ github.workspace }}\src\packages\${{ env.ILMERGE_VER }}\tools\net452\ilmerge.exe"
         Write-Output "ILMerge in: '$ilMergeExe'"
         if ([System.IO.File]::Exists($ilMergeExe)) { Write-Output "IlMerge Exists!" } else { Write-Output "ILMerge not found!" }
-        $mOut = '${{ github.workspace }}/src/Packed/EM.HostsManager.App.exe'
+        $mOut = '${{ github.workspace }}\src\Packed\EM.HostsManager.App.exe'
         $mInputAssemblies = @()
         $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe'
         $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll'
         $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll'
         Write-Output "Merging..."
         foreach ($mergeAssembly in $mInputAssemblies){ Write-Output " + $mergeAssembly"}
-        & $ilMergeExe /allowDup /target:winexe /out:$mOut $mInputAssemblies
+        {
+          $mergeCmd = "cmd /c '" + $ilMergeExe + "' /allowDup /target:winexe /out:" + $mOut + " " + $mInputAssemblies
+          Invoke-Expression $mergeCmd
+        }
         Write-Output " => $mOut"
         Write-Output "==============================================================================================================================================="
         Write-Output "Done!"
