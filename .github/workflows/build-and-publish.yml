@@ -107,7 +107,7 @@ jobs:
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
 
-    - name: ILMerge [Pack]
+    - name: ILMerge (Pack)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: "./src"
       shell: powershell
@@ -116,10 +116,10 @@ jobs:
         Write-Output "Starting ILMerge..."
         Write-Output "==============================================================================================================================================="
         md "Packed"
-        $ilMergeExe = "./packages/${{ env.ILMERGE_VER }}/tools/net452/ilmerge.exe"
+        $ilMergeExe = "${{ github.workspace }}/src/packages/${{ env.ILMERGE_VER }}/tools/net452/ilmerge.exe"
         Write-Output "ILMerge in: '$ilMergeExe'"
         if ([System.IO.File]::Exists($ilMergeExe)) { Write-Output "IlMerge Exists!" } else { Write-Output "ILMerge not found!" }
-        $mOut = './Packed/EM.HostsManager.App.exe'
+        $mOut = '${{ github.workspace }}/src/Packed/EM.HostsManager.App.exe'
         $mInputAssemblies = @()
         $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe'
         $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll'
@@ -235,5 +235,5 @@ jobs:
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       uses: actions/upload-artifact@v3
       with:
-        name: EM.HostsManager-${{steps.gitversion.outputs.MajorMinorPatch}}
+        name: EM.HostsManager-${{ steps.gitversion.outputs.MajorMinorPatch }}
         path: "./src/Binaries"
