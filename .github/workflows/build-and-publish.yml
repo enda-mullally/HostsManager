@@ -201,7 +201,7 @@ jobs:
         if not exist Binaries mkdir Binaries
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\*.*" "Binaries"
 
-    - name: Copy Build Files (2 of 3)
+    - name: Copy Build Files (2 of 4)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       working-directory: "./src"
@@ -214,7 +214,7 @@ jobs:
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
 
-    - name: Copy Build Files (3 of 3)
+    - name: Copy Build Files (3 of 4)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       working-directory: "./src"
@@ -223,6 +223,16 @@ jobs:
         if not exist Installer mkdir Installer
         cd ..
         copy "${{ env.INSTALLER_DIR }}\Output" "Binaries\Installer"
+
+    - name: Copy Build Files (4 of 4)
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      shell: cmd
+      working-directory: "./src"
+      run: |
+        cd Binaries
+        if not exist Packed mkdir Packed
+        cd ..
+        copy ".\Packed\*.*" "Binaries\Packed"
 
     # Right now I'm manually tagging the repo for this project.
     # This may change in the future.
