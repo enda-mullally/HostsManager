@@ -94,8 +94,8 @@ jobs:
         Write-Output "CommitIdAttribute written..."
         Write-Output "==============================================================================================================================================="
 
-    - name: Restore packages in build dir 
-      if: (github.ref != 'refs/heads/main' && !inputs.fullbuild)
+    - name: Restore packages (local)
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: "./src"
       run: dotnet restore --packages ./packages
 
