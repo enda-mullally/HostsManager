@@ -21,7 +21,7 @@ jobs:
       SIGNTOOL: "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x86/signtool.exe"  # See list of installed Windows SDK's @ https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
       TIMESTAMP_URL: "http://timestamp.digicert.com"
       CERT_FILENAME: "Cert.pfx"
-      ILMERGE_VER: 'ILMerge.3.0.41'  # Must match the version in packages.config
+      ILMERGE_VER: '3.0.41'  # Must match the version in packages.config
 
     steps:
     - uses: actions/checkout@v2
@@ -116,7 +116,7 @@ jobs:
         Write-Output "Starting ILMerge..."
         Write-Output "==============================================================================================================================================="
         md "Packed"
-        $ilMergeExe = "${{ github.workspace }}\src\packages\${{ env.ILMERGE_VER }}\tools\net452\ilmerge.exe"
+        $ilMergeExe = "${{ github.workspace }}\src\packages\ilmerge\${{ env.ILMERGE_VER }}\tools\net452\ilmerge.exe"
         Write-Output "ILMerge in: '$ilMergeExe'"
         if ([System.IO.File]::Exists($ilMergeExe)) { Write-Output "IlMerge Exists!" } else { Write-Output "ILMerge not found!" }
         $mOut = '${{ github.workspace }}\src\Packed\EM.HostsManager.App.exe'
