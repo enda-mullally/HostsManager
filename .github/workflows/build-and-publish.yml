@@ -125,11 +125,15 @@ jobs:
         $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll'
         $mInputAssemblies += '${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll'
         Write-Output "Merging..."
-        foreach ($mergeAssembly in $mInputAssemblies){ Write-Output " + $mergeAssembly"}
+        foreach ($mergeAssembly in $mInputAssemblies)
         {
-          $mergeCmd = "cmd /c '" + $ilMergeExe + "' /allowDup /target:winexe /out:" + $mOut + " " + $mInputAssemblies
-          Invoke-Expression $mergeCmd
+          Write-Output " + $mergeAssembly"
         }
+        
+        $mergeCmd = "cmd /c '" + $ilMergeExe + "' /allowDup /target:winexe /out:" + $mOut + " " + $mInputAssemblies
+        Write-Output $mergeCmd
+        Invoke-Expression $mergeCmd
+        
         Write-Output " => $mOut"
         Write-Output "==============================================================================================================================================="
         Write-Output "Done!"
