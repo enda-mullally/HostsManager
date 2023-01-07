@@ -7,7 +7,7 @@ on:
     inputs:
       fullbuild:
         type: boolean
-        description: Perform a full build.
+        description: Perform a full build
         default: false
     
 jobs:
