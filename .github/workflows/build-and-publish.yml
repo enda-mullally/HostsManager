@@ -193,7 +193,7 @@ jobs:
       continue-on-error: true
       run: Remove-Item -Verbose -Path ${{ env.CERT_FILENAME }}
 
-    - name: Copy Build Files (1 of 3)
+    - name: Copy Build Files (1 of 4)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       working-directory: "./src"
