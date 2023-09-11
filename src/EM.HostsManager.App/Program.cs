@@ -12,13 +12,13 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        using var si = new SingleInstance("Enda-Mullally|Hosts-Manager|2021-2023|V1|Single.Instance");
+        using var si = new SingleInstance(Consts.AppInstanceId);
         
         var arg = args.Length > 0 ? args[0].ToLowerInvariant() : string.Empty;
 
         switch (arg)
         {
-            case "/quit":
+            case Consts.QuitArg:
             {
                 if (!si.IsSingleInstance())
                 {
@@ -28,7 +28,7 @@ internal static class Program
                 return;
             }
 
-            case "/min":
+            case Consts.MinArg:
             {
                 if (!si.IsSingleInstance())
                 {
@@ -40,7 +40,7 @@ internal static class Program
                 break;  // continue to start minimized
             }
 
-            case "/elevate":
+            case Consts.ElevateArg:
             {
                 break;
             }

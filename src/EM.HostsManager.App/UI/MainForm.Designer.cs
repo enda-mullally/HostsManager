@@ -49,14 +49,14 @@ namespace EM.HostsManager.App.UI
             uxlblHostsCount = new Label();
             uxlblHostsFileSize = new Label();
             uxlblFileSize = new Label();
-            uxbtnDisableHostsFile = new Button();
-            uxbtnEnableHostsFile = new Button();
+            uxbtnDisableHostsFile = new SplitButton();
+            uxbtnEnableHostsFile = new SplitButton();
             uxbtnEdit = new SplitButton();
             uxOpenWith = new ContextMenuStrip(components);
             uxOpenWithDefault = new ToolStripMenuItem();
             uxOpenWithNotepadpp = new ToolStripMenuItem();
             uxOpenWithVSCode = new ToolStripMenuItem();
-            uxbtnFlushDNS = new Button();
+            uxbtnFlushDNS = new SplitButton();
             uxTrayMenu.SuspendLayout();
             ((ISupportInitialize)uxAppIcon).BeginInit();
             uxOpenWith.SuspendLayout();
@@ -271,6 +271,7 @@ namespace EM.HostsManager.App.UI
             uxOpenWithDefault.CheckState = CheckState.Checked;
             uxOpenWithDefault.Name = "uxOpenWithDefault";
             uxOpenWithDefault.Size = new System.Drawing.Size(173, 22);
+            uxOpenWithDefault.Tag = "DEFAULT";
             uxOpenWithDefault.Text = "Default";
             uxOpenWithDefault.Click += uxOpenWith_Click;
             // 
@@ -278,6 +279,7 @@ namespace EM.HostsManager.App.UI
             // 
             uxOpenWithNotepadpp.Name = "uxOpenWithNotepadpp";
             uxOpenWithNotepadpp.Size = new System.Drawing.Size(173, 22);
+            uxOpenWithNotepadpp.Tag = "NOTEPAD++";
             uxOpenWithNotepadpp.Text = "Notepad++";
             uxOpenWithNotepadpp.Click += uxOpenWith_Click;
             // 
@@ -285,6 +287,7 @@ namespace EM.HostsManager.App.UI
             // 
             uxOpenWithVSCode.Name = "uxOpenWithVSCode";
             uxOpenWithVSCode.Size = new System.Drawing.Size(173, 22);
+            uxOpenWithVSCode.Tag = "VSCODE";
             uxOpenWithVSCode.Text = "Visual Studio Code";
             uxOpenWithVSCode.Click += uxOpenWith_Click;
             // 
@@ -351,8 +354,8 @@ namespace EM.HostsManager.App.UI
         private Label uxlblHostsCount;
         private Label uxlblHostsFileSize;
         private Label uxlblFileSize;
-        private Button uxbtnDisableHostsFile;
-        private Button uxbtnEnableHostsFile;
+        private SplitButton uxbtnDisableHostsFile;
+        private SplitButton uxbtnEnableHostsFile;
         private SplitButton uxbtnEdit;
         private ContextMenuStrip uxTrayMenu;
         private ToolStripMenuItem uxMenuItemShow;
@@ -361,7 +364,7 @@ namespace EM.HostsManager.App.UI
         private ToolStripMenuItem uxMenuEnableHostsFile;
         private ToolStripSeparator uxMenuSeperator3;
         private ToolStripSeparator uxMenuSeperator1;
-        private Button uxbtnFlushDNS;
+        private SplitButton uxbtnFlushDNS;
         private ContextMenuStrip uxOpenWith;
         private ToolStripMenuItem uxOpenWithDefault;
         private ToolStripMenuItem uxOpenWithNotepadpp;

@@ -7,6 +7,11 @@ using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
 using Reg = EM.HostsManager.Infrastructure.Registry.Registry;
 
+#pragma warning disable IDE1006
+
+// ReSharper disable IdentifierTypo
+// ReSharper disable InconsistentNaming
+
 namespace EM.HostsManager.App.UI;
 
 using static User32;
@@ -17,21 +22,49 @@ public partial class MainForm : Form
     private bool _requestingClose;
 
     private const int SysMenuAboutId = 0x1;
-
     private const int WmUser = 0x0400;
     public const int WmActivateApp = WmUser + 55;
     public const int WmQuitApp = WmUser + 56;
+
+    private enum PreferredEditor { Default, NotepadPP, VSCode}
 
     public MainForm()
     {
         InitializeComponent();
 
+        UxGetPreferredEditor();
         UxFixButtonText();
         UxFixHeight();
         UxRefresh();
     }
 
     #region Ux
+
+    private void UxGetPreferredEditor()
+    {
+        uxOpenWithDefault.Tag = nameof(PreferredEditor.Default);
+        uxOpenWithNotepadpp.Tag = nameof(PreferredEditor.NotepadPP);
+        uxOpenWithVSCode.Tag = nameof(PreferredEditor.VSCode);
+
+        var currentPreferredEditor = Reg.GetRegString(
+            Microsoft.Win32.Registry.CurrentUser,
+            Consts.AppRegPath,
+            Consts.PreferredEditorKey,
+            nameof(PreferredEditor.Default));
+
+        foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
+        {
+            menuItem.Checked =
+                string.Equals(menuItem.Tag as string, currentPreferredEditor, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        // Write it again anyway, if it was defaulted above.
+        Reg.SetRegString(
+            Microsoft.Win32.Registry.CurrentUser,
+            Consts.AppRegPath,
+            Consts.PreferredEditorKey,
+            currentPreferredEditor);
+    }
 
     private void UxFixHeight()
     {
@@ -164,7 +197,6 @@ public partial class MainForm : Form
         UxRefresh();
     }
 
-    [SuppressMessage("SonarCloud", "S4036", Justification = "Fixed command")]
     private void uxbtnEdit_Click(object sender, EventArgs e)
     {
         var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
@@ -174,11 +206,26 @@ public partial class MainForm : Form
             return;
         }
 
+        var editor = Enum.Parse<PreferredEditor>(
+            Reg.GetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.AppRegPath,
+                Consts.PreferredEditorKey,
+                nameof(PreferredEditor.Default)));
+
+        var fileName = editor switch
+        {
+            PreferredEditor.Default => "notepad.exe",
+            PreferredEditor.NotepadPP => "notepad++",
+            PreferredEditor.VSCode => "code",
+            _ => "notepad.exe"
+        };
+
         var startInfo = new ProcessStartInfo
         {
             UseShellExecute = true,
             WorkingDirectory = workingDirectory,
-            FileName = "notepad.exe",
+            FileName = fileName,
             Arguments = HostsFile.GetHostsFilename(),
             Verb = "open"
         };
@@ -190,10 +237,26 @@ public partial class MainForm : Form
         catch (Exception exception)
         {
             Debug.WriteLine(exception.Message);
+
+            if (editor == PreferredEditor.Default)
+            {
+                return;
+            }
+
+            // We failed to open with the selected editor (non default) so reset to Default and try again...
+
+            Reg.SetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.AppRegPath,
+                Consts.PreferredEditorKey,
+                nameof(PreferredEditor.Default));
+
+            UxGetPreferredEditor();
+
+            uxbtnEdit_Click(sender, EventArgs.Empty);
         }
     }
 
-    [SuppressMessage("SonarCloud", "S4036", Justification = "Fixed command")]
     private void uxbtnFlushDNS_Click(object sender, EventArgs e)
     {
         try
@@ -317,7 +380,7 @@ public partial class MainForm : Form
 
         var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
-            Environment.GetCommandLineArgs()[1].Equals("/min", StringComparison.InvariantCultureIgnoreCase);
+            Environment.GetCommandLineArgs()[1].Equals(Consts.MinArg, StringComparison.InvariantCultureIgnoreCase);
 
         if (!minimized)
         {
@@ -333,7 +396,6 @@ public partial class MainForm : Form
         Opacity = 0;
     }
 
-    [SuppressMessage("SonarCloud", "S2589", Justification = "Using a compiler directive here so this will not always be false")]
     protected override void OnFormClosing(FormClosingEventArgs e)
     {
         // ReSharper disable once RedundantAssignment
@@ -432,16 +494,17 @@ public partial class MainForm : Form
 
     private void ShowMessageOnFirstRun()
     {
-        const string firstRunRegPath = @"Software\Enda Mullally\Hosts Manager";
-        const string firstRunRegKey = @"FirstRun";
-
         if (WindowState != FormWindowState.Normal)
         {
             return;
         }
 
         var firstRun =
-            Reg.GetRegString(Microsoft.Win32.Registry.CurrentUser, firstRunRegPath, firstRunRegKey, "false")
+            Reg.GetRegString(
+                    Microsoft.Win32.Registry.CurrentUser,
+                    Consts.AppRegPath,
+                    Consts.FirstRunKey,
+                    "false")
                 .ToLowerInvariant().Equals("true");
 
         if (!firstRun)
@@ -449,7 +512,11 @@ public partial class MainForm : Form
             return;
         }
 
-        Reg.SetRegString(Microsoft.Win32.Registry.CurrentUser, firstRunRegPath, firstRunRegKey, "false");
+        Reg.SetRegString(
+            Microsoft.Win32.Registry.CurrentUser,
+            Consts.AppRegPath,
+            Consts.FirstRunKey,
+            "false");
 
         var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
 
@@ -478,6 +545,16 @@ public partial class MainForm : Form
             menuItem.Checked = false;
         }
 
-        ((ToolStripMenuItem)sender).Checked = true;
+        var selectedOpenWith = ((ToolStripMenuItem)sender);
+
+        selectedOpenWith.Checked = true;
+
+        var preferredEditor = selectedOpenWith.Tag as string;
+
+        Reg.SetRegString(
+            Microsoft.Win32.Registry.CurrentUser,
+            Consts.AppRegPath,
+            Consts.PreferredEditorKey,
+            preferredEditor?? nameof(PreferredEditor.Default));
     }
 }
