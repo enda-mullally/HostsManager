@@ -5,7 +5,7 @@
 using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
-using Reg=EM.HostsManager.Infrastructure.Registry.Registry;
+using Reg = EM.HostsManager.Infrastructure.Registry.Registry;
 
 namespace EM.HostsManager.App.UI;
 
@@ -40,7 +40,7 @@ public partial class MainForm : Form
             Height -= 45;
         }
     }
-        
+
     private void UxFixButtonText()
     {
         if (!Elevated.IsElevated())
@@ -74,10 +74,10 @@ public partial class MainForm : Form
         uxMenuEnableHostsFile.Checked = hostsEnabled;
 
         var hostOrHosts = HostsFile
-            .HostsCount() == 1 
+            .HostsCount() == 1
             ? "host"
             : "hosts";
-            
+
         uxNotifyIcon.Text = @"Hosts Manager" + Environment.NewLine + (hostsEnabled
             ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
             : "(all hosts disabled)");
@@ -92,7 +92,7 @@ public partial class MainForm : Form
 
             uxbtnEdit.Enabled =
                 uxbtnDisableHostsFile.Enabled = hostsEnabled;
-                
+
             uxbtnEnableHostsFile.Enabled = !hostsEnabled;
 
             uxbtnFlushDNS.Enabled = true;
@@ -129,9 +129,9 @@ public partial class MainForm : Form
             $@"== Hosts Manager =={Environment.NewLine}{Environment.NewLine}" +
             @"https://github.com/enda-mullally/hostsmanager" +
             $@"{Environment.NewLine}{Environment.NewLine}" +
-            $@"Version: { appVersion.GetAppVersion() }{Environment.NewLine}" +
-            $@"Commit: { appVersion.GetCommitId() }{Environment.NewLine}" +
-            $@"Date: { appVersion.GetBuildDate() }" +
+            $@"Version: {appVersion.GetAppVersion()}{Environment.NewLine}" +
+            $@"Commit: {appVersion.GetCommitId()}{Environment.NewLine}" +
+            $@"Date: {appVersion.GetBuildDate()}" +
             $@"{Environment.NewLine}{Environment.NewLine}" +
             @"Copyright © 2021-2023 Enda Mullally",
             @"About",
@@ -153,14 +153,14 @@ public partial class MainForm : Form
     private void uxbtnDisableHostsFile_Click(object sender, EventArgs e)
     {
         HostsFile.DisableHostsFile();
-            
+
         UxRefresh();
     }
 
     private void uxbtnEnableHostsFile_Click(object sender, EventArgs e)
     {
         HostsFile.EnableHostsFile();
-            
+
         UxRefresh();
     }
 
@@ -173,7 +173,7 @@ public partial class MainForm : Form
         {
             return;
         }
-            
+
         var startInfo = new ProcessStartInfo
         {
             UseShellExecute = true,
@@ -239,7 +239,7 @@ public partial class MainForm : Form
             uxbtnFlushDNS.Enabled = true;
         }
     }
-        
+
     #endregion
 
     #region Form Events
@@ -283,7 +283,7 @@ public partial class MainForm : Form
         {
             return;
         }
-            
+
         if (uxMenuEnableHostsFile.Checked)
         {
             HostsFile.EnableHostsFile();
@@ -318,7 +318,7 @@ public partial class MainForm : Form
         var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
             Environment.GetCommandLineArgs()[1].Equals("/min", StringComparison.InvariantCultureIgnoreCase);
-                
+
         if (!minimized)
         {
             ShowInTaskbar = true;
@@ -339,7 +339,7 @@ public partial class MainForm : Form
         // ReSharper disable once RedundantAssignment
         var isDebug = false;
 #if DEBUG
-            isDebug = true;
+        isDebug = true;
 #endif
 
         if (e.CloseReason == CloseReason.WindowsShutDown ||
@@ -348,7 +348,7 @@ public partial class MainForm : Form
             isDebug)
         {
             base.OnFormClosing(e);
-                
+
             return; // Windows shutdown, Explicit user exit or Debugging 
         }
 
@@ -470,4 +470,14 @@ public partial class MainForm : Form
     }
 
     #endregion
+
+    private void uxOpenWith_Click(object sender, EventArgs e)
+    {
+        foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
+        {
+            menuItem.Checked = false;
+        }
+
+        ((ToolStripMenuItem)sender).Checked = true;
+    }
 }

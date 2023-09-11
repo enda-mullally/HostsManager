@@ -31,283 +31,314 @@ namespace EM.HostsManager.App.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.uxbtnRunAsAdmin = new System.Windows.Forms.Button();
-            this.uxNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.uxTrayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.uxMenuItemShow = new System.Windows.Forms.ToolStripMenuItem();
-            this.uxMenuSeperator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.uxMenuEnableHostsFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.uxMenuSeperator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.uxMenuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.uxMenuExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.uxlblSep = new System.Windows.Forms.Label();
-            this.uxAppIcon = new System.Windows.Forms.PictureBox();
-            this.uxlblEnabled = new System.Windows.Forms.Label();
-            this.uxlblHostNames = new System.Windows.Forms.Label();
-            this.uxlblHostsCount = new System.Windows.Forms.Label();
-            this.uxlblHostsFileSize = new System.Windows.Forms.Label();
-            this.uxlblFileSize = new System.Windows.Forms.Label();
-            this.uxbtnDisableHostsFile = new System.Windows.Forms.Button();
-            this.uxbtnEnableHostsFile = new System.Windows.Forms.Button();
-            this.uxbtnEdit = new System.Windows.Forms.Button();
-            this.uxbtnFlushDNS = new System.Windows.Forms.Button();
-            this.uxTrayMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.uxAppIcon)).BeginInit();
-            this.SuspendLayout();
+            components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(MainForm));
+            uxbtnRunAsAdmin = new Button();
+            uxNotifyIcon = new NotifyIcon(components);
+            uxTrayMenu = new ContextMenuStrip(components);
+            uxMenuItemShow = new ToolStripMenuItem();
+            uxMenuSeperator1 = new ToolStripSeparator();
+            uxMenuEnableHostsFile = new ToolStripMenuItem();
+            uxMenuSeperator3 = new ToolStripSeparator();
+            uxMenuAbout = new ToolStripMenuItem();
+            uxMenuExit = new ToolStripMenuItem();
+            uxlblSep = new Label();
+            uxAppIcon = new PictureBox();
+            uxlblEnabled = new Label();
+            uxlblHostNames = new Label();
+            uxlblHostsCount = new Label();
+            uxlblHostsFileSize = new Label();
+            uxlblFileSize = new Label();
+            uxbtnDisableHostsFile = new Button();
+            uxbtnEnableHostsFile = new Button();
+            uxbtnEdit = new SplitButton();
+            uxOpenWith = new ContextMenuStrip(components);
+            uxOpenWithDefault = new ToolStripMenuItem();
+            uxOpenWithNotepadpp = new ToolStripMenuItem();
+            uxOpenWithVSCode = new ToolStripMenuItem();
+            uxbtnFlushDNS = new Button();
+            uxTrayMenu.SuspendLayout();
+            ((ISupportInitialize)uxAppIcon).BeginInit();
+            uxOpenWith.SuspendLayout();
+            SuspendLayout();
             // 
             // uxbtnRunAsAdmin
             // 
-            this.uxbtnRunAsAdmin.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.uxbtnRunAsAdmin.BackColor = System.Drawing.SystemColors.Control;
-            this.uxbtnRunAsAdmin.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.uxbtnRunAsAdmin.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.uxbtnRunAsAdmin.Location = new System.Drawing.Point(114, 277);
-            this.uxbtnRunAsAdmin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.uxbtnRunAsAdmin.Name = "uxbtnRunAsAdmin";
-            this.uxbtnRunAsAdmin.Size = new System.Drawing.Size(175, 34);
-            this.uxbtnRunAsAdmin.TabIndex = 10;
-            this.uxbtnRunAsAdmin.Text = " Run as &Administrator";
-            this.uxbtnRunAsAdmin.UseCompatibleTextRendering = true;
-            this.uxbtnRunAsAdmin.UseVisualStyleBackColor = false;
-            this.uxbtnRunAsAdmin.Click += new System.EventHandler(this.uxbtnRunAsAdmin_Click);
+            uxbtnRunAsAdmin.Anchor = AnchorStyles.Left;
+            uxbtnRunAsAdmin.BackColor = System.Drawing.SystemColors.Control;
+            uxbtnRunAsAdmin.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnRunAsAdmin.ForeColor = System.Drawing.SystemColors.ControlText;
+            uxbtnRunAsAdmin.Location = new System.Drawing.Point(114, 277);
+            uxbtnRunAsAdmin.Margin = new Padding(3, 2, 3, 2);
+            uxbtnRunAsAdmin.Name = "uxbtnRunAsAdmin";
+            uxbtnRunAsAdmin.Size = new System.Drawing.Size(175, 34);
+            uxbtnRunAsAdmin.TabIndex = 10;
+            uxbtnRunAsAdmin.Text = " Run as &Administrator";
+            uxbtnRunAsAdmin.UseCompatibleTextRendering = true;
+            uxbtnRunAsAdmin.UseVisualStyleBackColor = false;
+            uxbtnRunAsAdmin.Click += uxbtnRunAsAdmin_Click;
             // 
             // uxNotifyIcon
             // 
-            this.uxNotifyIcon.ContextMenuStrip = this.uxTrayMenu;
-            this.uxNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("uxNotifyIcon.Icon")));
-            this.uxNotifyIcon.Text = "Hosts Manager";
-            this.uxNotifyIcon.Visible = true;
-            this.uxNotifyIcon.DoubleClick += new System.EventHandler(this.uxMenuItemShow_Click);
+            uxNotifyIcon.ContextMenuStrip = uxTrayMenu;
+            uxNotifyIcon.Icon = (System.Drawing.Icon)resources.GetObject("uxNotifyIcon.Icon");
+            uxNotifyIcon.Text = "Hosts Manager";
+            uxNotifyIcon.Visible = true;
+            uxNotifyIcon.DoubleClick += uxMenuItemShow_Click;
             // 
             // uxTrayMenu
             // 
-            this.uxTrayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.uxMenuItemShow,
-            this.uxMenuSeperator1,
-            this.uxMenuEnableHostsFile,
-            this.uxMenuSeperator3,
-            this.uxMenuAbout,
-            this.uxMenuExit});
-            this.uxTrayMenu.Name = "uxTrayMenu";
-            this.uxTrayMenu.Size = new System.Drawing.Size(191, 104);
+            uxTrayMenu.Items.AddRange(new ToolStripItem[] { uxMenuItemShow, uxMenuSeperator1, uxMenuEnableHostsFile, uxMenuSeperator3, uxMenuAbout, uxMenuExit });
+            uxTrayMenu.Name = "uxTrayMenu";
+            uxTrayMenu.Size = new System.Drawing.Size(191, 104);
             // 
             // uxMenuItemShow
             // 
-            this.uxMenuItemShow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.uxMenuItemShow.Name = "uxMenuItemShow";
-            this.uxMenuItemShow.Size = new System.Drawing.Size(190, 22);
-            this.uxMenuItemShow.Text = "&Open";
-            this.uxMenuItemShow.Click += new System.EventHandler(this.uxMenuItemShow_Click);
+            uxMenuItemShow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxMenuItemShow.Name = "uxMenuItemShow";
+            uxMenuItemShow.Size = new System.Drawing.Size(190, 22);
+            uxMenuItemShow.Text = "&Open";
+            uxMenuItemShow.Click += uxMenuItemShow_Click;
             // 
             // uxMenuSeperator1
             // 
-            this.uxMenuSeperator1.Name = "uxMenuSeperator1";
-            this.uxMenuSeperator1.Size = new System.Drawing.Size(187, 6);
+            uxMenuSeperator1.Name = "uxMenuSeperator1";
+            uxMenuSeperator1.Size = new System.Drawing.Size(187, 6);
             // 
             // uxMenuEnableHostsFile
             // 
-            this.uxMenuEnableHostsFile.Checked = true;
-            this.uxMenuEnableHostsFile.CheckOnClick = true;
-            this.uxMenuEnableHostsFile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.uxMenuEnableHostsFile.Name = "uxMenuEnableHostsFile";
-            this.uxMenuEnableHostsFile.Size = new System.Drawing.Size(190, 22);
-            this.uxMenuEnableHostsFile.Text = "Enable Hosts File";
-            this.uxMenuEnableHostsFile.Click += new System.EventHandler(this.uxMenuEnableHostsFile_Click);
+            uxMenuEnableHostsFile.Checked = true;
+            uxMenuEnableHostsFile.CheckOnClick = true;
+            uxMenuEnableHostsFile.CheckState = CheckState.Checked;
+            uxMenuEnableHostsFile.Name = "uxMenuEnableHostsFile";
+            uxMenuEnableHostsFile.Size = new System.Drawing.Size(190, 22);
+            uxMenuEnableHostsFile.Text = "Enable Hosts File";
+            uxMenuEnableHostsFile.Click += uxMenuEnableHostsFile_Click;
             // 
             // uxMenuSeperator3
             // 
-            this.uxMenuSeperator3.Name = "uxMenuSeperator3";
-            this.uxMenuSeperator3.Size = new System.Drawing.Size(187, 6);
+            uxMenuSeperator3.Name = "uxMenuSeperator3";
+            uxMenuSeperator3.Size = new System.Drawing.Size(187, 6);
             // 
             // uxMenuAbout
             // 
-            this.uxMenuAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.uxMenuAbout.Name = "uxMenuAbout";
-            this.uxMenuAbout.Size = new System.Drawing.Size(190, 22);
-            this.uxMenuAbout.Text = "&About Hosts Manager";
-            this.uxMenuAbout.Click += new System.EventHandler(this.uxMenuAbout_Click);
+            uxMenuAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxMenuAbout.Name = "uxMenuAbout";
+            uxMenuAbout.Size = new System.Drawing.Size(190, 22);
+            uxMenuAbout.Text = "&About Hosts Manager";
+            uxMenuAbout.Click += uxMenuAbout_Click;
             // 
             // uxMenuExit
             // 
-            this.uxMenuExit.Name = "uxMenuExit";
-            this.uxMenuExit.Size = new System.Drawing.Size(190, 22);
-            this.uxMenuExit.Text = "E&xit";
-            this.uxMenuExit.Click += new System.EventHandler(this.uxMenuExit_Click);
+            uxMenuExit.Name = "uxMenuExit";
+            uxMenuExit.Size = new System.Drawing.Size(190, 22);
+            uxMenuExit.Text = "E&xit";
+            uxMenuExit.Click += uxMenuExit_Click;
             // 
             // uxlblSep
             // 
-            this.uxlblSep.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.uxlblSep.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.uxlblSep.Location = new System.Drawing.Point(0, 261);
-            this.uxlblSep.Name = "uxlblSep";
-            this.uxlblSep.Size = new System.Drawing.Size(516, 3);
-            this.uxlblSep.TabIndex = 9;
+            uxlblSep.Anchor = AnchorStyles.Left;
+            uxlblSep.BorderStyle = BorderStyle.Fixed3D;
+            uxlblSep.Location = new System.Drawing.Point(0, 261);
+            uxlblSep.Name = "uxlblSep";
+            uxlblSep.Size = new System.Drawing.Size(516, 3);
+            uxlblSep.TabIndex = 9;
             // 
             // uxAppIcon
             // 
-            this.uxAppIcon.Image = ((System.Drawing.Image)(resources.GetObject("uxAppIcon.Image")));
-            this.uxAppIcon.Location = new System.Drawing.Point(12, 15);
-            this.uxAppIcon.Name = "uxAppIcon";
-            this.uxAppIcon.Size = new System.Drawing.Size(48, 48);
-            this.uxAppIcon.TabIndex = 3;
-            this.uxAppIcon.TabStop = false;
+            uxAppIcon.Image = (System.Drawing.Image)resources.GetObject("uxAppIcon.Image");
+            uxAppIcon.Location = new System.Drawing.Point(12, 15);
+            uxAppIcon.Name = "uxAppIcon";
+            uxAppIcon.Size = new System.Drawing.Size(48, 48);
+            uxAppIcon.TabIndex = 3;
+            uxAppIcon.TabStop = false;
             // 
             // uxlblEnabled
             // 
-            this.uxlblEnabled.AutoSize = true;
-            this.uxlblEnabled.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.uxlblEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.uxlblEnabled.Location = new System.Drawing.Point(86, 14);
-            this.uxlblEnabled.Name = "uxlblEnabled";
-            this.uxlblEnabled.Size = new System.Drawing.Size(188, 25);
-            this.uxlblEnabled.TabIndex = 0;
-            this.uxlblEnabled.Text = "Hosts file is [status].";
+            uxlblEnabled.AutoSize = true;
+            uxlblEnabled.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
+            uxlblEnabled.Location = new System.Drawing.Point(86, 14);
+            uxlblEnabled.Name = "uxlblEnabled";
+            uxlblEnabled.Size = new System.Drawing.Size(188, 25);
+            uxlblEnabled.TabIndex = 0;
+            uxlblEnabled.Text = "Hosts file is [status].";
             // 
             // uxlblHostNames
             // 
-            this.uxlblHostNames.AutoSize = true;
-            this.uxlblHostNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.uxlblHostNames.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.uxlblHostNames.Location = new System.Drawing.Point(89, 54);
-            this.uxlblHostNames.Name = "uxlblHostNames";
-            this.uxlblHostNames.Size = new System.Drawing.Size(41, 15);
-            this.uxlblHostNames.TabIndex = 1;
-            this.uxlblHostNames.Text = "Hosts:";
+            uxlblHostNames.AutoSize = true;
+            uxlblHostNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblHostNames.ForeColor = System.Drawing.Color.WhiteSmoke;
+            uxlblHostNames.Location = new System.Drawing.Point(89, 54);
+            uxlblHostNames.Name = "uxlblHostNames";
+            uxlblHostNames.Size = new System.Drawing.Size(41, 15);
+            uxlblHostNames.TabIndex = 1;
+            uxlblHostNames.Text = "Hosts:";
             // 
             // uxlblHostsCount
             // 
-            this.uxlblHostsCount.AutoSize = true;
-            this.uxlblHostsCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.uxlblHostsCount.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.uxlblHostsCount.Location = new System.Drawing.Point(184, 54);
-            this.uxlblHostsCount.Name = "uxlblHostsCount";
-            this.uxlblHostsCount.Size = new System.Drawing.Size(105, 15);
-            this.uxlblHostsCount.TabIndex = 2;
-            this.uxlblHostsCount.Text = "[hostname count]";
+            uxlblHostsCount.AutoSize = true;
+            uxlblHostsCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblHostsCount.ForeColor = System.Drawing.Color.WhiteSmoke;
+            uxlblHostsCount.Location = new System.Drawing.Point(184, 54);
+            uxlblHostsCount.Name = "uxlblHostsCount";
+            uxlblHostsCount.Size = new System.Drawing.Size(105, 15);
+            uxlblHostsCount.TabIndex = 2;
+            uxlblHostsCount.Text = "[hostname count]";
             // 
             // uxlblHostsFileSize
             // 
-            this.uxlblHostsFileSize.AutoSize = true;
-            this.uxlblHostsFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.uxlblHostsFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.uxlblHostsFileSize.Location = new System.Drawing.Point(184, 78);
-            this.uxlblHostsFileSize.Name = "uxlblHostsFileSize";
-            this.uxlblHostsFileSize.Size = new System.Drawing.Size(63, 15);
-            this.uxlblHostsFileSize.TabIndex = 4;
-            this.uxlblHostsFileSize.Text = "[0 byte(s)]";
+            uxlblHostsFileSize.AutoSize = true;
+            uxlblHostsFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblHostsFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
+            uxlblHostsFileSize.Location = new System.Drawing.Point(184, 78);
+            uxlblHostsFileSize.Name = "uxlblHostsFileSize";
+            uxlblHostsFileSize.Size = new System.Drawing.Size(63, 15);
+            uxlblHostsFileSize.TabIndex = 4;
+            uxlblHostsFileSize.Text = "[0 byte(s)]";
             // 
             // uxlblFileSize
             // 
-            this.uxlblFileSize.AutoSize = true;
-            this.uxlblFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.uxlblFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.uxlblFileSize.Location = new System.Drawing.Point(89, 78);
-            this.uxlblFileSize.Name = "uxlblFileSize";
-            this.uxlblFileSize.Size = new System.Drawing.Size(53, 15);
-            this.uxlblFileSize.TabIndex = 3;
-            this.uxlblFileSize.Text = "File size:";
+            uxlblFileSize.AutoSize = true;
+            uxlblFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
+            uxlblFileSize.Location = new System.Drawing.Point(89, 78);
+            uxlblFileSize.Name = "uxlblFileSize";
+            uxlblFileSize.Size = new System.Drawing.Size(53, 15);
+            uxlblFileSize.TabIndex = 3;
+            uxlblFileSize.Text = "File size:";
             // 
             // uxbtnDisableHostsFile
             // 
-            this.uxbtnDisableHostsFile.BackColor = System.Drawing.SystemColors.Control;
-            this.uxbtnDisableHostsFile.Enabled = false;
-            this.uxbtnDisableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.uxbtnDisableHostsFile.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.uxbtnDisableHostsFile.Location = new System.Drawing.Point(124, 135);
-            this.uxbtnDisableHostsFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.uxbtnDisableHostsFile.Name = "uxbtnDisableHostsFile";
-            this.uxbtnDisableHostsFile.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnDisableHostsFile.TabIndex = 6;
-            this.uxbtnDisableHostsFile.Text = "|&Disable Hosts File";
-            this.uxbtnDisableHostsFile.UseCompatibleTextRendering = true;
-            this.uxbtnDisableHostsFile.UseVisualStyleBackColor = false;
-            this.uxbtnDisableHostsFile.Click += new System.EventHandler(this.uxbtnDisableHostsFile_Click);
+            uxbtnDisableHostsFile.BackColor = System.Drawing.SystemColors.Control;
+            uxbtnDisableHostsFile.Enabled = false;
+            uxbtnDisableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnDisableHostsFile.ForeColor = System.Drawing.SystemColors.ControlText;
+            uxbtnDisableHostsFile.Location = new System.Drawing.Point(132, 135);
+            uxbtnDisableHostsFile.Margin = new Padding(3, 2, 3, 2);
+            uxbtnDisableHostsFile.Name = "uxbtnDisableHostsFile";
+            uxbtnDisableHostsFile.Size = new System.Drawing.Size(75, 75);
+            uxbtnDisableHostsFile.TabIndex = 6;
+            uxbtnDisableHostsFile.Text = "|&Disable Hosts File";
+            uxbtnDisableHostsFile.UseCompatibleTextRendering = true;
+            uxbtnDisableHostsFile.UseVisualStyleBackColor = false;
+            uxbtnDisableHostsFile.Click += uxbtnDisableHostsFile_Click;
             // 
             // uxbtnEnableHostsFile
             // 
-            this.uxbtnEnableHostsFile.BackColor = System.Drawing.SystemColors.Control;
-            this.uxbtnEnableHostsFile.Enabled = false;
-            this.uxbtnEnableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.uxbtnEnableHostsFile.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.uxbtnEnableHostsFile.Location = new System.Drawing.Point(205, 135);
-            this.uxbtnEnableHostsFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.uxbtnEnableHostsFile.Name = "uxbtnEnableHostsFile";
-            this.uxbtnEnableHostsFile.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnEnableHostsFile.TabIndex = 7;
-            this.uxbtnEnableHostsFile.Text = "|&Enable Hosts File";
-            this.uxbtnEnableHostsFile.UseCompatibleTextRendering = true;
-            this.uxbtnEnableHostsFile.UseVisualStyleBackColor = false;
-            this.uxbtnEnableHostsFile.Click += new System.EventHandler(this.uxbtnEnableHostsFile_Click);
+            uxbtnEnableHostsFile.BackColor = System.Drawing.SystemColors.Control;
+            uxbtnEnableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnEnableHostsFile.ForeColor = System.Drawing.SystemColors.ControlText;
+            uxbtnEnableHostsFile.Location = new System.Drawing.Point(214, 135);
+            uxbtnEnableHostsFile.Margin = new Padding(3, 2, 3, 2);
+            uxbtnEnableHostsFile.Name = "uxbtnEnableHostsFile";
+            uxbtnEnableHostsFile.Size = new System.Drawing.Size(75, 75);
+            uxbtnEnableHostsFile.TabIndex = 7;
+            uxbtnEnableHostsFile.Text = "|&Enable Hosts File";
+            uxbtnEnableHostsFile.UseCompatibleTextRendering = true;
+            uxbtnEnableHostsFile.UseVisualStyleBackColor = false;
+            uxbtnEnableHostsFile.Click += uxbtnEnableHostsFile_Click;
             // 
             // uxbtnEdit
             // 
-            this.uxbtnEdit.BackColor = System.Drawing.SystemColors.Control;
-            this.uxbtnEdit.Enabled = false;
-            this.uxbtnEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.uxbtnEdit.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.uxbtnEdit.Location = new System.Drawing.Point(43, 135);
-            this.uxbtnEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.uxbtnEdit.Name = "uxbtnEdit";
-            this.uxbtnEdit.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnEdit.TabIndex = 5;
-            this.uxbtnEdit.Text = "|Edit &Hosts File";
-            this.uxbtnEdit.UseCompatibleTextRendering = true;
-            this.uxbtnEdit.UseVisualStyleBackColor = false;
-            this.uxbtnEdit.Click += new System.EventHandler(this.uxbtnEdit_Click);
+            uxbtnEdit.BackColor = System.Drawing.SystemColors.Control;
+            uxbtnEdit.ContextMenuStrip = uxTrayMenu;
+            uxbtnEdit.Enabled = false;
+            uxbtnEdit.FlatAppearance.BorderSize = 0;
+            uxbtnEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnEdit.ForeColor = System.Drawing.SystemColors.ControlText;
+            uxbtnEdit.Location = new System.Drawing.Point(32, 135);
+            uxbtnEdit.Margin = new Padding(3, 2, 3, 2);
+            uxbtnEdit.Name = "uxbtnEdit";
+            uxbtnEdit.Size = new System.Drawing.Size(93, 75);
+            uxbtnEdit.SplitMenu = uxOpenWith;
+            uxbtnEdit.SplitMenuStrip = uxOpenWith;
+            uxbtnEdit.TabIndex = 5;
+            uxbtnEdit.Text = "| Edit &Hosts File";
+            uxbtnEdit.UseCompatibleTextRendering = true;
+            uxbtnEdit.UseVisualStyleBackColor = false;
+            uxbtnEdit.Click += uxbtnEdit_Click;
+            // 
+            // uxOpenWith
+            // 
+            uxOpenWith.Items.AddRange(new ToolStripItem[] { uxOpenWithDefault, uxOpenWithNotepadpp, uxOpenWithVSCode });
+            uxOpenWith.Name = "uxTrayMenu";
+            uxOpenWith.Size = new System.Drawing.Size(174, 70);
+            // 
+            // uxOpenWithDefault
+            // 
+            uxOpenWithDefault.Checked = true;
+            uxOpenWithDefault.CheckState = CheckState.Checked;
+            uxOpenWithDefault.Name = "uxOpenWithDefault";
+            uxOpenWithDefault.Size = new System.Drawing.Size(173, 22);
+            uxOpenWithDefault.Text = "Default";
+            uxOpenWithDefault.Click += uxOpenWith_Click;
+            // 
+            // uxOpenWithNotepadpp
+            // 
+            uxOpenWithNotepadpp.Name = "uxOpenWithNotepadpp";
+            uxOpenWithNotepadpp.Size = new System.Drawing.Size(173, 22);
+            uxOpenWithNotepadpp.Text = "Notepad++";
+            uxOpenWithNotepadpp.Click += uxOpenWith_Click;
+            // 
+            // uxOpenWithVSCode
+            // 
+            uxOpenWithVSCode.Name = "uxOpenWithVSCode";
+            uxOpenWithVSCode.Size = new System.Drawing.Size(173, 22);
+            uxOpenWithVSCode.Text = "Visual Studio Code";
+            uxOpenWithVSCode.Click += uxOpenWith_Click;
             // 
             // uxbtnFlushDNS
             // 
-            this.uxbtnFlushDNS.BackColor = System.Drawing.SystemColors.Control;
-            this.uxbtnFlushDNS.Enabled = false;
-            this.uxbtnFlushDNS.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.uxbtnFlushDNS.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.uxbtnFlushDNS.Location = new System.Drawing.Point(286, 135);
-            this.uxbtnFlushDNS.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.uxbtnFlushDNS.Name = "uxbtnFlushDNS";
-            this.uxbtnFlushDNS.Size = new System.Drawing.Size(75, 75);
-            this.uxbtnFlushDNS.TabIndex = 8;
-            this.uxbtnFlushDNS.Text = "|&Flush DNS Cache";
-            this.uxbtnFlushDNS.UseCompatibleTextRendering = true;
-            this.uxbtnFlushDNS.UseVisualStyleBackColor = false;
-            this.uxbtnFlushDNS.Click += new System.EventHandler(this.uxbtnFlushDNS_Click);
+            uxbtnFlushDNS.BackColor = System.Drawing.SystemColors.Control;
+            uxbtnFlushDNS.Enabled = false;
+            uxbtnFlushDNS.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnFlushDNS.ForeColor = System.Drawing.SystemColors.ControlText;
+            uxbtnFlushDNS.Location = new System.Drawing.Point(297, 135);
+            uxbtnFlushDNS.Margin = new Padding(3, 2, 3, 2);
+            uxbtnFlushDNS.Name = "uxbtnFlushDNS";
+            uxbtnFlushDNS.Size = new System.Drawing.Size(75, 75);
+            uxbtnFlushDNS.TabIndex = 8;
+            uxbtnFlushDNS.Text = "|&Flush DNS Cache";
+            uxbtnFlushDNS.UseCompatibleTextRendering = true;
+            uxbtnFlushDNS.UseVisualStyleBackColor = false;
+            uxbtnFlushDNS.Click += uxbtnFlushDNS_Click;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(404, 324);
-            this.Controls.Add(this.uxbtnFlushDNS);
-            this.Controls.Add(this.uxbtnEdit);
-            this.Controls.Add(this.uxbtnEnableHostsFile);
-            this.Controls.Add(this.uxbtnDisableHostsFile);
-            this.Controls.Add(this.uxlblHostsFileSize);
-            this.Controls.Add(this.uxlblFileSize);
-            this.Controls.Add(this.uxlblHostsCount);
-            this.Controls.Add(this.uxlblHostNames);
-            this.Controls.Add(this.uxlblEnabled);
-            this.Controls.Add(this.uxAppIcon);
-            this.Controls.Add(this.uxlblSep);
-            this.Controls.Add(this.uxbtnRunAsAdmin);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.Name = "MainForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Hosts Manager";
-            this.Activated += new System.EventHandler(this.MainForm_Activated);
-            this.Shown += new System.EventHandler(this.MainForm_Shown);
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
-            this.uxTrayMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.uxAppIcon)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
+            ClientSize = new System.Drawing.Size(404, 324);
+            Controls.Add(uxbtnFlushDNS);
+            Controls.Add(uxbtnEdit);
+            Controls.Add(uxbtnEnableHostsFile);
+            Controls.Add(uxbtnDisableHostsFile);
+            Controls.Add(uxlblHostsFileSize);
+            Controls.Add(uxlblFileSize);
+            Controls.Add(uxlblHostsCount);
+            Controls.Add(uxlblHostNames);
+            Controls.Add(uxlblEnabled);
+            Controls.Add(uxAppIcon);
+            Controls.Add(uxlblSep);
+            Controls.Add(uxbtnRunAsAdmin);
+            Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            Name = "MainForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Hosts Manager";
+            Activated += MainForm_Activated;
+            Shown += MainForm_Shown;
+            Resize += MainForm_Resize;
+            uxTrayMenu.ResumeLayout(false);
+            ((ISupportInitialize)uxAppIcon).EndInit();
+            uxOpenWith.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -322,7 +353,7 @@ namespace EM.HostsManager.App.UI
         private Label uxlblFileSize;
         private Button uxbtnDisableHostsFile;
         private Button uxbtnEnableHostsFile;
-        private Button uxbtnEdit;
+        private SplitButton uxbtnEdit;
         private ContextMenuStrip uxTrayMenu;
         private ToolStripMenuItem uxMenuItemShow;
         private ToolStripMenuItem uxMenuAbout;
@@ -331,5 +362,9 @@ namespace EM.HostsManager.App.UI
         private ToolStripSeparator uxMenuSeperator3;
         private ToolStripSeparator uxMenuSeperator1;
         private Button uxbtnFlushDNS;
+        private ContextMenuStrip uxOpenWith;
+        private ToolStripMenuItem uxOpenWithDefault;
+        private ToolStripMenuItem uxOpenWithNotepadpp;
+        private ToolStripMenuItem uxOpenWithVSCode;
     }
 }
