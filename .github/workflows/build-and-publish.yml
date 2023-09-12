@@ -115,7 +115,7 @@ jobs:
       working-directory: "./src"
       shell: powershell
       run: |
-        $signFiles = @("EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
+        $signFiles = @("EM.HostsManager.Infrastructure.dll", "EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
         $signDir = "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
         $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
         Foreach ($fileToSign in $signFiles)
