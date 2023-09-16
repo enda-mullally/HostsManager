@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms.VisualStyles;
 
+// ReSharper disable IdentifierTypo
+// ReSharper disable InconsistentNaming
 // ReSharper disable UselessBinaryOperation
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
@@ -15,7 +17,7 @@ using System.Windows.Forms.VisualStyles;
 
 #pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
 
-namespace EM.HostsManager.App.UI
+namespace EM.HostsManager.App.UI.Controls
 {
     /// <summary>
     /// SplitButton control. 
@@ -36,9 +38,12 @@ namespace EM.HostsManager.App.UI
         private ContextMenuStrip _mSplitMenuStrip = null!;
         private ContextMenuStrip _mSplitMenu = null!;
 
-        private TextFormatFlags _textFormatFlags = TextFormatFlags.Default |
-                                                  TextFormatFlags.WordBreak |
-                                                  TextFormatFlags.HorizontalCenter; // allow newlines and middle align
+        private TextFormatFlags _textFormatFlags =
+            TextFormatFlags.Default |
+            TextFormatFlags.WordBreak |
+            TextFormatFlags.HorizontalCenter; // Allow newlines and middle align
+
+        private const int WM_EXITMENULOOP = 0x0212;
 
         #region Properties
 
@@ -55,13 +60,13 @@ namespace EM.HostsManager.App.UI
             get => _mSplitMenu;
             set
             {
-                // remove the event handlers for the old SplitMenu
+                // Remove the event handlers for the old SplitMenu
                 if (_mSplitMenu != null)
                 {
                     _mSplitMenu.Opened -= SplitMenu_Popup!;
                 }
 
-                // add the event handlers for the new SplitMenu
+                // Add the event handlers for the new SplitMenu
                 if (value != null)
                 {
                     ShowSplit = true;
@@ -83,17 +88,18 @@ namespace EM.HostsManager.App.UI
             get => _mSplitMenuStrip;
             set
             {
-                // remove the event handlers for the old SplitMenuStrip
+                // Remove the event handlers for the old SplitMenuStrip
                 if (_mSplitMenuStrip != null)
                 {
                     _mSplitMenuStrip.Closing -= SplitMenuStrip_Closing!;
                     _mSplitMenuStrip.Opening -= SplitMenuStrip_Opening!;
                 }
 
-                //add the event handlers for the new SplitMenuStrip
+                // Add the event handlers for the new SplitMenuStrip
                 if (value != null)
                 {
                     ShowSplit = true;
+
                     value.Closing += SplitMenuStrip_Closing!;
                     value.Opening += SplitMenuStrip_Opening!;
                 }
@@ -117,6 +123,7 @@ namespace EM.HostsManager.App.UI
                 }
 
                 _showSplit = value;
+
                 Invalidate();
 
                 Parent?.PerformLayout();
@@ -138,6 +145,7 @@ namespace EM.HostsManager.App.UI
                 }
 
                 _state = value;
+
                 Invalidate();
             }
         }
@@ -170,6 +178,7 @@ namespace EM.HostsManager.App.UI
             if (!_showSplit)
             {
                 base.OnGotFocus(e);
+
                 return;
             }
 
@@ -211,23 +220,23 @@ namespace EM.HostsManager.App.UI
             switch (kevent.KeyCode)
             {
                 case Keys.Space:
-                {
-                    if (MouseButtons == MouseButtons.None)
                     {
-                        State = PushButtonState.Normal;
-                    }
+                        if (MouseButtons == MouseButtons.None)
+                        {
+                            State = PushButtonState.Normal;
+                        }
 
-                    break;
-                }
+                        break;
+                    }
                 case Keys.Apps:
-                {
-                    if (MouseButtons == MouseButtons.None && !_isSplitMenuVisible)
                     {
-                        ShowContextMenuStrip();
-                    }
+                        if (MouseButtons == MouseButtons.None && !_isSplitMenuVisible)
+                        {
+                            ShowContextMenuStrip();
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
 
             base.OnKeyUp(kevent);
@@ -238,7 +247,9 @@ namespace EM.HostsManager.App.UI
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnEnabledChanged(EventArgs e)
         {
-            State = Enabled ? PushButtonState.Normal : PushButtonState.Disabled;
+            State = Enabled
+                ? PushButtonState.Normal
+                : PushButtonState.Disabled;
 
             base.OnEnabledChanged(e);
         }
@@ -252,6 +263,7 @@ namespace EM.HostsManager.App.UI
             if (!_showSplit)
             {
                 base.OnLostFocus(e);
+
                 return;
             }
 
@@ -316,8 +328,11 @@ namespace EM.HostsManager.App.UI
                 return;
             }
 
-            // handle ContextMenu re-clicking the drop-down region to close the menu
-            if (_mSplitMenu != null && e.Button == MouseButtons.Left && !_isMouseEntered)
+            // Handle ContextMenu re-clicking the drop-down region to close the menu
+
+            if (_mSplitMenu != null &&
+                e.Button == MouseButtons.Left &&
+                !_isMouseEntered)
             {
                 _skipNextOpen = true;
             }
@@ -345,8 +360,9 @@ namespace EM.HostsManager.App.UI
                 return;
             }
 
-            // if the right button was released inside the button
-            if (mevent.Button == MouseButtons.Right && ClientRectangle.Contains(mevent.Location) && !_isSplitMenuVisible)
+            // If the right button was released inside the button
+            if (mevent.Button == MouseButtons.Right && ClientRectangle.Contains(mevent.Location) &&
+                !_isSplitMenuVisible)
             {
                 ShowContextMenuStrip();
             }
@@ -377,14 +393,14 @@ namespace EM.HostsManager.App.UI
             var g = pevent.Graphics;
             var bounds = ClientRectangle;
 
-            // draw the button background as according to the current state.
+            // Draw the button background as according to the current state.
             if (State != PushButtonState.Pressed && IsDefault && !Application.RenderWithVisualStyles)
             {
                 var backgroundBounds = bounds;
                 backgroundBounds.Inflate(-1, -1);
                 ButtonRenderer.DrawButton(g, backgroundBounds, State);
 
-                // button renderer doesn't draw the black frame when themes are off
+                // Button renderer doesn't draw the black frame when themes are off
                 g.DrawRectangle(SystemPens.WindowFrame, 0, 0, bounds.Width - 1, bounds.Height - 1);
             }
             else
@@ -392,18 +408,20 @@ namespace EM.HostsManager.App.UI
                 ButtonRenderer.DrawButton(g, bounds, State);
             }
 
-            // calculate the current dropdown rectangle.
+            // Calculate the current dropdown rectangle.
             _dropDownRectangle = new Rectangle(bounds.Right - SplitSectionWidth, 0, SplitSectionWidth, bounds.Height);
 
             var internalBorder = BorderSize;
             var focusRect =
                 new Rectangle(internalBorder - 1,
-                              internalBorder - 1,
-                              bounds.Width - _dropDownRectangle.Width - internalBorder,
-                              bounds.Height - (internalBorder * 2) + 2);
+                    internalBorder - 1,
+                    bounds.Width - _dropDownRectangle.Width - internalBorder,
+                    bounds.Height - internalBorder * 2 + 2);
 
-            //bool drawSplitLine = (State == PushButtonState.Hot || State == PushButtonState.Pressed || !Application.RenderWithVisualStyles);
-            var drawSplitLine = true; // Fix
+            //var drawSplitLine = (State == PushButtonState.Hot || State == PushButtonState.Pressed ||
+            //                     !Application.RenderWithVisualStyles);
+
+            const bool drawSplitLine = true; // Fix
 
             if (RightToLeft == RightToLeft.Yes)
             {
@@ -412,28 +430,33 @@ namespace EM.HostsManager.App.UI
 
                 if (drawSplitLine)
                 {
-                    // draw two lines at the edge of the dropdown button
-                    g.DrawLine(SystemPens.ButtonShadow, bounds.Left + SplitSectionWidth, BorderSize, bounds.Left + SplitSectionWidth, bounds.Bottom - BorderSize);
-                    g.DrawLine(SystemPens.ButtonFace, bounds.Left + SplitSectionWidth + 1, BorderSize, bounds.Left + SplitSectionWidth + 1, bounds.Bottom - BorderSize);
+                    // Draw two lines at the edge of the dropdown button
+                    g.DrawLine(SystemPens.ButtonShadow, bounds.Left + SplitSectionWidth, BorderSize,
+                        bounds.Left + SplitSectionWidth, bounds.Bottom - BorderSize);
+                    g.DrawLine(SystemPens.ButtonFace, bounds.Left + SplitSectionWidth + 1, BorderSize,
+                        bounds.Left + SplitSectionWidth + 1, bounds.Bottom - BorderSize);
                 }
             }
             else
             {
                 if (drawSplitLine)
                 {
-                    // draw two lines at the edge of the dropdown button
-                    g.DrawLine(SystemPens.ButtonShadow, bounds.Right - SplitSectionWidth, BorderSize, bounds.Right - SplitSectionWidth, bounds.Bottom - BorderSize);
-                    g.DrawLine(SystemPens.ButtonFace, bounds.Right - SplitSectionWidth - 1, BorderSize, bounds.Right - SplitSectionWidth - 1, bounds.Bottom - BorderSize);
+                    // Draw two lines at the edge of the dropdown button
+                    g.DrawLine(SystemPens.ButtonShadow, bounds.Right - SplitSectionWidth, BorderSize,
+                        bounds.Right - SplitSectionWidth, bounds.Bottom - BorderSize);
+                    g.DrawLine(SystemPens.ButtonFace, bounds.Right - SplitSectionWidth - 1, BorderSize,
+                        bounds.Right - SplitSectionWidth - 1, bounds.Bottom - BorderSize);
                 }
             }
 
             // Draw an arrow in the correct location
             PaintArrow(g, _dropDownRectangle);
 
-            //paint the image and text in the "button" part of the splitButton
-            PaintTextAndImage(g, new Rectangle(0, 0, ClientRectangle.Width - SplitSectionWidth, ClientRectangle.Height));
+            // Paint the image and text in the "button" part of the splitButton
+            PaintTextAndImage(g,
+                new Rectangle(0, 0, ClientRectangle.Width - SplitSectionWidth, ClientRectangle.Height));
 
-            // draw the focus rectangle.
+            // Draw the focus rectangle.
             if (State != PushButtonState.Pressed && Focused && ShowFocusCues)
             {
                 ControlPaint.DrawFocusRectangle(g, focusRect);
@@ -505,7 +528,7 @@ namespace EM.HostsManager.App.UI
                 Convert.ToInt32(dropDownRect.Top + dropDownRect.Height / 2));
 
             // If the width is odd - favor pushing it over one pixel right.
-            middle.X += (dropDownRect.Width % 2);
+            middle.X += dropDownRect.Width % 2;
 
             var arrow = new[]
             {
@@ -540,14 +563,15 @@ namespace EM.HostsManager.App.UI
                 return preferredSize;
             }
 
-            if (!string.IsNullOrEmpty(Text) && TextRenderer.MeasureText(Text, Font).Width + SplitSectionWidth > preferredSize.Width)
+            if (!string.IsNullOrEmpty(Text) &&
+                TextRenderer.MeasureText(Text, Font).Width + SplitSectionWidth > preferredSize.Width)
             {
                 return preferredSize + new Size(SplitSectionWidth + BorderSize * 2, 0);
             }
 
             return preferredSize;
         }
-        
+
         #region Button Layout Calculations
 
         // The following layout functions were taken from Mono's Windows.Forms 
@@ -574,7 +598,7 @@ namespace EM.HostsManager.App.UI
                     // Overlay is easy, text always goes here
                     textRectangle = OverlayObjectRect(ref contentRect, ref textSize, TextAlign); // Rectangle.Inflate(content_rect, -4, -4);
 
-                    //Offset on Windows 98 style when button is pressed
+                    // Offset on Windows 98 style when button is pressed
                     if (_state == PushButtonState.Pressed && !Application.RenderWithVisualStyles)
                     {
                         textRectangle.Offset(1, 1);
@@ -673,9 +697,10 @@ namespace EM.HostsManager.App.UI
         /// <param name="imageSize">Size of the image.</param>
         /// <param name="textRect">The text rect.</param>
         /// <param name="imageRect">The image rect.</param>
-        private void LayoutTextBeforeOrAfterImage(Rectangle totalArea, bool textFirst, Size textSize, Size imageSize, out Rectangle textRect, out Rectangle imageRect)
+        private void LayoutTextBeforeOrAfterImage(Rectangle totalArea, bool textFirst, Size textSize, Size imageSize,
+            out Rectangle textRect, out Rectangle imageRect)
         {
-            var elementSpacing = 0;	// Spacing between the Text and the Image
+            var elementSpacing = 0; // Spacing between the Text and the Image
             var totalWidth = textSize.Width + elementSpacing + imageSize.Width;
 
             if (!textFirst)
@@ -699,32 +724,35 @@ namespace EM.HostsManager.App.UI
             var hText = GetHorizontalAlignment(TextAlign);
             var hImage = GetHorizontalAlignment(ImageAlign);
 
-            if (hImage == HorizontalAlignment.Left)
+            switch (hImage)
             {
-                offset = 0;
-            }
-            else if (hImage == HorizontalAlignment.Right && hText == HorizontalAlignment.Right)
-            {
-                offset = excessWidth;
-            }
-            else if (hImage == HorizontalAlignment.Center && hText is HorizontalAlignment.Left or HorizontalAlignment.Center)
-            {
-                offset += excessWidth / 3;
-            }
-            else
-            {
-                offset += 2 * (excessWidth / 3);
+                case HorizontalAlignment.Left:
+                    offset = 0;
+                    break;
+                case HorizontalAlignment.Right when hText == HorizontalAlignment.Right:
+                    offset = excessWidth;
+                    break;
+                case HorizontalAlignment.Center when hText is HorizontalAlignment.Left or HorizontalAlignment.Center:
+                    offset += excessWidth / 3;
+                    break;
+                default:
+                    offset += 2 * (excessWidth / 3);
+                    break;
             }
 
             if (textFirst)
             {
-                finalTextRect = new Rectangle(totalArea.Left + offset, AlignInRectangle(totalArea, textSize, TextAlign).Top, textSize.Width, textSize.Height);
-                finalImageRect = new Rectangle(finalTextRect.Right + elementSpacing, AlignInRectangle(totalArea, imageSize, ImageAlign).Top, imageSize.Width, imageSize.Height);
+                finalTextRect = new Rectangle(totalArea.Left + offset,
+                    AlignInRectangle(totalArea, textSize, TextAlign).Top, textSize.Width, textSize.Height);
+                finalImageRect = new Rectangle(finalTextRect.Right + elementSpacing,
+                    AlignInRectangle(totalArea, imageSize, ImageAlign).Top, imageSize.Width, imageSize.Height);
             }
             else
             {
-                finalImageRect = new Rectangle(totalArea.Left + offset, AlignInRectangle(totalArea, imageSize, ImageAlign).Top, imageSize.Width, imageSize.Height);
-                finalTextRect = new Rectangle(finalImageRect.Right + elementSpacing, AlignInRectangle(totalArea, textSize, TextAlign).Top, textSize.Width, textSize.Height);
+                finalImageRect = new Rectangle(totalArea.Left + offset,
+                    AlignInRectangle(totalArea, imageSize, ImageAlign).Top, imageSize.Width, imageSize.Height);
+                finalTextRect = new Rectangle(finalImageRect.Right + elementSpacing,
+                    AlignInRectangle(totalArea, textSize, TextAlign).Top, textSize.Width, textSize.Height);
             }
 
             textRect = finalTextRect;
@@ -740,9 +768,10 @@ namespace EM.HostsManager.App.UI
         /// <param name="imageSize">Size of the image.</param>
         /// <param name="textRect">The text rect.</param>
         /// <param name="imageRect">The image rect.</param>
-        private void LayoutTextAboveOrBelowImage(Rectangle totalArea, bool textFirst, Size textSize, Size imageSize, out Rectangle textRect, out Rectangle imageRect)
+        private void LayoutTextAboveOrBelowImage(Rectangle totalArea, bool textFirst, Size textSize, Size imageSize,
+            out Rectangle textRect, out Rectangle imageRect)
         {
-            var elementSpacing = 0;	// Spacing between the Text and the Image
+            var elementSpacing = 0; // Spacing between the Text and the Image
             var totalHeight = textSize.Height + elementSpacing + imageSize.Height;
 
             if (textFirst)
@@ -771,32 +800,36 @@ namespace EM.HostsManager.App.UI
             var vText = GetVerticalAlignment(TextAlign);
             var vImage = GetVerticalAlignment(ImageAlign);
 
-            if (vImage == VerticalAlignment.Top)
+            switch (vImage)
             {
-                offset = 0;
-            }
-            else if (vImage == VerticalAlignment.Bottom && vText == VerticalAlignment.Bottom)
-            {
-                offset = excessHeight;
-            }
-            else if (vImage == VerticalAlignment.Center && (vText == VerticalAlignment.Top || vText == VerticalAlignment.Center))
-            {
-                offset += excessHeight / 3;
-            }
-            else
-            {
-                offset += 2 * (excessHeight / 3);
+                case VerticalAlignment.Top:
+                    offset = 0;
+                    break;
+                case VerticalAlignment.Bottom when vText == VerticalAlignment.Bottom:
+                    offset = excessHeight;
+                    break;
+                case VerticalAlignment.Center
+                    when vText is VerticalAlignment.Top or VerticalAlignment.Center:
+                    offset += excessHeight / 3;
+                    break;
+                default:
+                    offset += 2 * (excessHeight / 3);
+                    break;
             }
 
             if (textFirst)
             {
-                finalTextRect = new Rectangle(AlignInRectangle(totalArea, textSize, TextAlign).Left, totalArea.Top + offset, textSize.Width, textSize.Height);
-                finalImageRect = new Rectangle(AlignInRectangle(totalArea, imageSize, ImageAlign).Left, finalTextRect.Bottom + elementSpacing, imageSize.Width, imageSize.Height);
+                finalTextRect = new Rectangle(AlignInRectangle(totalArea, textSize, TextAlign).Left,
+                    totalArea.Top + offset, textSize.Width, textSize.Height);
+                finalImageRect = new Rectangle(AlignInRectangle(totalArea, imageSize, ImageAlign).Left,
+                    finalTextRect.Bottom + elementSpacing, imageSize.Width, imageSize.Height);
             }
             else
             {
-                finalImageRect = new Rectangle(AlignInRectangle(totalArea, imageSize, ImageAlign).Left, totalArea.Top + offset, imageSize.Width, imageSize.Height);
-                finalTextRect = new Rectangle(AlignInRectangle(totalArea, textSize, TextAlign).Left, finalImageRect.Bottom + elementSpacing, textSize.Width, textSize.Height);
+                finalImageRect = new Rectangle(AlignInRectangle(totalArea, imageSize, ImageAlign).Left,
+                    totalArea.Top + offset, imageSize.Width, imageSize.Height);
+                finalTextRect = new Rectangle(AlignInRectangle(totalArea, textSize, TextAlign).Left,
+                    finalImageRect.Bottom + elementSpacing, textSize.Width, textSize.Height);
 
                 if (finalTextRect.Bottom > totalArea.Bottom)
                 {
@@ -815,23 +848,19 @@ namespace EM.HostsManager.App.UI
         /// <returns></returns>
         private static HorizontalAlignment GetHorizontalAlignment(System.Drawing.ContentAlignment align)
         {
-            switch (align)
+            return align switch
             {
-                case System.Drawing.ContentAlignment.BottomLeft:
-                case System.Drawing.ContentAlignment.MiddleLeft:
-                case System.Drawing.ContentAlignment.TopLeft:
-                    return HorizontalAlignment.Left;
-                case System.Drawing.ContentAlignment.BottomCenter:
-                case System.Drawing.ContentAlignment.MiddleCenter:
-                case System.Drawing.ContentAlignment.TopCenter:
-                    return HorizontalAlignment.Center;
-                case System.Drawing.ContentAlignment.BottomRight:
-                case System.Drawing.ContentAlignment.MiddleRight:
-                case System.Drawing.ContentAlignment.TopRight:
-                    return HorizontalAlignment.Right;
-            }
-
-            return HorizontalAlignment.Left;
+                System.Drawing.ContentAlignment.BottomLeft => HorizontalAlignment.Left,
+                System.Drawing.ContentAlignment.MiddleLeft => HorizontalAlignment.Left,
+                System.Drawing.ContentAlignment.TopLeft => HorizontalAlignment.Left,
+                System.Drawing.ContentAlignment.BottomCenter => HorizontalAlignment.Center,
+                System.Drawing.ContentAlignment.MiddleCenter => HorizontalAlignment.Center,
+                System.Drawing.ContentAlignment.TopCenter => HorizontalAlignment.Center,
+                System.Drawing.ContentAlignment.BottomRight => HorizontalAlignment.Right,
+                System.Drawing.ContentAlignment.MiddleRight => HorizontalAlignment.Right,
+                System.Drawing.ContentAlignment.TopRight => HorizontalAlignment.Right,
+                _ => HorizontalAlignment.Left
+            };
         }
 
         /// <summary>
@@ -841,23 +870,19 @@ namespace EM.HostsManager.App.UI
         /// <returns></returns>
         private static VerticalAlignment GetVerticalAlignment(System.Drawing.ContentAlignment align)
         {
-            switch (align)
+            return align switch
             {
-                case System.Drawing.ContentAlignment.TopLeft:
-                case System.Drawing.ContentAlignment.TopCenter:
-                case System.Drawing.ContentAlignment.TopRight:
-                    return VerticalAlignment.Top;
-                case System.Drawing.ContentAlignment.MiddleLeft:
-                case System.Drawing.ContentAlignment.MiddleCenter:
-                case System.Drawing.ContentAlignment.MiddleRight:
-                    return VerticalAlignment.Center;
-                case System.Drawing.ContentAlignment.BottomLeft:
-                case System.Drawing.ContentAlignment.BottomCenter:
-                case System.Drawing.ContentAlignment.BottomRight:
-                    return VerticalAlignment.Bottom;
-            }
-
-            return VerticalAlignment.Top;
+                System.Drawing.ContentAlignment.TopLeft => VerticalAlignment.Top,
+                System.Drawing.ContentAlignment.TopCenter => VerticalAlignment.Top,
+                System.Drawing.ContentAlignment.TopRight => VerticalAlignment.Top,
+                System.Drawing.ContentAlignment.MiddleLeft => VerticalAlignment.Center,
+                System.Drawing.ContentAlignment.MiddleCenter => VerticalAlignment.Center,
+                System.Drawing.ContentAlignment.MiddleRight => VerticalAlignment.Center,
+                System.Drawing.ContentAlignment.BottomLeft => VerticalAlignment.Bottom,
+                System.Drawing.ContentAlignment.BottomCenter => VerticalAlignment.Bottom,
+                System.Drawing.ContentAlignment.BottomRight => VerticalAlignment.Bottom,
+                _ => VerticalAlignment.Top
+            };
         }
 
         /// <summary>
@@ -882,7 +907,7 @@ namespace EM.HostsManager.App.UI
                 case System.Drawing.ContentAlignment.BottomCenter:
                 case System.Drawing.ContentAlignment.MiddleCenter:
                 case System.Drawing.ContentAlignment.TopCenter:
-                    x = Math.Max(outer.X + ((outer.Width - inner.Width) / 2), outer.Left);
+                    x = Math.Max(outer.X + (outer.Width - inner.Width) / 2, outer.Left);
                     break;
                 case System.Drawing.ContentAlignment.BottomRight:
                 case System.Drawing.ContentAlignment.MiddleRight:
@@ -923,7 +948,7 @@ namespace EM.HostsManager.App.UI
         {
             if (_skipNextOpen)
             {
-                // we were called because we're closing the context menu strip
+                // We were called because we're closing the context menu strip
                 // when clicking the dropdown button.
                 _skipNextOpen = false;
 
@@ -946,7 +971,7 @@ namespace EM.HostsManager.App.UI
         /// Handles the Opening event of the SplitMenuStrip control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.CancelEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="CancelEventArgs"/> instance containing the event data.</param>
         private void SplitMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             _isSplitMenuVisible = true;
@@ -956,7 +981,7 @@ namespace EM.HostsManager.App.UI
         /// Handles the Closing event of the SplitMenuStrip control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.ToolStripDropDownClosingEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="ToolStripDropDownClosingEventArgs"/> instance containing the event data.</param>
         private void SplitMenuStrip_Closing(object sender, ToolStripDropDownClosingEventArgs e)
         {
             _isSplitMenuVisible = false;
@@ -965,7 +990,8 @@ namespace EM.HostsManager.App.UI
 
             if (e.CloseReason == ToolStripDropDownCloseReason.AppClicked)
             {
-                _skipNextOpen = (_dropDownRectangle.Contains(PointToClient(Cursor.Position))) && MouseButtons == MouseButtons.Left;
+                _skipNextOpen = _dropDownRectangle.Contains(PointToClient(Cursor.Position)) &&
+                                MouseButtons == MouseButtons.Left;
             }
         }
 
@@ -973,7 +999,7 @@ namespace EM.HostsManager.App.UI
         /// Handles the Popup event of the SplitMenu control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void SplitMenu_Popup(object sender, EventArgs e)
         {
             _isSplitMenuVisible = true;
@@ -985,10 +1011,9 @@ namespace EM.HostsManager.App.UI
         /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message"/> to process.</param>
         protected override void WndProc(ref Message m)
         {
-            // 0x0212 == WM_EXITMENULOOP
-            if (m.Msg == 0x0212)
+            if (m.Msg == WM_EXITMENULOOP)
             {
-                // this message is only sent when a ContextMenu is closed (not a ContextMenuStrip)
+                // This message is only sent when a ContextMenu is closed
                 _isSplitMenuVisible = false;
 
                 SetButtonDrawState();

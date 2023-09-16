@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Windows.Forms;
+using EM.HostsManager.App.UI.Controls;
 
 namespace EM.HostsManager.App.UI
 {
