@@ -52,6 +52,7 @@ Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 
 [Files]
 Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
+Source: "Licenses-ThirdParty.txt"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "HostsManager.ico"; DestDir: {app}; Flags: ignoreversion noencryption  
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
