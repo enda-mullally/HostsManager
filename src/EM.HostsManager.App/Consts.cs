@@ -12,7 +12,7 @@
 
         public const string AppRegPath = @"Software\Enda Mullally\Hosts Manager";
 
-        public const string FirstRunKey = @"FirstRun";
+        public const string FirstRunShownForKey = @"FirstRunShownForVersion";
 
         public const string PreferredEditorKey = @"PreferredEditor";
     }

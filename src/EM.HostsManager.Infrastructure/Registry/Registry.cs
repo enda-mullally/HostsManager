@@ -46,7 +46,8 @@ public sealed class Registry
         RegistryKey? regKey = null;
         try
         {
-            regKey = rootRegistryKey.OpenSubKey(key, true);
+            regKey = rootRegistryKey.OpenSubKey(key, true) ??
+                     rootRegistryKey.CreateSubKey(key);
 
             regKey!.SetValue(keyName, value, RegistryValueKind.String);
 
