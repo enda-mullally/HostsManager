@@ -499,13 +499,15 @@ public partial class MainForm : Form
             return;
         }
 
+        var appVersion = new AppVersion(Assembly.GetExecutingAssembly()).GetAppVersion();
+
         var firstRun =
-            Reg.GetRegString(
+            !Reg.GetRegString(
                     Microsoft.Win32.Registry.CurrentUser,
                     Consts.AppRegPath,
-                    Consts.FirstRunKey,
-                    "false")
-                .ToLowerInvariant().Equals("true");
+                    Consts.FirstRunShownForKey,
+                    string.Empty)
+                .ToLowerInvariant().Equals(appVersion);
 
         if (!firstRun)
         {
@@ -515,14 +517,12 @@ public partial class MainForm : Form
         Reg.SetRegString(
             Microsoft.Win32.Registry.CurrentUser,
             Consts.AppRegPath,
-            Consts.FirstRunKey,
-            "false");
-
-        var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
+            Consts.FirstRunShownForKey,
+            appVersion);
 
         MessageBox.Show(
             this,
-            $@"== Hosts Manager v{appVersion.GetAppVersion()} ==" +
+            $@"== Hosts Manager v{appVersion} ==" +
             $@"{Environment.NewLine}{Environment.NewLine}" +
             $@"Welcome to Hosts Manager! Just another Windows hosts file manager." +
             $@"{Environment.NewLine}{Environment.NewLine}" +
@@ -535,8 +535,6 @@ public partial class MainForm : Form
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
     }
-
-    #endregion
 
     private void uxOpenWith_Click(object sender, EventArgs e)
     {
@@ -555,6 +553,9 @@ public partial class MainForm : Form
             Microsoft.Win32.Registry.CurrentUser,
             Consts.AppRegPath,
             Consts.PreferredEditorKey,
-            preferredEditor?? nameof(PreferredEditor.Default));
+            preferredEditor ?? nameof(PreferredEditor.Default));
     }
+
+    #endregion
+
 }
