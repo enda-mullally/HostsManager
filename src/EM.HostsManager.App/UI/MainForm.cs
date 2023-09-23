@@ -494,7 +494,7 @@ public partial class MainForm : Form
 
     private void ShowMessageOnFirstRun()
     {
-        if (WindowState != FormWindowState.Normal)
+        if (WindowState != FormWindowState.Normal || Elevated.IsElevated())
         {
             return;
         }
