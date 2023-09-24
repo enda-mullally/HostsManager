@@ -64,4 +64,27 @@ public sealed class Registry
 
         return false;
     }
+
+    public static bool DeleteRegString(RegistryKey rootRegistryKey, string path, string key)
+    {
+        RegistryKey? regKey = null;
+        try
+        {
+            regKey = rootRegistryKey.OpenSubKey(path, true);
+
+            regKey?.DeleteValue(key);
+            
+            return true;
+        }
+        catch
+        {
+            // ignore
+        }
+        finally
+        {
+            regKey?.Close();
+        }
+
+        return false;
+    }
 }

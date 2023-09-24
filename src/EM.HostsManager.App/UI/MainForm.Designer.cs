@@ -39,8 +39,12 @@ namespace EM.HostsManager.App.UI
             uxMenuItemShow = new ToolStripMenuItem();
             uxMenuSeperator1 = new ToolStripSeparator();
             uxMenuEnableHostsFile = new ToolStripMenuItem();
-            uxMenuSeperator3 = new ToolStripSeparator();
+            toolStripSeparator1 = new ToolStripSeparator();
+            uxMenuAutoStart = new ToolStripMenuItem();
+            uxMenuRunAtStartup = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripSeparator();
             uxMenuAbout = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             uxMenuExit = new ToolStripMenuItem();
             uxlblSep = new Label();
             uxAppIcon = new PictureBox();
@@ -88,22 +92,22 @@ namespace EM.HostsManager.App.UI
             // 
             // uxTrayMenu
             // 
-            uxTrayMenu.Items.AddRange(new ToolStripItem[] { uxMenuItemShow, uxMenuSeperator1, uxMenuEnableHostsFile, uxMenuSeperator3, uxMenuAbout, uxMenuExit });
+            uxTrayMenu.Items.AddRange(new ToolStripItem[] { uxMenuItemShow, uxMenuSeperator1, uxMenuEnableHostsFile, toolStripSeparator1, uxMenuAutoStart, toolStripSeparator2, uxMenuExit });
             uxTrayMenu.Name = "uxTrayMenu";
-            uxTrayMenu.Size = new System.Drawing.Size(191, 104);
+            uxTrayMenu.Size = new System.Drawing.Size(181, 132);
             // 
             // uxMenuItemShow
             // 
             uxMenuItemShow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             uxMenuItemShow.Name = "uxMenuItemShow";
-            uxMenuItemShow.Size = new System.Drawing.Size(190, 22);
+            uxMenuItemShow.Size = new System.Drawing.Size(180, 22);
             uxMenuItemShow.Text = "&Open";
             uxMenuItemShow.Click += uxMenuItemShow_Click;
             // 
             // uxMenuSeperator1
             // 
             uxMenuSeperator1.Name = "uxMenuSeperator1";
-            uxMenuSeperator1.Size = new System.Drawing.Size(187, 6);
+            uxMenuSeperator1.Size = new System.Drawing.Size(177, 6);
             // 
             // uxMenuEnableHostsFile
             // 
@@ -111,14 +115,36 @@ namespace EM.HostsManager.App.UI
             uxMenuEnableHostsFile.CheckOnClick = true;
             uxMenuEnableHostsFile.CheckState = CheckState.Checked;
             uxMenuEnableHostsFile.Name = "uxMenuEnableHostsFile";
-            uxMenuEnableHostsFile.Size = new System.Drawing.Size(190, 22);
-            uxMenuEnableHostsFile.Text = "Enable Hosts File";
+            uxMenuEnableHostsFile.Size = new System.Drawing.Size(180, 22);
+            uxMenuEnableHostsFile.Text = "Enable hosts file";
             uxMenuEnableHostsFile.Click += uxMenuEnableHostsFile_Click;
             // 
-            // uxMenuSeperator3
+            // toolStripSeparator1
             // 
-            uxMenuSeperator3.Name = "uxMenuSeperator3";
-            uxMenuSeperator3.Size = new System.Drawing.Size(187, 6);
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // uxMenuAutoStart
+            // 
+            uxMenuAutoStart.DropDownItems.AddRange(new ToolStripItem[] { uxMenuRunAtStartup, toolStripMenuItem1, uxMenuAbout });
+            uxMenuAutoStart.Name = "uxMenuAutoStart";
+            uxMenuAutoStart.Size = new System.Drawing.Size(180, 22);
+            uxMenuAutoStart.Text = "Application";
+            // 
+            // uxMenuRunAtStartup
+            // 
+            uxMenuRunAtStartup.Checked = true;
+            uxMenuRunAtStartup.CheckOnClick = true;
+            uxMenuRunAtStartup.CheckState = CheckState.Checked;
+            uxMenuRunAtStartup.Name = "uxMenuRunAtStartup";
+            uxMenuRunAtStartup.Size = new System.Drawing.Size(190, 22);
+            uxMenuRunAtStartup.Text = "&Run at startup";
+            uxMenuRunAtStartup.Click += uxMenuRunAtStartup_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new System.Drawing.Size(187, 6);
             // 
             // uxMenuAbout
             // 
@@ -128,10 +154,15 @@ namespace EM.HostsManager.App.UI
             uxMenuAbout.Text = "&About Hosts Manager";
             uxMenuAbout.Click += uxMenuAbout_Click;
             // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
             // uxMenuExit
             // 
             uxMenuExit.Name = "uxMenuExit";
-            uxMenuExit.Size = new System.Drawing.Size(190, 22);
+            uxMenuExit.Size = new System.Drawing.Size(180, 22);
             uxMenuExit.Text = "E&xit";
             uxMenuExit.Click += uxMenuExit_Click;
             // 
@@ -219,7 +250,7 @@ namespace EM.HostsManager.App.UI
             uxbtnDisableHostsFile.Name = "uxbtnDisableHostsFile";
             uxbtnDisableHostsFile.Size = new System.Drawing.Size(75, 75);
             uxbtnDisableHostsFile.TabIndex = 6;
-            uxbtnDisableHostsFile.Text = "|&Disable Hosts File";
+            uxbtnDisableHostsFile.Text = "|&Disable hosts file";
             uxbtnDisableHostsFile.UseCompatibleTextRendering = true;
             uxbtnDisableHostsFile.UseVisualStyleBackColor = false;
             uxbtnDisableHostsFile.Click += uxbtnDisableHostsFile_Click;
@@ -234,7 +265,7 @@ namespace EM.HostsManager.App.UI
             uxbtnEnableHostsFile.Name = "uxbtnEnableHostsFile";
             uxbtnEnableHostsFile.Size = new System.Drawing.Size(75, 75);
             uxbtnEnableHostsFile.TabIndex = 7;
-            uxbtnEnableHostsFile.Text = "|&Enable Hosts File";
+            uxbtnEnableHostsFile.Text = "|&Enable hosts file";
             uxbtnEnableHostsFile.UseCompatibleTextRendering = true;
             uxbtnEnableHostsFile.UseVisualStyleBackColor = false;
             uxbtnEnableHostsFile.Click += uxbtnEnableHostsFile_Click;
@@ -254,7 +285,7 @@ namespace EM.HostsManager.App.UI
             uxbtnEdit.SplitMenu = uxOpenWith;
             uxbtnEdit.SplitMenuStrip = uxOpenWith;
             uxbtnEdit.TabIndex = 5;
-            uxbtnEdit.Text = "| Edit &Hosts File";
+            uxbtnEdit.Text = "| Edit &hosts file";
             uxbtnEdit.UseCompatibleTextRendering = true;
             uxbtnEdit.UseVisualStyleBackColor = false;
             uxbtnEdit.Click += uxbtnEdit_Click;
@@ -302,7 +333,7 @@ namespace EM.HostsManager.App.UI
             uxbtnFlushDNS.Name = "uxbtnFlushDNS";
             uxbtnFlushDNS.Size = new System.Drawing.Size(75, 75);
             uxbtnFlushDNS.TabIndex = 8;
-            uxbtnFlushDNS.Text = "|&Flush DNS Cache";
+            uxbtnFlushDNS.Text = "|&Flush DNS cache";
             uxbtnFlushDNS.UseCompatibleTextRendering = true;
             uxbtnFlushDNS.UseVisualStyleBackColor = false;
             uxbtnFlushDNS.Click += uxbtnFlushDNS_Click;
@@ -359,15 +390,19 @@ namespace EM.HostsManager.App.UI
         private SplitButton uxbtnEdit;
         private ContextMenuStrip uxTrayMenu;
         private ToolStripMenuItem uxMenuItemShow;
-        private ToolStripMenuItem uxMenuAbout;
         private ToolStripMenuItem uxMenuExit;
         private ToolStripMenuItem uxMenuEnableHostsFile;
-        private ToolStripSeparator uxMenuSeperator3;
         private ToolStripSeparator uxMenuSeperator1;
         private SplitButton uxbtnFlushDNS;
         private ContextMenuStrip uxOpenWith;
         private ToolStripMenuItem uxOpenWithDefault;
         private ToolStripMenuItem uxOpenWithNotepadpp;
         private ToolStripMenuItem uxOpenWithVSCode;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem uxMenuAutoStart;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem uxMenuRunAtStartup;
+        private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem uxMenuAbout;
     }
 }

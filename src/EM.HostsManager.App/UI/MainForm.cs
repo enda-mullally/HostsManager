@@ -26,7 +26,7 @@ public partial class MainForm : Form
     public const int WmActivateApp = WmUser + 55;
     public const int WmQuitApp = WmUser + 56;
 
-    private enum PreferredEditor { Default, NotepadPP, VSCode}
+    private enum PreferredEditor { Default, NotepadPP, VSCode }
 
     public MainForm()
     {
@@ -78,7 +78,7 @@ public partial class MainForm : Form
     {
         if (!Elevated.IsElevated())
         {
-            uxbtnEdit.Text = @"|Open &Hosts File";
+            uxbtnEdit.Text = @"| Open &hosts file";
         }
 
         uxbtnEdit.Text = uxbtnEdit.Text.Replace("|", Environment.NewLine);
@@ -114,6 +114,15 @@ public partial class MainForm : Form
         uxNotifyIcon.Text = @"Hosts Manager" + Environment.NewLine + (hostsEnabled
             ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
             : "(all hosts disabled)");
+
+        var runAtStartupCurrentlyEnabled =
+            !string.IsNullOrWhiteSpace(Reg.GetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                string.Empty).Trim());
+
+        uxMenuRunAtStartup.Checked = runAtStartupCurrentlyEnabled;
 
         // button state
         if (Elevated.IsElevated())
@@ -157,16 +166,15 @@ public partial class MainForm : Form
 
         var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
 
+        var aboutMessage =
+            Consts.AboutMessage
+                .Replace("{appVersion}", appVersion.GetAppVersion())
+                .Replace("{commitId}", appVersion.GetCommitId())
+                .Replace("{buildDate}", appVersion.GetBuildDate());
+
         MessageBox.Show(
             this,
-            $@"== Hosts Manager =={Environment.NewLine}{Environment.NewLine}" +
-            @"https://github.com/enda-mullally/hostsmanager" +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            $@"Version: {appVersion.GetAppVersion()}{Environment.NewLine}" +
-            $@"Commit: {appVersion.GetCommitId()}{Environment.NewLine}" +
-            $@"Date: {appVersion.GetBuildDate()}" +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            @"Copyright © 2021-2023 Enda Mullally",
+            aboutMessage,
             @"About",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
@@ -522,15 +530,7 @@ public partial class MainForm : Form
 
         MessageBox.Show(
             this,
-            $@"== Hosts Manager v{appVersion} ==" +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            $@"Welcome to Hosts Manager! Just another Windows hosts file manager." +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            @"Hosts Manager is a system tray application, it will automatically minimize to your system tray." +
-            @$"{Environment.NewLine}{Environment.NewLine}Startup app: By default, Hosts Manager will start (minimized) automatically. You can disable auto-start in Windows Task Manager (Ctrl+Alt+Esc -> Startup apps)." +
-            @$"{Environment.NewLine}{Environment.NewLine}To exit Hosts Manager, right click the system tray icon and select Exit." +
-            @$"{Environment.NewLine}{Environment.NewLine}Thank you for installing Hosts Manager." +
-            @$"{Environment.NewLine}{Environment.NewLine}Enjoy!",
+            Consts.RunAtStartupMessage.Replace("{appVersion}", appVersion),
             @"Welcome",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
@@ -543,7 +543,7 @@ public partial class MainForm : Form
             menuItem.Checked = false;
         }
 
-        var selectedOpenWith = ((ToolStripMenuItem)sender);
+        var selectedOpenWith = (ToolStripMenuItem)sender;
 
         selectedOpenWith.Checked = true;
 
@@ -554,6 +554,38 @@ public partial class MainForm : Form
             Consts.AppRegPath,
             Consts.PreferredEditorKey,
             preferredEditor ?? nameof(PreferredEditor.Default));
+    }
+
+    private void uxMenuRunAtStartup_Click(object sender, EventArgs e)
+    {
+        var currentlyEnabled =
+            !string.IsNullOrWhiteSpace(Reg.GetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                string.Empty).Trim());
+
+        if (currentlyEnabled)
+        {
+             Reg.DeleteRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey);
+        }
+        else
+        {
+            var exe = Application
+                .ExecutablePath
+                .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
+
+            const string doubleQuote = "\"";
+
+            Reg.SetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                $"{doubleQuote}{exe}{doubleQuote} /min");
+        }
     }
 
     #endregion
