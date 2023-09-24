@@ -478,6 +478,42 @@ public partial class MainForm : Form
 
     #region Private
 
+    private static bool EnableRunAtStartup(bool enable)
+    {
+        if (enable)
+        {
+            var exe = Application
+                .ExecutablePath
+                .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
+
+            const string doubleQuote = "\"";
+
+            Reg.SetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                $"{doubleQuote}{exe}{doubleQuote} /min");
+        }
+        else
+        {
+            Reg.DeleteRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey);
+        }
+
+        var runAtStartupCurrentlyEnabled =
+            !string.IsNullOrWhiteSpace(Reg.GetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                string.Empty).Trim());
+
+        return enable
+            ? runAtStartupCurrentlyEnabled
+            : !runAtStartupCurrentlyEnabled;
+    }
+
     private void DoShow(bool external = false)
     {
         // This is a trick to force the app back on top in some cases when
@@ -522,6 +558,12 @@ public partial class MainForm : Form
             return;
         }
 
+        //
+        // New install - Set Run at startup to true (default)
+        //
+        uxMenuRunAtStartup.Checked = EnableRunAtStartup(true);
+        //..
+
         Reg.SetRegString(
             Microsoft.Win32.Registry.CurrentUser,
             Consts.AppRegPath,
@@ -565,27 +607,7 @@ public partial class MainForm : Form
                 Consts.RunAtStartupKey,
                 string.Empty).Trim());
 
-        if (currentlyEnabled)
-        {
-             Reg.DeleteRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.RunAtStartupRegPath,
-                Consts.RunAtStartupKey);
-        }
-        else
-        {
-            var exe = Application
-                .ExecutablePath
-                .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
-
-            const string doubleQuote = "\"";
-
-            Reg.SetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.RunAtStartupRegPath,
-                Consts.RunAtStartupKey,
-                $"{doubleQuote}{exe}{doubleQuote} /min");
-        }
+        EnableRunAtStartup(!currentlyEnabled);
     }
 
     #endregion

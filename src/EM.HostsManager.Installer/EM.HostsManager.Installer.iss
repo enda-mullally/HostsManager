@@ -44,11 +44,11 @@ Root: HKLM; SubKey: "Software\Enda Mullally"; ValueType: string; ValueName: ""; 
 Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "App"; ValueData: "{app}\EM.HostsManager.App.exe"; Flags: uninsdeletekey
 Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "Version"; ValueData: "{#InstallerVersion}"; Flags: uninsdeletekey
 
-; Note app settings - stored in the HKCU hive.
+; Note app settings - stored in the HKCU hive. - Disbaled - Now managed by the application
 ; Root: HKCU; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; ValueName: "FirstRun"; ValueData: "true"; Flags: uninsdeletekey
 
-; Start the app on user startup (minimized to the system tray)
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Hosts Manager"; ValueData: """{app}\EM.HostsManager.App.exe"" /min"; Flags: uninsdeletekey
+; Start the app on user startup (minimized to the system tray) - Disbaled - Now managed by the application
+; Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Hosts Manager"; ValueData: """{app}\EM.HostsManager.App.exe"" /min"; Flags: uninsdeletekey
 
 [Files]
 Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
