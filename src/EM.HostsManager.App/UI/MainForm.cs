@@ -55,7 +55,8 @@ public partial class MainForm : Form
         foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
         {
             menuItem.Checked =
-                string.Equals(menuItem.Tag as string, currentPreferredEditor, StringComparison.InvariantCultureIgnoreCase);
+                string.Equals(menuItem.Tag as string, currentPreferredEditor,
+                    StringComparison.InvariantCultureIgnoreCase);
         }
 
         // Write it again anyway, if it was defaulted above.
@@ -153,7 +154,8 @@ public partial class MainForm : Form
                     uxMenuEnableHostsFile.Enabled =
                         uxbtnFlushDNS.Enabled = false;
 
-            // When Not elevated "edit/open" should only be available when the hosts file itself is enabled
+            // When Not elevated "edit/open" should only be available when the
+            // hosts file itself is enabled
             uxbtnEdit.Enabled = hostsEnabled;
 
             Elevated.AddShieldToButton(uxbtnRunAsAdmin);
@@ -207,7 +209,8 @@ public partial class MainForm : Form
 
     private void uxbtnEdit_Click(object sender, EventArgs e)
     {
-        var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
+        var workingDirectory =
+            Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
 
         if (workingDirectory == null)
         {
@@ -251,7 +254,8 @@ public partial class MainForm : Form
                 return;
             }
 
-            // We failed to open with the selected editor (non default) so reset to Default and try again...
+            // We failed to open with the selected editor (non default) so reset
+            // to Default and try again...
 
             Reg.SetRegString(
                 Microsoft.Win32.Registry.CurrentUser,
@@ -388,7 +392,8 @@ public partial class MainForm : Form
 
         var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
-            Environment.GetCommandLineArgs()[1].Equals(Consts.MinArg, StringComparison.InvariantCultureIgnoreCase);
+            Environment.GetCommandLineArgs()[1].Equals(
+                Consts.MinArg, StringComparison.InvariantCultureIgnoreCase);
 
         if (!minimized)
         {
@@ -441,17 +446,20 @@ public partial class MainForm : Form
         // Add the About menu item
         User32.AppendMenu(hSysMenu, User32.MfString, SysMenuAboutId, "&About");
 
-        if (Elevated.IsElevated())
+        if (!Elevated.IsElevated())
         {
-            // UIPI bypass for our custom messages if the app is elevated.
-            User32.ChangeWindowMessageFilterEx(Handle,
-                WmActivateApp,
-                ChangeWindowMessageFilterExAction.Allow);
-
-            User32.ChangeWindowMessageFilterEx(Handle,
-                WmQuitApp,
-                ChangeWindowMessageFilterExAction.Allow);
+            return;
         }
+
+        // UIPI bypass for our custom messages if the app is elevated.
+
+        User32.ChangeWindowMessageFilterEx(Handle,
+            WmActivateApp,
+            ChangeWindowMessageFilterExAction.Allow);
+
+        User32.ChangeWindowMessageFilterEx(Handle,
+            WmQuitApp,
+            ChangeWindowMessageFilterExAction.Allow);
     }
 
     protected override void WndProc(ref Message m)
@@ -543,7 +551,9 @@ public partial class MainForm : Form
             return;
         }
 
-        var appVersion = new AppVersion(Assembly.GetExecutingAssembly()).GetAppVersion();
+        var appVersion =
+            new AppVersion(
+                Assembly.GetExecutingAssembly()).GetAppVersion();
 
         var firstRun =
             !Reg.GetRegString(
@@ -551,7 +561,8 @@ public partial class MainForm : Form
                     Consts.AppRegPath,
                     Consts.FirstRunShownForKey,
                     string.Empty)
-                .ToLowerInvariant().Equals(appVersion);
+                .ToLowerInvariant()
+                .Equals(appVersion);
 
         if (!firstRun)
         {

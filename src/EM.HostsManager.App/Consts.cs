@@ -20,7 +20,6 @@
 
         public const string RunAtStartupKey = @"Hosts Manager";
 
-
         public const string
             RunAtStartupMessage = """
                   == Hosts Manager v{appVersion} ==

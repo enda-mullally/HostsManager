@@ -2,6 +2,8 @@
 // Copyright © 2009-2023 Enda Mullally.
 //
 
+#pragma warning disable SYSLIB1054
+
 namespace EM.HostsManager.Infrastructure.Win32;
 
 public static class User32

@@ -32,7 +32,8 @@ internal static class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    // If started with the /min switch, but another instance is already active, we can ignore here.
+                    // If started with the /min switch, but another instance is already
+                    // active, we can ignore here.
 
                     return;
                 }
