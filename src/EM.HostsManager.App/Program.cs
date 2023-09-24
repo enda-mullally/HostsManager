@@ -14,7 +14,9 @@ internal static class Program
     {
         using var si = new SingleInstance(Consts.AppInstanceId);
         
-        var arg = args.Length > 0 ? args[0].ToLowerInvariant() : string.Empty;
+        var arg = args.Length > 0
+            ? args[0].ToLowerInvariant()
+            : string.Empty;
 
         switch (arg)
         {
