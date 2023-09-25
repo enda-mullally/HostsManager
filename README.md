@@ -15,9 +15,10 @@ Hosts Manager now supports opening your **hosts** file with **Notepad++** or **V
 ![image](docs/Main-Settings.png)
 
 ### System tray ###
-Hosts Manager is a system tray application, it will automatically minimize to your system tray. By default, Hosts Manager will start (minimized). You can disable auto-start in Windows Task Manager (**Ctrl+Alt+Esc** -> Startup apps). To exit Hosts Manager, right click the system tray icon and select **Exit**.
+Hosts Manager is a system tray application, it will automatically minimize to your system tray. By default, Hosts Manager will start (minimized). You can disable auto-start by un-checking 'Run at startup' in the system tray Application menu. To exit Hosts Manager, right click the system tray icon and select **Exit**.
 
 ![image](docs/Sys-Tray-1.png)
 
 ![image](docs/Sys-Tray-2.png)
 
+![image](docs/Sys-Tray-3.png)
