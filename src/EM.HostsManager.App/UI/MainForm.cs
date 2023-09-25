@@ -26,7 +26,7 @@ public partial class MainForm : Form
     public const int WmActivateApp = WmUser + 55;
     public const int WmQuitApp = WmUser + 56;
 
-    private enum PreferredEditor { Default, NotepadPP, VSCode}
+    private enum PreferredEditor { Default, NotepadPP, VSCode }
 
     public MainForm()
     {
@@ -55,7 +55,8 @@ public partial class MainForm : Form
         foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
         {
             menuItem.Checked =
-                string.Equals(menuItem.Tag as string, currentPreferredEditor, StringComparison.InvariantCultureIgnoreCase);
+                string.Equals(menuItem.Tag as string, currentPreferredEditor,
+                    StringComparison.InvariantCultureIgnoreCase);
         }
 
         // Write it again anyway, if it was defaulted above.
@@ -78,7 +79,7 @@ public partial class MainForm : Form
     {
         if (!Elevated.IsElevated())
         {
-            uxbtnEdit.Text = @"|Open &Hosts File";
+            uxbtnEdit.Text = @"| Open &hosts file";
         }
 
         uxbtnEdit.Text = uxbtnEdit.Text.Replace("|", Environment.NewLine);
@@ -115,6 +116,15 @@ public partial class MainForm : Form
             ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
             : "(all hosts disabled)");
 
+        var runAtStartupCurrentlyEnabled =
+            !string.IsNullOrWhiteSpace(Reg.GetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                string.Empty).Trim());
+
+        uxMenuRunAtStartup.Checked = runAtStartupCurrentlyEnabled;
+
         // button state
         if (Elevated.IsElevated())
         {
@@ -144,7 +154,8 @@ public partial class MainForm : Form
                     uxMenuEnableHostsFile.Enabled =
                         uxbtnFlushDNS.Enabled = false;
 
-            // When Not elevated "edit/open" should only be available when the hosts file itself is enabled
+            // When Not elevated "edit/open" should only be available when the
+            // hosts file itself is enabled
             uxbtnEdit.Enabled = hostsEnabled;
 
             Elevated.AddShieldToButton(uxbtnRunAsAdmin);
@@ -157,16 +168,15 @@ public partial class MainForm : Form
 
         var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
 
+        var aboutMessage =
+            Consts.AboutMessage
+                .Replace("{appVersion}", appVersion.GetAppVersion())
+                .Replace("{commitId}", appVersion.GetCommitId())
+                .Replace("{buildDate}", appVersion.GetBuildDate());
+
         MessageBox.Show(
             this,
-            $@"== Hosts Manager =={Environment.NewLine}{Environment.NewLine}" +
-            @"https://github.com/enda-mullally/hostsmanager" +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            $@"Version: {appVersion.GetAppVersion()}{Environment.NewLine}" +
-            $@"Commit: {appVersion.GetCommitId()}{Environment.NewLine}" +
-            $@"Date: {appVersion.GetBuildDate()}" +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            @"Copyright © 2021-2023 Enda Mullally",
+            aboutMessage,
             @"About",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
@@ -199,7 +209,8 @@ public partial class MainForm : Form
 
     private void uxbtnEdit_Click(object sender, EventArgs e)
     {
-        var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
+        var workingDirectory =
+            Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
 
         if (workingDirectory == null)
         {
@@ -243,7 +254,8 @@ public partial class MainForm : Form
                 return;
             }
 
-            // We failed to open with the selected editor (non default) so reset to Default and try again...
+            // We failed to open with the selected editor (non default) so reset
+            // to Default and try again...
 
             Reg.SetRegString(
                 Microsoft.Win32.Registry.CurrentUser,
@@ -380,7 +392,8 @@ public partial class MainForm : Form
 
         var minimized =
             Environment.GetCommandLineArgs().Length > 1 &&
-            Environment.GetCommandLineArgs()[1].Equals(Consts.MinArg, StringComparison.InvariantCultureIgnoreCase);
+            Environment.GetCommandLineArgs()[1].Equals(
+                Consts.MinArg, StringComparison.InvariantCultureIgnoreCase);
 
         if (!minimized)
         {
@@ -433,17 +446,20 @@ public partial class MainForm : Form
         // Add the About menu item
         User32.AppendMenu(hSysMenu, User32.MfString, SysMenuAboutId, "&About");
 
-        if (Elevated.IsElevated())
+        if (!Elevated.IsElevated())
         {
-            // UIPI bypass for our custom messages if the app is elevated.
-            User32.ChangeWindowMessageFilterEx(Handle,
-                WmActivateApp,
-                ChangeWindowMessageFilterExAction.Allow);
-
-            User32.ChangeWindowMessageFilterEx(Handle,
-                WmQuitApp,
-                ChangeWindowMessageFilterExAction.Allow);
+            return;
         }
+
+        // UIPI bypass for our custom messages if the app is elevated.
+
+        User32.ChangeWindowMessageFilterEx(Handle,
+            WmActivateApp,
+            ChangeWindowMessageFilterExAction.Allow);
+
+        User32.ChangeWindowMessageFilterEx(Handle,
+            WmQuitApp,
+            ChangeWindowMessageFilterExAction.Allow);
     }
 
     protected override void WndProc(ref Message m)
@@ -469,6 +485,42 @@ public partial class MainForm : Form
     #endregion
 
     #region Private
+
+    private static bool EnableRunAtStartup(bool enable)
+    {
+        if (enable)
+        {
+            var exe = Application
+                .ExecutablePath
+                .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
+
+            const string doubleQuote = "\"";
+
+            Reg.SetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                $"{doubleQuote}{exe}{doubleQuote} /min");
+        }
+        else
+        {
+            Reg.DeleteRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey);
+        }
+
+        var runAtStartupCurrentlyEnabled =
+            !string.IsNullOrWhiteSpace(Reg.GetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                string.Empty).Trim());
+
+        return enable
+            ? runAtStartupCurrentlyEnabled
+            : !runAtStartupCurrentlyEnabled;
+    }
 
     private void DoShow(bool external = false)
     {
@@ -499,7 +551,9 @@ public partial class MainForm : Form
             return;
         }
 
-        var appVersion = new AppVersion(Assembly.GetExecutingAssembly()).GetAppVersion();
+        var appVersion =
+            new AppVersion(
+                Assembly.GetExecutingAssembly()).GetAppVersion();
 
         var firstRun =
             !Reg.GetRegString(
@@ -507,12 +561,19 @@ public partial class MainForm : Form
                     Consts.AppRegPath,
                     Consts.FirstRunShownForKey,
                     string.Empty)
-                .ToLowerInvariant().Equals(appVersion);
+                .ToLowerInvariant()
+                .Equals(appVersion);
 
         if (!firstRun)
         {
             return;
         }
+
+        //
+        // New install - Set Run at startup to true (default)
+        //
+        uxMenuRunAtStartup.Checked = EnableRunAtStartup(true);
+        //..
 
         Reg.SetRegString(
             Microsoft.Win32.Registry.CurrentUser,
@@ -522,15 +583,7 @@ public partial class MainForm : Form
 
         MessageBox.Show(
             this,
-            $@"== Hosts Manager v{appVersion} ==" +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            $@"Welcome to Hosts Manager! Just another Windows hosts file manager." +
-            $@"{Environment.NewLine}{Environment.NewLine}" +
-            @"Hosts Manager is a system tray application, it will automatically minimize to your system tray." +
-            @$"{Environment.NewLine}{Environment.NewLine}Startup app: By default, Hosts Manager will start (minimized) automatically. You can disable auto-start in Windows Task Manager (Ctrl+Alt+Esc -> Startup apps)." +
-            @$"{Environment.NewLine}{Environment.NewLine}To exit Hosts Manager, right click the system tray icon and select Exit." +
-            @$"{Environment.NewLine}{Environment.NewLine}Thank you for installing Hosts Manager." +
-            @$"{Environment.NewLine}{Environment.NewLine}Enjoy!",
+            Consts.RunAtStartupMessage.Replace("{appVersion}", appVersion),
             @"Welcome",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
@@ -543,7 +596,7 @@ public partial class MainForm : Form
             menuItem.Checked = false;
         }
 
-        var selectedOpenWith = ((ToolStripMenuItem)sender);
+        var selectedOpenWith = (ToolStripMenuItem)sender;
 
         selectedOpenWith.Checked = true;
 
@@ -554,6 +607,18 @@ public partial class MainForm : Form
             Consts.AppRegPath,
             Consts.PreferredEditorKey,
             preferredEditor ?? nameof(PreferredEditor.Default));
+    }
+
+    private void uxMenuRunAtStartup_Click(object sender, EventArgs e)
+    {
+        var currentlyEnabled =
+            !string.IsNullOrWhiteSpace(Reg.GetRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                Consts.RunAtStartupRegPath,
+                Consts.RunAtStartupKey,
+                string.Empty).Trim());
+
+        EnableRunAtStartup(!currentlyEnabled);
     }
 
     #endregion

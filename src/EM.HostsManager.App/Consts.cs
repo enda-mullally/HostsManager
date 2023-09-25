@@ -15,5 +15,39 @@
         public const string FirstRunShownForKey = @"FirstRunShownForVersion";
 
         public const string PreferredEditorKey = @"PreferredEditor";
+
+        public const string RunAtStartupRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+
+        public const string RunAtStartupKey = @"Hosts Manager";
+
+        public const string
+            RunAtStartupMessage = """
+                  == Hosts Manager v{appVersion} ==
+                  
+                  Welcome to Hosts Manager! Just another Windows hosts file manager.
+                  
+                  Hosts Manager is a system tray application, it will automatically minimize to your system tray.
+
+                  Startup app: By default, Hosts Manager will run at startup. You can disable auto start by un-checking 'Run at startup' in the system tray icon.
+
+                  To exit Hosts Manager, right click the system tray icon and select Exit.
+
+                  Thank you for installing Hosts Manager.
+
+                  Enjoy!
+                  """;
+
+        public const string
+            AboutMessage = """
+                  == Hosts Manager ==
+                  
+                  https://github.com/enda-mullally/hostsmanager
+                  
+                  Version: {appVersion}
+                  Commit: {commitId}
+                  Date: {buildDate}
+                  
+                  Copyright © 2021-2023 Enda Mullally
+                  """;
     }
 }
