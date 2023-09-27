@@ -95,6 +95,7 @@ namespace EM.HostsManager.App.UI
             uxTrayMenu.Items.AddRange(new ToolStripItem[] { uxMenuItemShow, uxMenuSeperator1, uxMenuEnableHostsFile, toolStripSeparator1, uxMenuAutoStart, toolStripSeparator2, uxMenuExit });
             uxTrayMenu.Name = "uxTrayMenu";
             uxTrayMenu.Size = new System.Drawing.Size(181, 132);
+            uxTrayMenu.Opening += uxTrayMenu_Opening;
             // 
             // uxMenuItemShow
             // 

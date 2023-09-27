@@ -2,6 +2,7 @@
 // Copyright © 2021-2023 Enda Mullally.
 //
 
+using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
@@ -25,6 +26,7 @@ public partial class MainForm : Form
     private const int WmUser = 0x0400;
     public const int WmActivateApp = WmUser + 55;
     public const int WmQuitApp = WmUser + 56;
+    public const int WmUninstallApp = WmUser + 57;
 
     private enum PreferredEditor { Default, NotepadPP, VSCode }
 
@@ -116,12 +118,13 @@ public partial class MainForm : Form
             ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
             : "(all hosts disabled)");
 
+        var exe = Application
+            .ExecutablePath
+            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
+
         var runAtStartupCurrentlyEnabled =
-            !string.IsNullOrWhiteSpace(Reg.GetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.RunAtStartupRegPath,
-                Consts.RunAtStartupKey,
-                string.Empty).Trim());
+            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName)
+                .IsAutoRunEnabled();
 
         uxMenuRunAtStartup.Checked = runAtStartupCurrentlyEnabled;
 
@@ -460,6 +463,10 @@ public partial class MainForm : Form
         User32.ChangeWindowMessageFilterEx(Handle,
             WmQuitApp,
             ChangeWindowMessageFilterExAction.Allow);
+
+        User32.ChangeWindowMessageFilterEx(Handle,
+            WmUninstallApp,
+            ChangeWindowMessageFilterExAction.Allow);
     }
 
     protected override void WndProc(ref Message m)
@@ -479,6 +486,13 @@ public partial class MainForm : Form
             case WmQuitApp:
                 uxMenuExit_Click(null!, EventArgs.Empty);
                 break;
+
+            case WmUninstallApp:
+            {
+                Uninstall();
+                uxMenuExit_Click(null!, EventArgs.Empty);
+                break;
+            }
         }
     }
 
@@ -486,40 +500,43 @@ public partial class MainForm : Form
 
     #region Private
 
-    private static bool EnableRunAtStartup(bool enable)
+    public static void Uninstall()
     {
-        if (enable)
+        try
         {
             var exe = Application
                 .ExecutablePath
                 .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
 
-            const string doubleQuote = "\"";
+            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName)
+                .DeleteAutoRunAtStartup();
 
-            Reg.SetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.RunAtStartupRegPath,
-                Consts.RunAtStartupKey,
-                $"{doubleQuote}{exe}{doubleQuote} /min");
-        }
-        else
-        {
             Reg.DeleteRegString(
                 Microsoft.Win32.Registry.CurrentUser,
-                Consts.RunAtStartupRegPath,
-                Consts.RunAtStartupKey);
+                Consts.AppRegPath,
+                Consts.FirstRunShownForKey);
+        }
+        catch
+        {
+            // ignore
+        }
+    }
+
+    private static bool EnableRunAtStartup(bool enable)
+    {
+        var exe = Application
+            .ExecutablePath
+            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
+
+        var autoStartManager =
+            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName);
+
+        if (enable)
+        {
+            autoStartManager.SetupAutoRunAtStartup();
         }
 
-        var runAtStartupCurrentlyEnabled =
-            !string.IsNullOrWhiteSpace(Reg.GetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.RunAtStartupRegPath,
-                Consts.RunAtStartupKey,
-                string.Empty).Trim());
-
-        return enable
-            ? runAtStartupCurrentlyEnabled
-            : !runAtStartupCurrentlyEnabled;
+        return autoStartManager.EnableDisableAutoRun(enable);
     }
 
     private void DoShow(bool external = false)
@@ -611,16 +628,20 @@ public partial class MainForm : Form
 
     private void uxMenuRunAtStartup_Click(object sender, EventArgs e)
     {
-        var currentlyEnabled =
-            !string.IsNullOrWhiteSpace(Reg.GetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.RunAtStartupRegPath,
-                Consts.RunAtStartupKey,
-                string.Empty).Trim());
+        var exe = Application
+            .ExecutablePath
+            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
 
-        EnableRunAtStartup(!currentlyEnabled);
+        var autoStartManager =
+            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName);
+
+        EnableRunAtStartup(!autoStartManager.IsAutoRunEnabled());
     }
 
     #endregion
 
+    private void uxTrayMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        UxRefresh();
+    }
 }
