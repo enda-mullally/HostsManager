@@ -6,6 +6,8 @@
 
         public const string QuitArg = "/quit";
 
+        public const string UninstallArg = "/uninstall";
+
         public const string MinArg = "/min";
 
         public const string ElevateArg = "/elevate";
@@ -16,9 +18,7 @@
 
         public const string PreferredEditorKey = @"PreferredEditor";
 
-        public const string RunAtStartupRegPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-
-        public const string RunAtStartupKey = @"Hosts Manager";
+        public const string ApplicationName = @"Hosts Manager";
 
         public const string
             RunAtStartupMessage = """

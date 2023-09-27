@@ -69,7 +69,7 @@ Source: "windowsdesktop-runtime-7.0.10-win_x64.exe"; Flags: dontcopy noencryptio
 Filename: {app}\EM.HostsManager.App.exe; Description: {cm:LaunchProgram,{cm:AppName}}; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
-Filename: "{app}\EM.HostsManager.App.exe"; Parameters:"/quit"; RunOnceId: "Hosts_Manager_10e26e4d"; Flags: waituntilterminated
+Filename: "{app}\EM.HostsManager.App.exe"; Parameters:"/uninstall"; RunOnceId: "Hosts_Manager_10e26e4d"; Flags: waituntilterminated
 
 [CustomMessages]
 AppName=Hosts Manager

@@ -30,6 +30,20 @@ internal static class Program
                 return;
             }
 
+            case Consts.UninstallArg:
+            {
+                if (!si.IsSingleInstance())
+                {
+                    si.QuitOtherProcess(MainForm.WmUninstallApp);
+                }
+                else
+                {
+                    MainForm.Uninstall();
+                }
+
+                return;
+            }
+
             case Consts.MinArg:
             {
                 if (!si.IsSingleInstance())
