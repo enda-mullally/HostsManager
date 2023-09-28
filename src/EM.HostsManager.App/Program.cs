@@ -7,7 +7,7 @@ using EM.HostsManager.Infrastructure.Process;
 
 namespace EM.HostsManager.App;
 
-internal static class Program
+internal static partial class Program
 {
     [STAThread]
     private static void Main(string[] args)
@@ -38,7 +38,7 @@ internal static class Program
                 }
                 else
                 {
-                    MainForm.Uninstall();
+                    Uninstall();
                 }
 
                 return;

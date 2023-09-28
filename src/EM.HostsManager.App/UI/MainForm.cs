@@ -2,6 +2,7 @@
 // Copyright © 2021-2023 Enda Mullally.
 //
 
+using EM.HostsManager.App.UI.CustomForms;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.Version;
@@ -17,12 +18,11 @@ namespace EM.HostsManager.App.UI;
 
 using static User32;
 
-public partial class MainForm : Form
+public partial class MainForm : AboutSysMenuForm
 {
     private bool _aboutShown;
     private bool _requestingClose;
 
-    private const int SysMenuAboutId = 0x1;
     private const int WmUser = 0x0400;
     public const int WmActivateApp = WmUser + 55;
     public const int WmQuitApp = WmUser + 56;
@@ -30,9 +30,11 @@ public partial class MainForm : Form
 
     private enum PreferredEditor { Default, NotepadPP, VSCode }
 
-    public MainForm()
+    public MainForm() : base("&About")
     {
         InitializeComponent();
+
+        SysAboutMenuClicked += OnSysAboutMenuClicked;
 
         UxGetPreferredEditor();
         UxFixButtonText();
@@ -337,6 +339,11 @@ public partial class MainForm : Form
         ShowMessageOnFirstRun();
     }
 
+    private void OnSysAboutMenuClicked(object? sender, EventArgs e)
+    {
+        uxMenuAbout_Click(null!, EventArgs.Empty);
+    }
+
     #endregion
 
     #region Menu Events
@@ -385,6 +392,43 @@ public partial class MainForm : Form
         }
     }
 
+    private void uxTrayMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        UxRefresh();
+    }
+
+    private void uxOpenWith_Click(object sender, EventArgs e)
+    {
+        foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
+        {
+            menuItem.Checked = false;
+        }
+
+        var selectedOpenWith = (ToolStripMenuItem)sender;
+
+        selectedOpenWith.Checked = true;
+
+        var preferredEditor = selectedOpenWith.Tag as string;
+
+        Reg.SetRegString(
+            Microsoft.Win32.Registry.CurrentUser,
+            Consts.AppRegPath,
+            Consts.PreferredEditorKey,
+            preferredEditor ?? nameof(PreferredEditor.Default));
+    }
+
+    private void uxMenuRunAtStartup_Click(object sender, EventArgs e)
+    {
+        var exe = Application
+            .ExecutablePath
+            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
+
+        var autoStartManager =
+            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName);
+
+        EnableRunAtStartup(!autoStartManager.IsAutoRunEnabled());
+    }
+
     #endregion
 
     #region Protected
@@ -415,6 +459,7 @@ public partial class MainForm : Form
     protected override void OnFormClosing(FormClosingEventArgs e)
     {
         // ReSharper disable once RedundantAssignment
+        // ReSharper disable once ConvertToConstant.Local
         var isDebug = false;
 #if DEBUG
         isDebug = true;
@@ -422,6 +467,7 @@ public partial class MainForm : Form
 
         if (e.CloseReason == CloseReason.WindowsShutDown ||
             e.CloseReason == CloseReason.TaskManagerClosing ||
+            e.CloseReason == CloseReason.ApplicationExitCall ||
             _requestingClose ||
             isDebug)
         {
@@ -439,15 +485,6 @@ public partial class MainForm : Form
     protected override void OnHandleCreated(EventArgs e)
     {
         base.OnHandleCreated(e);
-
-        // Get a handle to a copy of this form's system (window) menu
-        var hSysMenu = User32.GetSystemMenu(Handle, false);
-
-        // Add a separator
-        User32.AppendMenu(hSysMenu, User32.MfSeparator, 0, string.Empty);
-
-        // Add the About menu item
-        User32.AppendMenu(hSysMenu, User32.MfString, SysMenuAboutId, "&About");
 
         if (!Elevated.IsElevated())
         {
@@ -475,10 +512,6 @@ public partial class MainForm : Form
 
         switch (m.Msg)
         {
-            case User32.WmSysCommand when (int)m.WParam == SysMenuAboutId:
-                uxMenuAbout_Click(null!, EventArgs.Empty);
-                break;
-
             case WmActivateApp:
                 DoShow(true);
                 break;
@@ -489,7 +522,7 @@ public partial class MainForm : Form
 
             case WmUninstallApp:
             {
-                Uninstall();
+                Program.Uninstall();
                 uxMenuExit_Click(null!, EventArgs.Empty);
                 break;
             }
@@ -499,28 +532,6 @@ public partial class MainForm : Form
     #endregion
 
     #region Private
-
-    public static void Uninstall()
-    {
-        try
-        {
-            var exe = Application
-                .ExecutablePath
-                .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
-
-            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName)
-                .DeleteAutoRunAtStartup();
-
-            Reg.DeleteRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.AppRegPath,
-                Consts.FirstRunShownForKey);
-        }
-        catch
-        {
-            // ignore
-        }
-    }
 
     private static bool EnableRunAtStartup(bool enable)
     {
@@ -544,6 +555,7 @@ public partial class MainForm : Form
         // This is a trick to force the app back on top in some cases when
         // invoked via PostMessage/WndProc and our custom WmActivateApp
         // message
+        
         if (external)
         {
             WindowState = FormWindowState.Minimized;
@@ -606,42 +618,6 @@ public partial class MainForm : Form
             MessageBoxIcon.Information);
     }
 
-    private void uxOpenWith_Click(object sender, EventArgs e)
-    {
-        foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
-        {
-            menuItem.Checked = false;
-        }
-
-        var selectedOpenWith = (ToolStripMenuItem)sender;
-
-        selectedOpenWith.Checked = true;
-
-        var preferredEditor = selectedOpenWith.Tag as string;
-
-        Reg.SetRegString(
-            Microsoft.Win32.Registry.CurrentUser,
-            Consts.AppRegPath,
-            Consts.PreferredEditorKey,
-            preferredEditor ?? nameof(PreferredEditor.Default));
-    }
-
-    private void uxMenuRunAtStartup_Click(object sender, EventArgs e)
-    {
-        var exe = Application
-            .ExecutablePath
-            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
-
-        var autoStartManager =
-            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName);
-
-        EnableRunAtStartup(!autoStartManager.IsAutoRunEnabled());
-    }
-
     #endregion
 
-    private void uxTrayMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        UxRefresh();
-    }
 }
