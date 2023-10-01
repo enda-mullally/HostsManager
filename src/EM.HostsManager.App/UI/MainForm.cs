@@ -2,9 +2,9 @@
 // Copyright © 2021-2023 Enda Mullally.
 //
 
-using EM.HostsManager.App.UI.CustomForms;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
+using EM.HostsManager.Infrastructure.UI.CustomForms;
 using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
 using Reg = EM.HostsManager.Infrastructure.Registry.Registry;
@@ -23,18 +23,14 @@ public partial class MainForm : AboutSysMenuForm
     private bool _aboutShown;
     private bool _requestingClose;
 
-    private const int WmUser = 0x0400;
-    public const int WmActivateApp = WmUser + 55;
-    public const int WmQuitApp = WmUser + 56;
-    public const int WmUninstallApp = WmUser + 57;
-
     private enum PreferredEditor { Default, NotepadPP, VSCode }
 
-    public MainForm() : base("&About")
+    public MainForm() : base("&About", Program.WmActivateApp, Program.WmQuitApp, Program.WmUninstallApp)
     {
         InitializeComponent();
 
         SysAboutMenuClicked += OnSysAboutMenuClicked;
+        CustomMessageReceived += OnCustomMessageReceived;
 
         UxGetPreferredEditor();
         UxFixButtonText();
@@ -344,6 +340,27 @@ public partial class MainForm : AboutSysMenuForm
         uxMenuAbout_Click(null!, EventArgs.Empty);
     }
 
+    private void OnCustomMessageReceived(object? sender, CustomMessageEventArgs e)
+    {
+        switch (e.Msg)
+        {
+            case Program.WmActivateApp:
+                DoShow(true);
+                break;
+
+            case Program.WmQuitApp:
+                uxMenuExit_Click(null!, EventArgs.Empty);
+                break;
+
+            case Program.WmUninstallApp:
+            {
+                Program.Uninstall();
+                uxMenuExit_Click(null!, EventArgs.Empty);
+                break;
+            }
+        }
+    }
+
     #endregion
 
     #region Menu Events
@@ -480,53 +497,6 @@ public partial class MainForm : AboutSysMenuForm
         WindowState = FormWindowState.Minimized;
 
         base.OnFormClosing(e);
-    }
-
-    protected override void OnHandleCreated(EventArgs e)
-    {
-        base.OnHandleCreated(e);
-
-        if (!Elevated.IsElevated())
-        {
-            return;
-        }
-
-        // UIPI bypass for our custom messages if the app is elevated.
-
-        User32.ChangeWindowMessageFilterEx(Handle,
-            WmActivateApp,
-            ChangeWindowMessageFilterExAction.Allow);
-
-        User32.ChangeWindowMessageFilterEx(Handle,
-            WmQuitApp,
-            ChangeWindowMessageFilterExAction.Allow);
-
-        User32.ChangeWindowMessageFilterEx(Handle,
-            WmUninstallApp,
-            ChangeWindowMessageFilterExAction.Allow);
-    }
-
-    protected override void WndProc(ref Message m)
-    {
-        base.WndProc(ref m);
-
-        switch (m.Msg)
-        {
-            case WmActivateApp:
-                DoShow(true);
-                break;
-
-            case WmQuitApp:
-                uxMenuExit_Click(null!, EventArgs.Empty);
-                break;
-
-            case WmUninstallApp:
-            {
-                Program.Uninstall();
-                uxMenuExit_Click(null!, EventArgs.Empty);
-                break;
-            }
-        }
     }
 
     #endregion

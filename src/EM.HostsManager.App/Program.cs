@@ -24,7 +24,7 @@ internal static partial class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.QuitOtherProcess(MainForm.WmQuitApp);
+                    si.QuitOtherProcess(WmQuitApp);
                 }
 
                 return;
@@ -34,7 +34,7 @@ internal static partial class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.QuitOtherProcess(MainForm.WmUninstallApp);
+                    si.QuitOtherProcess(WmUninstallApp);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ internal static partial class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.ActivateOtherProcess(MainForm.WmActivateApp);
+                    si.ActivateOtherProcess(WmActivateApp);
 
                     return;
                 }

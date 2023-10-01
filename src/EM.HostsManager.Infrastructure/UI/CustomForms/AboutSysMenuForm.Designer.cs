@@ -1,4 +1,4 @@
-﻿namespace EM.HostsManager.App.UI.CustomForms
+﻿namespace EM.HostsManager.Infrastructure.UI.CustomForms
 {
     partial class AboutSysMenuForm
     {
