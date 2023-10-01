@@ -126,13 +126,11 @@ jobs:
         }
         
     - name: Install Inno Setup
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: cmd
       run: |
         choco install innosetup
 
     - name: Build Installer
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: "./src/${{ env.INSTALLER_DIR }}"
       run: |
         iscc.exe EM.HostsManager.Installer.iss /DInstallerVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
