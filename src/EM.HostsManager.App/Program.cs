@@ -7,7 +7,7 @@ using EM.HostsManager.Infrastructure.Process;
 
 namespace EM.HostsManager.App;
 
-internal static class Program
+internal static partial class Program
 {
     [STAThread]
     private static void Main(string[] args)
@@ -24,7 +24,7 @@ internal static class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.QuitOtherProcess(MainForm.WmQuitApp);
+                    si.QuitOtherProcess(WmQuitApp);
                 }
 
                 return;
@@ -34,11 +34,11 @@ internal static class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.QuitOtherProcess(MainForm.WmUninstallApp);
+                    si.QuitOtherProcess(WmUninstallApp);
                 }
                 else
                 {
-                    MainForm.Uninstall();
+                    Uninstall();
                 }
 
                 return;
@@ -66,7 +66,7 @@ internal static class Program
             {
                 if (!si.IsSingleInstance())
                 {
-                    si.ActivateOtherProcess(MainForm.WmActivateApp);
+                    si.ActivateOtherProcess(WmActivateApp);
 
                     return;
                 }
