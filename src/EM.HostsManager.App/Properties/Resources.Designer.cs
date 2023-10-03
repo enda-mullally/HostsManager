@@ -96,7 +96,7 @@ namespace EM.HostsManager.App.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to byte(s).
+        ///   Looks up a localized string similar to  byte(s).
         /// </summary>
         internal static string bytes {
             get {

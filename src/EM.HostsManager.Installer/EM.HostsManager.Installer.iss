@@ -17,6 +17,7 @@ ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 AppId=Hosts_Manager_10e26e4d
 AppVerName=Hosts Manager v{#InstallerVersion}
+UninstallDisplayName=Hosts Manager {#InstallerVersion}
 OutputBaseFilename=EM.HostsManager.Installer.{#InstallerVersion}
 UninstallDisplayIcon={app}\EM.HostsManager.App.exe
 WizardStyle=modern
