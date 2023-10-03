@@ -136,7 +136,7 @@
     <value>(all hosts disabled)</value>
   </data>
   <data name="bytes" xml:space="preserve">
-    <value>byte(s)</value>
+    <value> byte(s)</value>
   </data>
   <data name="disabled" xml:space="preserve">
     <value>disabled</value>

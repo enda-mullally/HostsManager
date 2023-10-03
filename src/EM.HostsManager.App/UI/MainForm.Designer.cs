@@ -286,7 +286,7 @@ namespace EM.HostsManager.App.UI
             uxbtnEdit.SplitMenu = uxOpenWith;
             uxbtnEdit.SplitMenuStrip = uxOpenWith;
             uxbtnEdit.TabIndex = 5;
-            uxbtnEdit.Text = "|  Edit &hosts file ";
+            uxbtnEdit.Text = "| Edit &hosts file ";
             uxbtnEdit.UseCompatibleTextRendering = true;
             uxbtnEdit.UseVisualStyleBackColor = false;
             uxbtnEdit.Click += uxbtnEdit_Click;
@@ -341,8 +341,7 @@ namespace EM.HostsManager.App.UI
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
             ClientSize = new System.Drawing.Size(404, 324);
             Controls.Add(uxbtnFlushDNS);
