@@ -19,7 +19,7 @@ namespace EM.HostsManager.App.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,171 @@ namespace EM.HostsManager.App.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;About.
+        /// </summary>
+        internal static string About_Label {
+            get {
+                return ResourceManager.GetString("About_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to == Hosts Manager ==
+        ///
+        ///https://github.com/enda-mullally/hostsmanager
+        ///
+        ///Version: {appVersion}
+        ///Commit: {commitId}
+        ///Date: {buildDate}
+        ///
+        ///Copyright © 2021-2023 Enda Mullally.
+        /// </summary>
+        internal static string AboutMessage {
+            get {
+                return ResourceManager.GetString("AboutMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (all hosts disabled).
+        /// </summary>
+        internal static string all_hosts_disabled {
+            get {
+                return ResourceManager.GetString("all_hosts_disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to byte(s).
+        /// </summary>
+        internal static string bytes {
+            get {
+                return ResourceManager.GetString("bytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to disabled.
+        /// </summary>
+        internal static string disabled {
+            get {
+                return ResourceManager.GetString("disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to enabled.
+        /// </summary>
+        internal static string enabled {
+            get {
+                return ResourceManager.GetString("enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to host.
+        /// </summary>
+        internal static string host {
+            get {
+                return ResourceManager.GetString("host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hosts.
+        /// </summary>
+        internal static string hosts {
+            get {
+                return ResourceManager.GetString("hosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hosts file is .
+        /// </summary>
+        internal static string hosts_file_is {
+            get {
+                return ResourceManager.GetString("hosts_file_is", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string MainForm_About {
+            get {
+                return ResourceManager.GetString("MainForm_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        internal static string MainForm_ShowMessageOnFirstRun_Welcome {
+            get {
+                return ResourceManager.GetString("MainForm_ShowMessageOnFirstRun_Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flush DNS.
+        /// </summary>
+        internal static string MainForm_uxbtnFlushDNS_Click_Flush_DNS {
+            get {
+                return ResourceManager.GetString("MainForm_uxbtnFlushDNS_Click_Flush_DNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error starting process &apos;ipconfig /flushdns&apos;..
+        /// </summary>
+        internal static string MainForm_uxbtnFlushDNS_Click_Unknown_error_starting_process__ipconfig__flushdns__ {
+            get {
+                return ResourceManager.GetString("MainForm_uxbtnFlushDNS_Click_Unknown_error_starting_process__ipconfig__flushdns__" +
+                        "", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to | Open &amp;hosts file.
+        /// </summary>
+        internal static string MainForm_UxFixButtonText_ {
+            get {
+                return ResourceManager.GetString("MainForm_UxFixButtonText_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  [Administrator].
+        /// </summary>
+        internal static string MainForm_UxRefresh___Administrator_ {
+            get {
+                return ResourceManager.GetString("MainForm_UxRefresh___Administrator_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to == Hosts Manager v{appVersion} ==
+        ///
+        ///Welcome to Hosts Manager! Just another Windows hosts file manager.
+        ///
+        ///Hosts Manager is a system tray application, it will automatically minimize to your system tray.
+        ///
+        ///Startup app: By default, Hosts Manager will run at startup. You can disable auto start by un-checking &apos;Run at startup&apos; in the system tray icon.
+        ///
+        ///To exit Hosts Manager, right click the system tray icon and select Exit.
+        ///
+        ///Thank you for installing Hosts Manager.
+        ///
+        ///Enjoy!.
+        /// </summary>
+        internal static string RunAtStartupMessage {
+            get {
+                return ResourceManager.GetString("RunAtStartupMessage", resourceCulture);
             }
         }
     }

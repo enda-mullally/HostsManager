@@ -117,4 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MainForm_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="MainForm_uxbtnFlushDNS_Click_Flush_DNS" xml:space="preserve">
+    <value>Flush DNS</value>
+  </data>
+  <data name="MainForm_uxbtnFlushDNS_Click_Unknown_error_starting_process__ipconfig__flushdns__" xml:space="preserve">
+    <value>Unknown error starting process 'ipconfig /flushdns'.</value>
+  </data>
+  <data name="MainForm_ShowMessageOnFirstRun_Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="MainForm_UxRefresh___Administrator_" xml:space="preserve">
+    <value> [Administrator]</value>
+  </data>
+  <data name="all_hosts_disabled" xml:space="preserve">
+    <value>(all hosts disabled)</value>
+  </data>
+  <data name="bytes" xml:space="preserve">
+    <value>byte(s)</value>
+  </data>
+  <data name="disabled" xml:space="preserve">
+    <value>disabled</value>
+  </data>
+  <data name="enabled" xml:space="preserve">
+    <value>enabled</value>
+  </data>
+  <data name="host" xml:space="preserve">
+    <value>host</value>
+  </data>
+  <data name="hosts" xml:space="preserve">
+    <value>hosts</value>
+  </data>
+  <data name="hosts_file_is" xml:space="preserve">
+    <value>Hosts file is </value>
+  </data>
+  <data name="MainForm_UxFixButtonText_" xml:space="preserve">
+    <value>| Open &amp;hosts file</value>
+  </data>
+  <data name="AboutMessage" xml:space="preserve">
+    <value>== Hosts Manager ==
+
+https://github.com/enda-mullally/hostsmanager
+
+Version: {appVersion}
+Commit: {commitId}
+Date: {buildDate}
+
+Copyright © 2021-2023 Enda Mullally</value>
+  </data>
+  <data name="About_Label" xml:space="preserve">
+    <value>&amp;About</value>
+  </data>
+  <data name="RunAtStartupMessage" xml:space="preserve">
+    <value>== Hosts Manager v{appVersion} ==
+
+Welcome to Hosts Manager! Just another Windows hosts file manager.
+
+Hosts Manager is a system tray application, it will automatically minimize to your system tray.
+
+Startup app: By default, Hosts Manager will run at startup. You can disable auto start by un-checking 'Run at startup' in the system tray icon.
+
+To exit Hosts Manager, right click the system tray icon and select Exit.
+
+Thank you for installing Hosts Manager.
+
+Enjoy!</value>
+  </data>
 </root>

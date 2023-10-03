@@ -2,6 +2,7 @@
 // Copyright © 2021-2023 Enda Mullally.
 //
 
+using EM.HostsManager.App.Properties;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.UI.CustomForms;
@@ -9,14 +10,12 @@ using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
 using Reg = EM.HostsManager.Infrastructure.Registry.Registry;
 
-#pragma warning disable IDE1006
-
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming
 
-namespace EM.HostsManager.App.UI;
+#pragma warning disable IDE1006 // Naming Styles
 
-using static User32;
+namespace EM.HostsManager.App.UI;
 
 public partial class MainForm : AboutSysMenuForm
 {
@@ -25,7 +24,7 @@ public partial class MainForm : AboutSysMenuForm
 
     private enum PreferredEditor { Default, NotepadPP, VSCode }
 
-    public MainForm() : base("&About", Program.WmActivateApp, Program.WmQuitApp, Program.WmUninstallApp)
+    public MainForm() : base(Resources.About_Label, Program.WmActivateApp, Program.WmQuitApp, Program.WmUninstallApp)
     {
         InitializeComponent();
 
@@ -79,7 +78,7 @@ public partial class MainForm : AboutSysMenuForm
     {
         if (!Elevated.IsElevated())
         {
-            uxbtnEdit.Text = @"| Open &hosts file";
+            uxbtnEdit.Text = Resources.MainForm_UxFixButtonText_;
         }
 
         uxbtnEdit.Text = uxbtnEdit.Text.Replace("|", Environment.NewLine);
@@ -90,13 +89,13 @@ public partial class MainForm : AboutSysMenuForm
 
     private void UxRefresh()
     {
-        uxlblEnabled.Text = @"Hosts file is " + (HostsFile.IsEnabled()
-            ? "enabled."
-            : "disabled.");
+        uxlblEnabled.Text = Resources.hosts_file_is + (HostsFile.IsEnabled()
+            ? Resources.enabled + "."
+            : Resources.disabled + ".");
 
         uxlblHostsFileSize.Text = HostsFile
             .HostsFileSize()
-            .ToString("##,###0") + @" byte(s)";
+            .ToString("##,###0") + Resources.bytes;
 
         uxlblHostsCount.Text =
             HostsFile
@@ -109,12 +108,12 @@ public partial class MainForm : AboutSysMenuForm
 
         var hostOrHosts = HostsFile
             .HostsCount() == 1
-            ? "host"
-            : "hosts";
+            ? Resources.host
+            : Resources.hosts;
 
-        uxNotifyIcon.Text = @"Hosts Manager" + Environment.NewLine + (hostsEnabled
-            ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " enabled)"
-            : "(all hosts disabled)");
+        uxNotifyIcon.Text = Consts.ApplicationName + Environment.NewLine + (hostsEnabled
+            ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " " + Resources.enabled + ")"
+            : Resources.all_hosts_disabled);
 
         var exe = Application
             .ExecutablePath
@@ -142,9 +141,9 @@ public partial class MainForm : AboutSysMenuForm
             uxbtnFlushDNS.Enabled = true;
 
             // Indicate that we are running as admin.
-            if (!Text.Contains("[Administrator]"))
+            if (!Text.Contains(Resources.MainForm_UxRefresh___Administrator_.Trim()))
             {
-                Text += @" [Administrator]";
+                Text += Resources.MainForm_UxRefresh___Administrator_;
             }
         }
         else
@@ -170,7 +169,7 @@ public partial class MainForm : AboutSysMenuForm
         var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
 
         var aboutMessage =
-            Consts.AboutMessage
+            Resources.AboutMessage
                 .Replace("{appVersion}", appVersion.GetAppVersion())
                 .Replace("{commitId}", appVersion.GetCommitId())
                 .Replace("{buildDate}", appVersion.GetBuildDate());
@@ -178,7 +177,7 @@ public partial class MainForm : AboutSysMenuForm
         MessageBox.Show(
             this,
             aboutMessage,
-            @"About",
+            Resources.MainForm_About,
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
 
@@ -300,8 +299,8 @@ public partial class MainForm : AboutSysMenuForm
             if (error)
             {
                 MessageBox.Show(this,
-                    @"Unknown error starting process 'ipconfig /flushdns'.",
-                    @"Flush DNS",
+                    Resources.MainForm_uxbtnFlushDNS_Click_Unknown_error_starting_process__ipconfig__flushdns__,
+                    Resources.MainForm_uxbtnFlushDNS_Click_Flush_DNS,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -353,11 +352,11 @@ public partial class MainForm : AboutSysMenuForm
                 break;
 
             case Program.WmUninstallApp:
-            {
-                Program.Uninstall();
-                uxMenuExit_Click(null!, EventArgs.Empty);
-                break;
-            }
+                {
+                    Program.Uninstall();
+                    uxMenuExit_Click(null!, EventArgs.Empty);
+                    break;
+                }
         }
     }
 
@@ -525,7 +524,7 @@ public partial class MainForm : AboutSysMenuForm
         // This is a trick to force the app back on top in some cases when
         // invoked via PostMessage/WndProc and our custom WmActivateApp
         // message
-        
+
         if (external)
         {
             WindowState = FormWindowState.Minimized;
@@ -582,8 +581,8 @@ public partial class MainForm : AboutSysMenuForm
 
         MessageBox.Show(
             this,
-            Consts.RunAtStartupMessage.Replace("{appVersion}", appVersion),
-            @"Welcome",
+            Resources.RunAtStartupMessage.Replace("{appVersion}", appVersion),
+            Resources.MainForm_ShowMessageOnFirstRun_Welcome,
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
     }
