@@ -428,6 +428,22 @@ begin
   end;
 end;
 
+procedure Dependency_AddDotNet80Desktop;
+begin
+  // https://dotnet.microsoft.com/download/dotnet/8.0
+  if not Dependency_IsNetCoreInstalled('Microsoft.WindowsDesktop.App 8.0.0') then begin
+    Dependency_Add('windowsdesktop-runtime-8.0.0-win' + Dependency_ArchSuffix + '.exe',
+      '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
+      '.NET Desktop Runtime 8.0.0' + Dependency_ArchTitle,
+      Dependency_String(
+        'https://download.visualstudio.microsoft.com/download/pr/f9e3b581-059d-429f-9f0d-1d1167ff7e32/bd7661030cd5d66cd3eee0fd20b24540/windowsdesktop-runtime-8.0.0-win-x86.exe',
+        'https://download.visualstudio.microsoft.com/download/pr/b280d97f-25a9-4ab7-8a12-8291aa3af117/a37ed0e68f51fcd973e9f6cb4f40b1a7/windowsdesktop-runtime-8.0.0-win-x64.exe'),
+        '',
+        False,
+        False);
+  end;
+end;
+
 procedure Dependency_AddVC2005;
 begin
   // https://www.microsoft.com/en-us/download/details.aspx?id=26347
@@ -639,6 +655,7 @@ end;
   #define UseDotNet60Asp
   #define UseDotNet60Desktop
   #define UseDotNet70Desktop
+  #define UseDotNet80Desktop
 #endif
 
 #define UseVC2005
@@ -770,6 +787,9 @@ begin
 #endif
 #ifdef UseDotNet70Desktop
   Dependency_AddDotNet70Desktop;
+#endif
+#ifdef UseDotNet80Desktop
+  Dependency_AddDotNet80Desktop;
 #endif
 
 #ifdef UseVC2005
