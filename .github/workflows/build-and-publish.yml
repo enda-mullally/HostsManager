@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-2022
     env:
       BUILD_CONFIG: "Release"
-      DOTNET_VER: "net7.0-windows"
+      DOTNET_VER: "net8.0-windows7.0"
       APP_DIR: "EM.HostsManager.App"
       INSTALLER_DIR: "EM.HostsManager.Installer"
       SIGNTOOL: "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x86/signtool.exe"  # See list of installed Windows SDK's @ https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
@@ -23,7 +23,7 @@ jobs:
       CERT_FILENAME: "Cert.pfx"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Fetch all history and tags
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
@@ -54,10 +54,10 @@ jobs:
         Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
         Write-Output "==============================================================================================================================================="
 
-    - name: Setup .NET 7.0
-      uses: actions/setup-dotnet@v2
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
 
     - name: Patch BuildDateAttribute
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)

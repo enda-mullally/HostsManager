@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EM.HostsManager.Installer",
 		EM.HostsManager.Installer\Licenses-ThirdParty.txt = EM.HostsManager.Installer\Licenses-ThirdParty.txt
 		EM.HostsManager.Installer\netcorecheck_x64.exe = EM.HostsManager.Installer\netcorecheck_x64.exe
 		EM.HostsManager.Installer\SetupIcon.bmp = EM.HostsManager.Installer\SetupIcon.bmp
-		EM.HostsManager.Installer\windowsdesktop-runtime-7.0.10-win_x64.exe = EM.HostsManager.Installer\windowsdesktop-runtime-7.0.10-win_x64.exe
+		EM.HostsManager.Installer\windowsdesktop-runtime-8.0.0-win_x64.exe = EM.HostsManager.Installer\windowsdesktop-runtime-8.0.0-win_x64.exe
 	EndProjectSection
 EndProject
 Global

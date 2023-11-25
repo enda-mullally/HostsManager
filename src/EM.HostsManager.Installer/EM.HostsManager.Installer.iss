@@ -10,7 +10,7 @@
 #define public Dependency_NoExampleSetup
 #include "CodeDependencies.iss"
 
-#define DotNetVersionBuildDir "net7.0-windows"
+#define DotNetVersionBuildDir "net8.0-windows7.0"
 
 [Setup]
 ArchitecturesAllowed=x64
@@ -63,8 +63,8 @@ Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsMan
 ; Deps
 Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
 
-; Currently 7.0.10
-Source: "windowsdesktop-runtime-7.0.10-win_x64.exe"; Flags: dontcopy noencryption
+; Currently 8.0.0
+Source: "windowsdesktop-runtime-8.0.0-win_x64.exe"; Flags: dontcopy noencryption
 
 [Run]
 Filename: {app}\EM.HostsManager.App.exe; Description: {cm:LaunchProgram,{cm:AppName}}; Flags: nowait postinstall skipifsilent
@@ -79,21 +79,21 @@ LaunchProgram=Start Hosts Manager v{#InstallerVersion}
 [Code]
 function InitializeSetup: Boolean;
 begin
-  // We depend on the .NET 7.0 Desktop runtime so install it if needed (x64).
+  // We depend on the .NET 8.0 Desktop runtime so install it if needed (x64).
   // Note:
-  //   This is an embedded offline install, see how 'windowsdesktop-runtime-7.0.10-win_x64.exe' is
+  //   This is an embedded offline install, see how 'windowsdesktop-runtime-8.0.0-win_x64.exe' is
   //   packed above and extracted below.
   //   This will make our installer much larger in size, but,
   //   will work well on machines that are offline or behind paranoid corporate firewalls.
   // Note:
-  //   This may be obvious, but, if the user already has a compatible .NET 7.0 Desktop runtime
+  //   This may be obvious, but, if the user already has a compatible .NET 8.0 Desktop runtime
   //   installed everything above will be skipped and the installer will just install Hosts Manager.
   //
   // Special thanks to all the contributors @ https://github.com/DomGries/InnoDependencyInstaller !
 
-  ExtractTemporaryFile('windowsdesktop-runtime-7.0.10-win_x64.exe');
+  ExtractTemporaryFile('windowsdesktop-runtime-8.0.0-win_x64.exe');
 
-  Dependency_AddDotNet70Desktop;
+  Dependency_AddDotNet80Desktop;
   
   // ...
 
