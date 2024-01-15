@@ -1,23 +1,16 @@
-﻿using Reg = EM.HostsManager.Infrastructure.Registry.Registry;
+﻿//
+// Copyright © 2021-2024 Enda Mullally.
+//
+
+using Reg=EM.HostsManager.Infrastructure.Registry.Registry;
 
 namespace EM.HostsManager.Infrastructure.AutoStart
 {
-    public class AutoStartManager
+    public class AutoStartManager(
+        string applicationExePath,
+        string startupArgs,
+        string applicationName)
     {
-        private readonly string _applicationExePath;
-        private readonly string _startupArgs;
-        private readonly string _applicationName;
-
-        public AutoStartManager(
-            string applicationExePath,
-            string startupArgs,
-            string applicationName)
-        {
-            _applicationExePath = applicationExePath;
-            _startupArgs = startupArgs;
-            _applicationName = applicationName;
-        }
-
         private const string RunAtStartupMainRegPath =
             @"Software\Microsoft\Windows\CurrentVersion\Run";
 
@@ -31,8 +24,8 @@ namespace EM.HostsManager.Infrastructure.AutoStart
             Reg.SetRegString(
                 Microsoft.Win32.Registry.CurrentUser,
                 RunAtStartupMainRegPath,
-                _applicationName,
-                $"{DoubleQuote}{_applicationExePath}{DoubleQuote} {_startupArgs}");
+                applicationName,
+                $"{DoubleQuote}{applicationExePath}{DoubleQuote} {startupArgs}");
 
             return EnableDisableAutoRun(true);
         }
@@ -42,10 +35,10 @@ namespace EM.HostsManager.Infrastructure.AutoStart
             var result = Reg.DeleteRegString(
                 Microsoft.Win32.Registry.CurrentUser,
                 RunAtStartupMainRegPath,
-                _applicationName) && Reg.DeleteRegString(
+                applicationName) && Reg.DeleteRegString(
                     Microsoft.Win32.Registry.CurrentUser,
                     RunAtStartupApprovedRegPath,
-                    _applicationName);
+                    applicationName);
 
             return result;
         }
@@ -62,7 +55,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                 {
                     if (key != null)
                     {
-                        var valueType = key.GetValueKind(_applicationName);
+                        var valueType = key.GetValueKind(applicationName);
 
                         isBinaryKey = valueType == RegistryValueKind.Binary;
                     }
@@ -79,14 +72,14 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                     {
                         case true:
                         {
-                            if (key.GetValue(_applicationName) is byte[] binaryData)
+                            if (key.GetValue(applicationName) is byte[] binaryData)
                             {
                                 // Modify the binary data to enable the entry (exact bit manipulation depends on the format)
                                 // Example: Set the first byte to 0x02 to enable 0x03 to disable
                                 binaryData[0] = (byte)(enable ? 0x02 : 0x03);
 
                                 // Write the modified binary data back to the registry
-                                key.SetValue(_applicationName, binaryData, RegistryValueKind.Binary);
+                                key.SetValue(applicationName, binaryData, RegistryValueKind.Binary);
 
                                 result = true;
                             }
@@ -95,10 +88,10 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                         }
                         case false:
                         {
-                            if (key.GetValue(_applicationName) is RegistryValueKind.DWord)
+                            if (key.GetValue(applicationName) is RegistryValueKind.DWord)
                             {
                                 // Set the value to 3 to disable startup
-                                key.SetValue(_applicationName, enable ? 2 : 3, RegistryValueKind.DWord);
+                                key.SetValue(applicationName, enable ? 2 : 3, RegistryValueKind.DWord);
 
                                 result = true;
                             }
@@ -119,7 +112,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                         var binaryData = new byte[] { 0x02 };
 
                         // Write the modified binary data back to the registry
-                        keyCreate.SetValue(_applicationName, binaryData, RegistryValueKind.Binary);
+                        keyCreate.SetValue(applicationName, binaryData, RegistryValueKind.Binary);
                     }
 
                     return true;
@@ -136,10 +129,10 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                 var mainRegValue = Reg.GetRegString(
                     Microsoft.Win32.Registry.CurrentUser,
                     RunAtStartupMainRegPath,
-                    _applicationName);
+                    applicationName);
 
                 var mainAutoRunKeyExistsAndIsValid =
-                    mainRegValue.Contains(_applicationExePath, StringComparison.InvariantCultureIgnoreCase);
+                    mainRegValue.Contains(applicationExePath, StringComparison.InvariantCultureIgnoreCase);
 
                 if (!mainAutoRunKeyExistsAndIsValid)
                 {
@@ -154,7 +147,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                 {
                     if (key != null)
                     {
-                        var valueType = key.GetValueKind(_applicationName);
+                        var valueType = key.GetValueKind(applicationName);
 
                         isBinaryKey = valueType == RegistryValueKind.Binary;
                     }
@@ -173,7 +166,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                     {
                         case true:
                         {
-                            if (key.GetValue(_applicationName) is byte[] binaryData)
+                            if (key.GetValue(applicationName) is byte[] binaryData)
                             {
                                 enableResult = binaryData[0] == 0x02;
                             }
@@ -182,7 +175,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                         }
                         case false:
                         {
-                            if (key.GetValue(_applicationName) is long longVal)
+                            if (key.GetValue(applicationName) is long longVal)
                             {
                                 enableResult = longVal == 2;
                             }

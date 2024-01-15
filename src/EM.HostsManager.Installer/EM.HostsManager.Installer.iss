@@ -1,6 +1,6 @@
 ;
 ; Hosts Maneger InnoSetup Installer Script.
-; Copyright (c) 2022-2023 Enda Mullally.
+; Copyright (c) 2022-2024 Enda Mullally.
 ;
 
 #ifndef InstallerVersion
@@ -23,12 +23,12 @@ UninstallDisplayIcon={app}\EM.HostsManager.App.exe
 WizardStyle=modern
 AppName=Hosts Manager
 AppPublisher=Enda Mullally
-DefaultDirName={commonpf}\Enda Mullally\Hosts Manager
+DefaultDirName={commonpf}\Hosts Manager
 DefaultGroupName=Hosts Manager
 PrivilegesRequired=admin
 LicenseFile=License.txt
 AppVersion={#InstallerVersion}
-AppCopyright=Copyright 2021-2023 Enda Mullally
+AppCopyright=Copyright 2021-2024 Enda Mullally
 DisableProgramGroupPage=true
 DisableDirPage=true
 Compression=lzma2

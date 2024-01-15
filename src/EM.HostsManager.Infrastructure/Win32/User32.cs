@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2009-2023 Enda Mullally.
+// Copyright © 2009-2024 Enda Mullally.
 //
 
 #pragma warning disable SYSLIB1054

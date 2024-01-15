@@ -1,17 +1,14 @@
 ﻿//
-// Copyright © 2021-2023 Enda Mullally.
+// Copyright © 2021-2024 Enda Mullally.
 //
 
 using EM.HostsManager.Infrastructure.Attributes;
 
 namespace EM.HostsManager.Infrastructure.Version;
 
-public class AppVersion
+public class AppVersion(Assembly assembly)
 {
-    private readonly Assembly _assembly;
-        
-    public AppVersion(Assembly assembly) =>
-        _assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
+    private readonly Assembly _assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
     public string GetAppVersion()
     {

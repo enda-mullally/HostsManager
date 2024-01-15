@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2021-2023 Enda Mullally.
+// Copyright © 2021-2024 Enda Mullally.
 //
 
 using EM.HostsManager.App.Properties;
@@ -8,7 +8,7 @@ using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.UI.CustomForms;
 using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
-using Reg = EM.HostsManager.Infrastructure.Registry.Registry;
+using Reg=EM.HostsManager.Infrastructure.Registry.Registry;
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming

@@ -2,7 +2,7 @@
 {
     public static class Consts
     {
-        public const string AppInstanceId = "Enda-Mullally|Hosts-Manager|2021-2023|V1|Single.Instance";
+        public const string AppInstanceId = "Enda-Mullally|Hosts-Manager|2021-2024|V1|Single.Instance";
 
         public const string QuitArg = "/quit";
 

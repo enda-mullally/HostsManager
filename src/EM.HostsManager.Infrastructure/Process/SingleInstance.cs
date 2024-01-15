@@ -1,5 +1,5 @@
 //
-// Copyright © 2009-2023 Enda Mullally.
+// Copyright Â© 2021-2024 Enda Mullally.
 //
 
 using EM.HostsManager.Infrastructure.Win32;

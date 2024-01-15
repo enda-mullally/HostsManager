@@ -6,7 +6,7 @@
     Version 2.0
     
     The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
+    that is mostly human-readable. The generation and parsing of the 
     various data types are done through the TypeConverter classes 
     associated with the data types.
     
@@ -165,7 +165,7 @@ Version: {appVersion}
 Commit: {commitId}
 Date: {buildDate}
 
-Copyright © 2021-2023 Enda Mullally</value>
+Copyright © 2021-2024 Enda Mullally</value>
   </data>
   <data name="About_Label" xml:space="preserve">
     <value>&amp;About</value>
@@ -179,7 +179,7 @@ Hosts Manager is a system tray application, it will automatically minimize to yo
 
 Startup app: By default, Hosts Manager will run at startup. You can disable auto start by un-checking 'Run at startup' in the system tray icon.
 
-To exit Hosts Manager, right click the system tray icon and select Exit.
+To exit Hosts Manager, right-click the system tray icon and select Exit.
 
 Thank you for installing Hosts Manager.
 

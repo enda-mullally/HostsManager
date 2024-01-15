@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2021-2023 Enda Mullally.
+// Copyright © 2021-2024 Enda Mullally.
 //
 
 using SysFile=System.IO.File;
