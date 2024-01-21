@@ -1,5 +1,9 @@
-﻿using EM.HostsManager.Infrastructure.AutoStart;
-using Reg = EM.HostsManager.Infrastructure.Registry.Registry;
+﻿//
+// Copyright © 2021-2024 Enda Mullally.
+//
+
+using EM.HostsManager.Infrastructure.AutoStart;
+using Reg=EM.HostsManager.Infrastructure.Registry.Registry;
 
 namespace EM.HostsManager.App
 {

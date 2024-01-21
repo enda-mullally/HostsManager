@@ -1,16 +1,11 @@
 ﻿//
-// Copyright © 2021-2023 Enda Mullally.
+// Copyright © 2021-2024 Enda Mullally.
 //
 
 namespace EM.HostsManager.Infrastructure.Attributes;
 
 [AttributeUsage(AttributeTargets.Assembly)]
-public class BuildDateAttribute : Attribute
+public class BuildDateAttribute(string buildDateString) : Attribute
 {
-    public string BuildDate { get; set; }
-
-    public BuildDateAttribute(string buildDateString)
-    {
-        BuildDate = buildDateString;
-    }
+    public string BuildDate { get; set; } = buildDateString;
 }

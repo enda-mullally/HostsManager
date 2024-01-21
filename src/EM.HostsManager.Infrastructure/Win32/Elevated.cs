@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2009-2023 Enda Mullally.
+// Copyright © 2009-2024 Enda Mullally.
 //
 
 namespace EM.HostsManager.Infrastructure.Win32;

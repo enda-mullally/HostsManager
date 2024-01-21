@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2021-2023 Enda Mullally.
+// Copyright © 2021-2024 Enda Mullally.
 //
 
 namespace EM.HostsManager.Infrastructure.Hosts;
@@ -74,7 +74,7 @@ public static class HostsFile
             // this line doesn't look like a comment, skip it
             if (!nextLine!
                     .TrimStart()
-                    .StartsWith("#"))
+                    .StartsWith('#'))
             {
                 continue;
             }
@@ -106,7 +106,7 @@ public static class HostsFile
         var hostsFileName = GetHostsFilename();
 
         IO.File.CopyFileTo(hostsFileName, GetDisabledHostsFilename());
-            
+
         IO.File.ReplaceContentWith(hostsFileName,
             DisabledHostFileEntry1 + Environment.NewLine + DisabledHostFileEntry2);
 
@@ -123,7 +123,7 @@ public static class HostsFile
         var disabledHostsFileName = GetDisabledHostsFilename();
 
         IO.File.CopyFileTo(disabledHostsFileName, GetHostsFilename());
-            
+
         IO.File.DeleteIfExists(disabledHostsFileName);
 
         return true;

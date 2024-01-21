@@ -78,7 +78,7 @@ namespace EM.HostsManager.App.Properties {
         ///Commit: {commitId}
         ///Date: {buildDate}
         ///
-        ///Copyright © 2021-2023 Enda Mullally.
+        ///Copyright © 2021-2024 Enda Mullally.
         /// </summary>
         internal static string AboutMessage {
             get {
@@ -213,7 +213,7 @@ namespace EM.HostsManager.App.Properties {
         ///
         ///Startup app: By default, Hosts Manager will run at startup. You can disable auto start by un-checking &apos;Run at startup&apos; in the system tray icon.
         ///
-        ///To exit Hosts Manager, right click the system tray icon and select Exit.
+        ///To exit Hosts Manager, right-click the system tray icon and select Exit.
         ///
         ///Thank you for installing Hosts Manager.
         ///

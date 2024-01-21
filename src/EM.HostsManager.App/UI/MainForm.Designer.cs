@@ -70,7 +70,7 @@ namespace EM.HostsManager.App.UI
             // 
             uxbtnRunAsAdmin.Anchor = AnchorStyles.Left;
             uxbtnRunAsAdmin.BackColor = System.Drawing.SystemColors.Control;
-            uxbtnRunAsAdmin.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnRunAsAdmin.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             uxbtnRunAsAdmin.ForeColor = System.Drawing.SystemColors.ControlText;
             uxbtnRunAsAdmin.Location = new System.Drawing.Point(114, 277);
             uxbtnRunAsAdmin.Margin = new Padding(3, 2, 3, 2);
@@ -99,7 +99,7 @@ namespace EM.HostsManager.App.UI
             // 
             // uxMenuItemShow
             // 
-            uxMenuItemShow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxMenuItemShow.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxMenuItemShow.Name = "uxMenuItemShow";
             uxMenuItemShow.Size = new System.Drawing.Size(159, 22);
             uxMenuItemShow.Text = "&Open";
@@ -149,7 +149,7 @@ namespace EM.HostsManager.App.UI
             // 
             // uxMenuAbout
             // 
-            uxMenuAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxMenuAbout.Font = new System.Drawing.Font("Segoe UI", 9F);
             uxMenuAbout.Name = "uxMenuAbout";
             uxMenuAbout.Size = new System.Drawing.Size(190, 22);
             uxMenuAbout.Text = "&About Hosts Manager";
@@ -188,7 +188,7 @@ namespace EM.HostsManager.App.UI
             // uxlblEnabled
             // 
             uxlblEnabled.AutoSize = true;
-            uxlblEnabled.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblEnabled.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold);
             uxlblEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
             uxlblEnabled.Location = new System.Drawing.Point(86, 14);
             uxlblEnabled.Name = "uxlblEnabled";
@@ -199,7 +199,7 @@ namespace EM.HostsManager.App.UI
             // uxlblHostNames
             // 
             uxlblHostNames.AutoSize = true;
-            uxlblHostNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblHostNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblHostNames.ForeColor = System.Drawing.Color.WhiteSmoke;
             uxlblHostNames.Location = new System.Drawing.Point(89, 54);
             uxlblHostNames.Name = "uxlblHostNames";
@@ -210,7 +210,7 @@ namespace EM.HostsManager.App.UI
             // uxlblHostsCount
             // 
             uxlblHostsCount.AutoSize = true;
-            uxlblHostsCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblHostsCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblHostsCount.ForeColor = System.Drawing.Color.WhiteSmoke;
             uxlblHostsCount.Location = new System.Drawing.Point(184, 54);
             uxlblHostsCount.Name = "uxlblHostsCount";
@@ -221,7 +221,7 @@ namespace EM.HostsManager.App.UI
             // uxlblHostsFileSize
             // 
             uxlblHostsFileSize.AutoSize = true;
-            uxlblHostsFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblHostsFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblHostsFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
             uxlblHostsFileSize.Location = new System.Drawing.Point(184, 78);
             uxlblHostsFileSize.Name = "uxlblHostsFileSize";
@@ -232,7 +232,7 @@ namespace EM.HostsManager.App.UI
             // uxlblFileSize
             // 
             uxlblFileSize.AutoSize = true;
-            uxlblFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            uxlblFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
             uxlblFileSize.Location = new System.Drawing.Point(89, 78);
             uxlblFileSize.Name = "uxlblFileSize";
@@ -244,7 +244,7 @@ namespace EM.HostsManager.App.UI
             // 
             uxbtnDisableHostsFile.BackColor = System.Drawing.SystemColors.Control;
             uxbtnDisableHostsFile.Enabled = false;
-            uxbtnDisableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnDisableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             uxbtnDisableHostsFile.ForeColor = System.Drawing.SystemColors.ControlText;
             uxbtnDisableHostsFile.Location = new System.Drawing.Point(132, 135);
             uxbtnDisableHostsFile.Margin = new Padding(3, 2, 3, 2);
@@ -259,7 +259,7 @@ namespace EM.HostsManager.App.UI
             // uxbtnEnableHostsFile
             // 
             uxbtnEnableHostsFile.BackColor = System.Drawing.SystemColors.Control;
-            uxbtnEnableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnEnableHostsFile.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             uxbtnEnableHostsFile.ForeColor = System.Drawing.SystemColors.ControlText;
             uxbtnEnableHostsFile.Location = new System.Drawing.Point(214, 135);
             uxbtnEnableHostsFile.Margin = new Padding(3, 2, 3, 2);
@@ -277,7 +277,7 @@ namespace EM.HostsManager.App.UI
             uxbtnEdit.ContextMenuStrip = uxTrayMenu;
             uxbtnEdit.Enabled = false;
             uxbtnEdit.FlatAppearance.BorderSize = 0;
-            uxbtnEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             uxbtnEdit.ForeColor = System.Drawing.SystemColors.ControlText;
             uxbtnEdit.Location = new System.Drawing.Point(32, 135);
             uxbtnEdit.Margin = new Padding(3, 2, 3, 2);
@@ -327,7 +327,7 @@ namespace EM.HostsManager.App.UI
             // 
             uxbtnFlushDNS.BackColor = System.Drawing.SystemColors.Control;
             uxbtnFlushDNS.Enabled = false;
-            uxbtnFlushDNS.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            uxbtnFlushDNS.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             uxbtnFlushDNS.ForeColor = System.Drawing.SystemColors.ControlText;
             uxbtnFlushDNS.Location = new System.Drawing.Point(297, 135);
             uxbtnFlushDNS.Margin = new Padding(3, 2, 3, 2);
@@ -356,7 +356,7 @@ namespace EM.HostsManager.App.UI
             Controls.Add(uxAppIcon);
             Controls.Add(uxlblSep);
             Controls.Add(uxbtnRunAsAdmin);
-            Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            Font = new System.Drawing.Font("Segoe UI", 8.25F);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;

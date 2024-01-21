@@ -1,12 +1,12 @@
 //
-// Copyright © 2009-2023 Enda Mullally.
+// Copyright Â© 2021-2024 Enda Mullally.
 //
 
 using EM.HostsManager.Infrastructure.Win32;
 
 namespace EM.HostsManager.Infrastructure.Process;
 
-using Procs = System.Diagnostics.Process;
+using Procs=System.Diagnostics.Process;
 
 public sealed class SingleInstance : IDisposable
 {

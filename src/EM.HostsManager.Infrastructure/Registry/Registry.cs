@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2021-2023 Enda Mullally.
+// Copyright © 2021-2024 Enda Mullally.
 //
 
 namespace EM.HostsManager.Infrastructure.Registry;
@@ -49,7 +49,7 @@ public sealed class Registry
             regKey = rootRegistryKey.OpenSubKey(key, true) ??
                      rootRegistryKey.CreateSubKey(key);
 
-            regKey!.SetValue(keyName, value, RegistryValueKind.String);
+            regKey.SetValue(keyName, value, RegistryValueKind.String);
 
             return true;
         }
