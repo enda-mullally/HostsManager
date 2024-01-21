@@ -21,7 +21,7 @@ public static class File
         {
             return false;
         }
-            
+
         return true;
     }
 

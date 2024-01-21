@@ -49,7 +49,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
 
             try
             {
-                var isBinaryKey = false;
+                bool isBinaryKey;
 
                 using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RunAtStartupApprovedRegPath))
                 {
@@ -58,6 +58,10 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                         var valueType = key.GetValueKind(applicationName);
 
                         isBinaryKey = valueType == RegistryValueKind.Binary;
+                    }
+                    else
+                    {
+                        isBinaryKey = true; // Key not found, on new machines, default to Binary key
                     }
                 }
 
@@ -139,7 +143,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                     return false;
                 }
 
-                var isBinaryKey = false;
+                bool isBinaryKey;
 
                 // Now get the approved key value [It will be either a dword or binary value key]
 
@@ -150,6 +154,10 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                         var valueType = key.GetValueKind(applicationName);
 
                         isBinaryKey = valueType == RegistryValueKind.Binary;
+                    }
+                    else
+                    {
+                        isBinaryKey = true; // Key not found, on new machines, default to Binary key
                     }
                 }
 
