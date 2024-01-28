@@ -4,9 +4,9 @@
 
 namespace EM.HostsManager.Infrastructure.Registry;
 
-public sealed class Registry
+public sealed class Registry : IRegistry
 {
-    public static string GetRegString(RegistryKey rootRegistryKey, string key, string keyName, string defaultString = "")
+    public string GetRegString(RegistryKey rootRegistryKey, string key, string keyName, string defaultString = "")
     {
         RegistryKey? regKey = null;
         try
@@ -41,7 +41,7 @@ public sealed class Registry
         return defaultString;
     }
 
-    public static bool SetRegString(RegistryKey rootRegistryKey, string key, string keyName, string value)
+    public bool SetRegString(RegistryKey rootRegistryKey, string key, string keyName, string value)
     {
         RegistryKey? regKey = null;
         try
@@ -65,7 +65,7 @@ public sealed class Registry
         return false;
     }
 
-    public static bool DeleteRegString(RegistryKey rootRegistryKey, string path, string key)
+    public bool DeleteRegString(RegistryKey rootRegistryKey, string path, string key)
     {
         RegistryKey? regKey = null;
         try

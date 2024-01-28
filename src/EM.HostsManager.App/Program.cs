@@ -2,18 +2,26 @@
 // Copyright © 2021-2024 Enda Mullally.
 //
 
+using EM.HostsManager.App.DI;
 using EM.HostsManager.App.UI;
+using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.Process;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EM.HostsManager.App;
 
 internal static partial class Program
 {
+    private static readonly IServiceProvider ServiceProvider =
+        Container
+            .Create()
+            .BuildServiceProvider();
+
     [STAThread]
     private static void Main(string[] args)
     {
         using var si = new SingleInstance(Consts.AppInstanceId);
-        
+
         var arg = args.Length > 0
             ? args[0].ToLowerInvariant()
             : string.Empty;
@@ -38,7 +46,11 @@ internal static partial class Program
                 }
                 else
                 {
-                    Uninstall();
+                    var uninstaller =
+                        ServiceProvider.GetService<ProgramUninstaller>() ??
+                        throw new NullReferenceException("Could not create " + nameof(ProgramUninstaller));
+
+                    uninstaller.Uninstall();
                 }
 
                 return;
@@ -54,7 +66,7 @@ internal static partial class Program
                     return;
                 }
 
-                break;  // continue to start minimized
+                break; // continue to start minimized
             }
 
             case Consts.ElevateArg:
@@ -78,6 +90,11 @@ internal static partial class Program
         Application.SetHighDpiMode(HighDpiMode.SystemAware);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(new MainForm());
+
+        var mainForm =
+            ServiceProvider.GetService<MainForm>() ??
+                throw new NullReferenceException("Could not create " + nameof(Main));
+
+        Application.Run(mainForm);
     }
 }

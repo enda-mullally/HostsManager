@@ -2,14 +2,15 @@
 // Copyright © 2021-2024 Enda Mullally.
 //
 
-using Reg=EM.HostsManager.Infrastructure.Registry.Registry;
+using EM.HostsManager.Infrastructure.Registry;
 
 namespace EM.HostsManager.Infrastructure.AutoStart
 {
     public class AutoStartManager(
+        IRegistry registry,
         string applicationExePath,
         string startupArgs,
-        string applicationName)
+        string applicationName) : IAutoStartManager
     {
         private const string RunAtStartupMainRegPath =
             @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -21,7 +22,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
 
         public bool SetupAutoRunAtStartup()
         {
-            Reg.SetRegString(
+            registry.SetRegString(
                 Microsoft.Win32.Registry.CurrentUser,
                 RunAtStartupMainRegPath,
                 applicationName,
@@ -32,13 +33,13 @@ namespace EM.HostsManager.Infrastructure.AutoStart
 
         public bool DeleteAutoRunAtStartup()
         {
-            var result = Reg.DeleteRegString(
+            var result = registry.DeleteRegString(
                 Microsoft.Win32.Registry.CurrentUser,
                 RunAtStartupMainRegPath,
-                applicationName) && Reg.DeleteRegString(
-                    Microsoft.Win32.Registry.CurrentUser,
-                    RunAtStartupApprovedRegPath,
-                    applicationName);
+                applicationName) && registry.DeleteRegString(
+                Microsoft.Win32.Registry.CurrentUser,
+                RunAtStartupApprovedRegPath,
+                applicationName);
 
             return result;
         }
@@ -111,7 +112,8 @@ namespace EM.HostsManager.Infrastructure.AutoStart
                 if (enable)
                 {
                     // Create the key if needed (only on enable)
-                    using var keyCreate = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RunAtStartupApprovedRegPath);
+                    using var keyCreate =
+                        Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RunAtStartupApprovedRegPath);
                     {
                         var binaryData = new byte[] { 0x02 };
 
@@ -130,7 +132,7 @@ namespace EM.HostsManager.Infrastructure.AutoStart
         {
             try
             {
-                var mainRegValue = Reg.GetRegString(
+                var mainRegValue = registry.GetRegString(
                     Microsoft.Win32.Registry.CurrentUser,
                     RunAtStartupMainRegPath,
                     applicationName);

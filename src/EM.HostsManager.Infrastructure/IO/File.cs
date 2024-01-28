@@ -2,13 +2,13 @@
 // Copyright © 2021-2024 Enda Mullally.
 //
 
-using SysFile=System.IO.File;
+using SysFile = System.IO.File;
 
 namespace EM.HostsManager.Infrastructure.IO;
 
-public static class File
+public class File : IFile
 {
-    public static bool CopyFileTo(string sourceFileName, string destFileName, bool append = false)
+    public bool CopyFileTo(string sourceFileName, string destFileName, bool append = false)
     {
         try
         {
@@ -25,14 +25,14 @@ public static class File
         return true;
     }
 
-    public static long FileSize(string fileName)
+    public long FileSize(string fileName)
     {
         return SysFile.Exists(fileName)
             ? new FileInfo(fileName).Length
             : 0;
     }
 
-    public static bool ReplaceContentWith(string destFileName, string newContent)
+    public bool ReplaceContentWith(string destFileName, string newContent)
     {
         try
         {
@@ -47,7 +47,7 @@ public static class File
         return true;
     }
 
-    public static bool DeleteIfExists(string fileName)
+    public bool DeleteIfExists(string fileName)
     {
         try
         {
