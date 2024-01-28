@@ -4,7 +4,7 @@
 
 namespace EM.HostsManager.App
 {
-    internal static partial class Program
+    public partial class App
     {
         private const int WmUser = 0x0400;
 

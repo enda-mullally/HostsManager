@@ -2,9 +2,12 @@
 // Copyright © 2021-2024 Enda Mullally.
 //
 
+using EM.HostsManager.Infrastructure.IO;
+using SysFile = System.IO.File;
+
 namespace EM.HostsManager.Infrastructure.Hosts;
 
-public static class HostsFile
+public class HostsFile(IFile file) : IHostsFile
 {
     private const string HostsDirLoc = @"drivers\etc\";
     private const string HostsFileName = @"hosts";
@@ -17,16 +20,16 @@ public static class HostsFile
         return GetEnabledOrDisabledHostsFilename();
     }
 
-    public static bool IsEnabled()
+    public bool IsEnabled()
     {
         return !(HostsCount() == 0 && HostsContainsDisabledMarker());
     }
 
-    public static int HostsCount()
+    public int HostsCount()
     {
         var hostsFile = GetHostsFilename();
 
-        if (!File.Exists(hostsFile))
+        if (!SysFile.Exists(hostsFile))
         {
             return -1;
         }
@@ -55,11 +58,51 @@ public static class HostsFile
         return hostNameCount;
     }
 
-    public static bool HostsContainsDisabledMarker()
+    public long HostsFileSize()
+    {
+        return file.FileSize(GetHostsFilename());
+    }
+
+    public bool DisableHostsFile()
+    {
+        if (!IsEnabled())
+        {
+            return true;
+        }
+
+        var hostsFileName = GetHostsFilename();
+
+        file.CopyFileTo(hostsFileName, GetDisabledHostsFilename());
+
+        file.ReplaceContentWith(hostsFileName,
+            DisabledHostFileEntry1 + Environment.NewLine + DisabledHostFileEntry2);
+
+        return true;
+    }
+
+    public bool EnableHostsFile()
+    {
+        if (IsEnabled())
+        {
+            return true;
+        }
+
+        var disabledHostsFileName = GetDisabledHostsFilename();
+
+        file.CopyFileTo(disabledHostsFileName, GetHostsFilename());
+
+        file.DeleteIfExists(disabledHostsFileName);
+
+        return true;
+    }
+
+    #region Private
+
+    private static bool HostsContainsDisabledMarker()
     {
         var hostsFile = GetHostsFilename();
 
-        if (!File.Exists(hostsFile))
+        if (!SysFile.Exists(hostsFile))
         {
             return false;
         }
@@ -90,46 +133,6 @@ public static class HostsFile
 
         return markerFound;
     }
-
-    public static long HostsFileSize()
-    {
-        return IO.File.FileSize(GetHostsFilename());
-    }
-
-    public static bool DisableHostsFile()
-    {
-        if (!IsEnabled())
-        {
-            return true;
-        }
-
-        var hostsFileName = GetHostsFilename();
-
-        IO.File.CopyFileTo(hostsFileName, GetDisabledHostsFilename());
-
-        IO.File.ReplaceContentWith(hostsFileName,
-            DisabledHostFileEntry1 + Environment.NewLine + DisabledHostFileEntry2);
-
-        return true;
-    }
-
-    public static bool EnableHostsFile()
-    {
-        if (IsEnabled())
-        {
-            return true;
-        }
-
-        var disabledHostsFileName = GetDisabledHostsFilename();
-
-        IO.File.CopyFileTo(disabledHostsFileName, GetHostsFilename());
-
-        IO.File.DeleteIfExists(disabledHostsFileName);
-
-        return true;
-    }
-
-    #region Private
 
     private static string GetEnabledOrDisabledHostsFilename(bool enabledHostsFile = true)
     {

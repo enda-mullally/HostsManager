@@ -3,12 +3,13 @@
 //
 
 using EM.HostsManager.App.Properties;
+using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
+using EM.HostsManager.Infrastructure.Registry;
 using EM.HostsManager.Infrastructure.UI.CustomForms;
 using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
-using Reg=EM.HostsManager.Infrastructure.Registry.Registry;
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming
@@ -24,8 +25,26 @@ public partial class MainForm : AboutSysMenuForm
 
     private enum PreferredEditor { Default, NotepadPP, VSCode }
 
-    public MainForm() : base(Resources.About_Label, Program.WmActivateApp, Program.WmQuitApp, Program.WmUninstallApp)
+    private readonly IHostsFile _hostsFile;
+    private readonly IRegistry _registry;
+    private readonly IAutoStartManager _autoStartManager;
+    private readonly IAppUninstaller _uninstaller;
+    private readonly IAppVersion _appVersion;
+
+    public MainForm(
+        IHostsFile hostsFile,
+        IRegistry registry,
+        IAutoStartManager autoStartManager,
+        IAppUninstaller uninstaller,
+        IAppVersion appVersion) :
+        base(Resources.About_Label, App.WmActivateApp, App.WmQuitApp, App.WmUninstallApp)
     {
+        _hostsFile = hostsFile;
+        _registry = registry;
+        _autoStartManager = autoStartManager;
+        _uninstaller = uninstaller;
+        _appVersion = appVersion;
+
         InitializeComponent();
 
         SysAboutMenuClicked += OnSysAboutMenuClicked;
@@ -45,7 +64,7 @@ public partial class MainForm : AboutSysMenuForm
         uxOpenWithNotepadpp.Tag = nameof(PreferredEditor.NotepadPP);
         uxOpenWithVSCode.Tag = nameof(PreferredEditor.VSCode);
 
-        var currentPreferredEditor = Reg.GetRegString(
+        var currentPreferredEditor = _registry.GetRegString(
             Microsoft.Win32.Registry.CurrentUser,
             Consts.AppRegPath,
             Consts.PreferredEditorKey,
@@ -59,7 +78,7 @@ public partial class MainForm : AboutSysMenuForm
         }
 
         // Write it again anyway, if it was defaulted above.
-        Reg.SetRegString(
+        _registry.SetRegString(
             Microsoft.Win32.Registry.CurrentUser,
             Consts.AppRegPath,
             Consts.PreferredEditorKey,
@@ -89,24 +108,24 @@ public partial class MainForm : AboutSysMenuForm
 
     private void UxRefresh()
     {
-        uxlblEnabled.Text = Resources.hosts_file_is + (HostsFile.IsEnabled()
+        uxlblEnabled.Text = Resources.hosts_file_is + (_hostsFile.IsEnabled()
             ? Resources.enabled + "."
             : Resources.disabled + ".");
 
-        uxlblHostsFileSize.Text = HostsFile
+        uxlblHostsFileSize.Text = _hostsFile
             .HostsFileSize()
             .ToString("##,###0") + Resources.bytes;
 
         uxlblHostsCount.Text =
-            HostsFile
+            _hostsFile
                 .HostsCount()
                 .ToString("##,###0");
 
-        var hostsEnabled = HostsFile.IsEnabled();
+        var hostsEnabled = _hostsFile.IsEnabled();
 
         uxMenuEnableHostsFile.Checked = hostsEnabled;
 
-        var hostOrHosts = HostsFile
+        var hostOrHosts = _hostsFile
             .HostsCount() == 1
             ? Resources.host
             : Resources.hosts;
@@ -115,12 +134,8 @@ public partial class MainForm : AboutSysMenuForm
             ? "(" + uxlblHostsCount.Text + " " + hostOrHosts + " " + Resources.enabled + ")"
             : Resources.all_hosts_disabled);
 
-        var exe = Application
-            .ExecutablePath
-            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
-
         var runAtStartupCurrentlyEnabled =
-            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName)
+            _autoStartManager
                 .IsAutoRunEnabled();
 
         uxMenuRunAtStartup.Checked = runAtStartupCurrentlyEnabled;
@@ -165,14 +180,12 @@ public partial class MainForm : AboutSysMenuForm
     private void UxAbout()
     {
         _aboutShown = true;
-
-        var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
-
+        
         var aboutMessage =
             Resources.AboutMessage
-                .Replace("{appVersion}", appVersion.GetAppVersion())
-                .Replace("{commitId}", appVersion.GetCommitId())
-                .Replace("{buildDate}", appVersion.GetBuildDate());
+                .Replace("{appVersion}", _appVersion.GetAppVersion())
+                .Replace("{commitId}", _appVersion.GetCommitId())
+                .Replace("{buildDate}", _appVersion.GetBuildDate());
 
         MessageBox.Show(
             this,
@@ -195,14 +208,14 @@ public partial class MainForm : AboutSysMenuForm
 
     private void uxbtnDisableHostsFile_Click(object sender, EventArgs e)
     {
-        HostsFile.DisableHostsFile();
+        _hostsFile.DisableHostsFile();
 
         UxRefresh();
     }
 
     private void uxbtnEnableHostsFile_Click(object sender, EventArgs e)
     {
-        HostsFile.EnableHostsFile();
+        _hostsFile.EnableHostsFile();
 
         UxRefresh();
     }
@@ -218,7 +231,7 @@ public partial class MainForm : AboutSysMenuForm
         }
 
         var editor = Enum.Parse<PreferredEditor>(
-            Reg.GetRegString(
+            _registry.GetRegString(
                 Microsoft.Win32.Registry.CurrentUser,
                 Consts.AppRegPath,
                 Consts.PreferredEditorKey,
@@ -257,7 +270,7 @@ public partial class MainForm : AboutSysMenuForm
             // We failed to open with the selected editor (non default) so reset
             // to Default and try again...
 
-            Reg.SetRegString(
+            _registry.SetRegString(
                 Microsoft.Win32.Registry.CurrentUser,
                 Consts.AppRegPath,
                 Consts.PreferredEditorKey,
@@ -343,17 +356,17 @@ public partial class MainForm : AboutSysMenuForm
     {
         switch (e.Msg)
         {
-            case Program.WmActivateApp:
+            case App.WmActivateApp:
                 DoShow(true);
                 break;
 
-            case Program.WmQuitApp:
+            case App.WmQuitApp:
                 uxMenuExit_Click(null!, EventArgs.Empty);
                 break;
 
-            case Program.WmUninstallApp:
+            case App.WmUninstallApp:
                 {
-                    Program.Uninstall();
+                    _uninstaller.Uninstall();
                     uxMenuExit_Click(null!, EventArgs.Empty);
                     break;
                 }
@@ -387,11 +400,11 @@ public partial class MainForm : AboutSysMenuForm
 
         if (uxMenuEnableHostsFile.Checked)
         {
-            HostsFile.EnableHostsFile();
+            _hostsFile.EnableHostsFile();
         }
         else
         {
-            HostsFile.DisableHostsFile();
+            _hostsFile.DisableHostsFile();
         }
 
         if (Visible)
@@ -426,7 +439,7 @@ public partial class MainForm : AboutSysMenuForm
 
         var preferredEditor = selectedOpenWith.Tag as string;
 
-        Reg.SetRegString(
+        _registry.SetRegString(
             Microsoft.Win32.Registry.CurrentUser,
             Consts.AppRegPath,
             Consts.PreferredEditorKey,
@@ -435,14 +448,7 @@ public partial class MainForm : AboutSysMenuForm
 
     private void uxMenuRunAtStartup_Click(object sender, EventArgs e)
     {
-        var exe = Application
-            .ExecutablePath
-            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
-
-        var autoStartManager =
-            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName);
-
-        EnableRunAtStartup(!autoStartManager.IsAutoRunEnabled());
+        EnableRunAtStartup(!_autoStartManager.IsAutoRunEnabled());
     }
 
     #endregion
@@ -502,21 +508,14 @@ public partial class MainForm : AboutSysMenuForm
 
     #region Private
 
-    private static bool EnableRunAtStartup(bool enable)
+    private bool EnableRunAtStartup(bool enable)
     {
-        var exe = Application
-            .ExecutablePath
-            .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
-
-        var autoStartManager =
-            new AutoStartManager(exe, Consts.MinArg, Consts.ApplicationName);
-
         if (enable)
         {
-            autoStartManager.SetupAutoRunAtStartup();
+            _autoStartManager.SetupAutoRunAtStartup();
         }
 
-        return autoStartManager.EnableDisableAutoRun(enable);
+        return _autoStartManager.EnableDisableAutoRun(enable);
     }
 
     private void DoShow(bool external = false)
@@ -549,12 +548,10 @@ public partial class MainForm : AboutSysMenuForm
             return;
         }
 
-        var appVersion =
-            new AppVersion(
-                Assembly.GetExecutingAssembly()).GetAppVersion();
+        var appVersion = _appVersion.GetAppVersion();
 
         var firstRun =
-            !Reg.GetRegString(
+            !_registry.GetRegString(
                     Microsoft.Win32.Registry.CurrentUser,
                     Consts.AppRegPath,
                     Consts.FirstRunShownForKey,
@@ -573,7 +570,7 @@ public partial class MainForm : AboutSysMenuForm
         uxMenuRunAtStartup.Checked = EnableRunAtStartup(true);
         //..
 
-        Reg.SetRegString(
+        _registry.SetRegString(
             Microsoft.Win32.Registry.CurrentUser,
             Consts.AppRegPath,
             Consts.FirstRunShownForKey,
@@ -588,5 +585,4 @@ public partial class MainForm : AboutSysMenuForm
     }
 
     #endregion
-
 }
