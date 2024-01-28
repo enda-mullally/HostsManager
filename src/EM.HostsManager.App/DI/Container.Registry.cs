@@ -3,6 +3,7 @@ using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.IO;
+using EM.HostsManager.Infrastructure.Process;
 using EM.HostsManager.Infrastructure.Registry;
 using EM.HostsManager.Infrastructure.Version;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,9 @@ namespace EM.HostsManager.App.DI
 
             _container.AddSingleton<IAppVersion, AppVersion>(provider =>
                 new AppVersion(Assembly.GetExecutingAssembly()));
+
+            _container.AddSingleton<ISingleInstance, SingleInstance>(provider =>
+                new SingleInstance(Consts.AppInstanceId));
 
             return this;
         }

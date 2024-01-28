@@ -6,9 +6,9 @@ using EM.HostsManager.Infrastructure.Win32;
 
 namespace EM.HostsManager.Infrastructure.Process;
 
-using Procs=System.Diagnostics.Process;
+using Procs = System.Diagnostics.Process;
 
-public sealed class SingleInstance : IDisposable
+public sealed class SingleInstance : ISingleInstance
 {
     private readonly Mutex _processSync;
     private bool _owned;

@@ -7,13 +7,12 @@ namespace EM.HostsManager.App
 {
     public partial class App(
         IAppUninstaller uninstaller,
+        ISingleInstance singleInstance,
         // ReSharper disable once SuggestBaseTypeForParameterInConstructor
         MainForm mainForm)
     {
         public void Start(IReadOnlyList<string> args)
         {
-            using var si = new SingleInstance(Consts.AppInstanceId);
-
             var arg = args.Count > 0
                 ? args[0].ToLowerInvariant()
                 : string.Empty;
@@ -22,9 +21,9 @@ namespace EM.HostsManager.App
             {
                 case Consts.QuitArg:
                 {
-                    if (!si.IsSingleInstance())
+                    if (!singleInstance.IsSingleInstance())
                     {
-                        si.QuitOtherProcess(WmQuitApp);
+                        singleInstance.QuitOtherProcess(WmQuitApp);
                     }
 
                     return;
@@ -32,9 +31,9 @@ namespace EM.HostsManager.App
 
                 case Consts.UninstallArg:
                 {
-                    if (!si.IsSingleInstance())
+                    if (!singleInstance.IsSingleInstance())
                     {
-                        si.QuitOtherProcess(WmUninstallApp);
+                        singleInstance.QuitOtherProcess(WmUninstallApp);
                     }
                     else
                     {
@@ -46,7 +45,7 @@ namespace EM.HostsManager.App
 
                 case Consts.MinArg:
                 {
-                    if (!si.IsSingleInstance())
+                    if (!singleInstance.IsSingleInstance())
                     {
                         // If started with the /min switch, but another instance is already
                         // active, we can ignore here.
@@ -64,9 +63,9 @@ namespace EM.HostsManager.App
 
                 default:
                 {
-                    if (!si.IsSingleInstance())
+                    if (!singleInstance.IsSingleInstance())
                     {
-                        si.ActivateOtherProcess(WmActivateApp);
+                        singleInstance.ActivateOtherProcess(WmActivateApp);
 
                         return;
                     }
