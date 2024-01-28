@@ -7,9 +7,9 @@ using EM.HostsManager.Infrastructure.Registry;
 
 namespace EM.HostsManager.App.Uninstall
 {
-    public class ProgramUninstaller(
+    public class AppUninstaller(
         IRegistry registry,
-        IAutoStartManager autoStartManager) : IProgramUninstaller
+        IAutoStartManager autoStartManager) : IAppUninstaller
     {
         public void Uninstall()
         {

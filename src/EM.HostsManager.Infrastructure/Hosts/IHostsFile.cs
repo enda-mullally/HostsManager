@@ -6,8 +6,6 @@ public interface IHostsFile
 
     int HostsCount();
 
-    bool HostsContainsDisabledMarker();
-
     long HostsFileSize();
 
     bool DisableHostsFile();

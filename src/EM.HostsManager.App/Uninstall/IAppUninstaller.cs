@@ -1,6 +1,6 @@
 ﻿namespace EM.HostsManager.App.Uninstall;
 
-public interface IProgramUninstaller
+public interface IAppUninstaller
 {
     void Uninstall();
 }

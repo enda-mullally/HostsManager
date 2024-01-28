@@ -28,19 +28,22 @@ public partial class MainForm : AboutSysMenuForm
     private readonly IHostsFile _hostsFile;
     private readonly IRegistry _registry;
     private readonly IAutoStartManager _autoStartManager;
-    private readonly IProgramUninstaller _uninstaller;
+    private readonly IAppUninstaller _uninstaller;
+    private readonly IAppVersion _appVersion;
 
     public MainForm(
         IHostsFile hostsFile,
         IRegistry registry,
         IAutoStartManager autoStartManager,
-        IProgramUninstaller uninstaller) :
-        base(Resources.About_Label, Program.WmActivateApp, Program.WmQuitApp, Program.WmUninstallApp)
+        IAppUninstaller uninstaller,
+        IAppVersion appVersion) :
+        base(Resources.About_Label, App.WmActivateApp, App.WmQuitApp, App.WmUninstallApp)
     {
         _hostsFile = hostsFile;
         _registry = registry;
         _autoStartManager = autoStartManager;
         _uninstaller = uninstaller;
+        _appVersion = appVersion;
 
         InitializeComponent();
 
@@ -177,14 +180,12 @@ public partial class MainForm : AboutSysMenuForm
     private void UxAbout()
     {
         _aboutShown = true;
-
-        var appVersion = new AppVersion(Assembly.GetExecutingAssembly());
-
+        
         var aboutMessage =
             Resources.AboutMessage
-                .Replace("{appVersion}", appVersion.GetAppVersion())
-                .Replace("{commitId}", appVersion.GetCommitId())
-                .Replace("{buildDate}", appVersion.GetBuildDate());
+                .Replace("{appVersion}", _appVersion.GetAppVersion())
+                .Replace("{commitId}", _appVersion.GetCommitId())
+                .Replace("{buildDate}", _appVersion.GetBuildDate());
 
         MessageBox.Show(
             this,
@@ -355,15 +356,15 @@ public partial class MainForm : AboutSysMenuForm
     {
         switch (e.Msg)
         {
-            case Program.WmActivateApp:
+            case App.WmActivateApp:
                 DoShow(true);
                 break;
 
-            case Program.WmQuitApp:
+            case App.WmQuitApp:
                 uxMenuExit_Click(null!, EventArgs.Empty);
                 break;
 
-            case Program.WmUninstallApp:
+            case App.WmUninstallApp:
                 {
                     _uninstaller.Uninstall();
                     uxMenuExit_Click(null!, EventArgs.Empty);
@@ -547,9 +548,7 @@ public partial class MainForm : AboutSysMenuForm
             return;
         }
 
-        var appVersion =
-            new AppVersion(
-                Assembly.GetExecutingAssembly()).GetAppVersion();
+        var appVersion = _appVersion.GetAppVersion();
 
         var firstRun =
             !_registry.GetRegString(

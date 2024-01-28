@@ -58,42 +58,6 @@ public class HostsFile(IFile file) : IHostsFile
         return hostNameCount;
     }
 
-    public bool HostsContainsDisabledMarker()
-    {
-        var hostsFile = GetHostsFilename();
-
-        if (!SysFile.Exists(hostsFile))
-        {
-            return false;
-        }
-
-        var markerFound = false;
-
-        using var sr = new StreamReader(hostsFile);
-        while (sr.Peek() >= 0 && !markerFound)
-        {
-            var nextLine = sr.ReadLine();
-
-            // this line doesn't look like a comment, skip it
-            if (!nextLine!
-                    .TrimStart()
-                    .StartsWith('#'))
-            {
-                continue;
-            }
-
-            if (nextLine
-                .Trim()
-                .ToLowerInvariant()
-                .Equals(DisabledHostFileEntry2.ToLowerInvariant()))
-            {
-                markerFound = true;
-            }
-        }
-
-        return markerFound;
-    }
-
     public long HostsFileSize()
     {
         return file.FileSize(GetHostsFilename());
@@ -133,6 +97,42 @@ public class HostsFile(IFile file) : IHostsFile
     }
 
     #region Private
+
+    private static bool HostsContainsDisabledMarker()
+    {
+        var hostsFile = GetHostsFilename();
+
+        if (!SysFile.Exists(hostsFile))
+        {
+            return false;
+        }
+
+        var markerFound = false;
+
+        using var sr = new StreamReader(hostsFile);
+        while (sr.Peek() >= 0 && !markerFound)
+        {
+            var nextLine = sr.ReadLine();
+
+            // this line doesn't look like a comment, skip it
+            if (!nextLine!
+                    .TrimStart()
+                    .StartsWith('#'))
+            {
+                continue;
+            }
+
+            if (nextLine
+                .Trim()
+                .ToLowerInvariant()
+                .Equals(DisabledHostFileEntry2.ToLowerInvariant()))
+            {
+                markerFound = true;
+            }
+        }
+
+        return markerFound;
+    }
 
     private static string GetEnabledOrDisabledHostsFilename(bool enabledHostsFile = true)
     {

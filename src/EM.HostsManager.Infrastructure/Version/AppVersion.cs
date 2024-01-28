@@ -6,7 +6,7 @@ using EM.HostsManager.Infrastructure.Attributes;
 
 namespace EM.HostsManager.Infrastructure.Version;
 
-public class AppVersion(Assembly assembly)
+public class AppVersion(Assembly assembly) : IAppVersion
 {
     private readonly Assembly _assembly =
         assembly ?? throw new ArgumentNullException(nameof(assembly));
