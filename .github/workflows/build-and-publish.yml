@@ -175,8 +175,10 @@ jobs:
         cd ..
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll" "Binaries\Deploy"
-        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\Microsoft.Extensions.DependencyInjection.dll" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\Microsoft.Extensions.DependencyInjection.Abstractions.dll" "Binaries\Deploy"
 
     - name: Copy Build Files (3 of 3)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
