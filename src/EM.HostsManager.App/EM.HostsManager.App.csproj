@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<OutputType>WinExe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows7.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ApplicationIcon>Icon_01.ico</ApplicationIcon>
     <StartupObject>EM.HostsManager.App.Program</StartupObject>
-	<Authors>Enda Mullally</Authors>
+    <Authors>Enda Mullally</Authors>
     <Company />
     <PackageIcon>Icon_01.ico</PackageIcon>
     <Description>Just another Windows hosts file manager</Description>
