@@ -27,7 +27,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
   </PropertyGroup>
 
   <ItemGroup>
