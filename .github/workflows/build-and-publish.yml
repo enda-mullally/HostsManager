@@ -20,7 +20,6 @@ jobs:
       INSTALLER_DIR: "EM.HostsManager.Installer"
       SIGNTOOL: "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x86/signtool.exe"  # See list of installed Windows SDK's @ https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
       TIMESTAMP_URL: "http://timestamp.digicert.com"
-      CERT_FILENAME: "Cert.pfx"
 
     steps:
     - uses: actions/checkout@v3
@@ -107,7 +106,7 @@ jobs:
       shell: powershell
       run: |
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
-        $certificatePath = Join-Path -Path . -ChildPath ${{ env.CERT_FILENAME}}
+        $certificatePath = Join-Path -Path . -ChildPath ${{ secrets.PFX_CERT_FILENAME }}
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
     - name: Sign Application Files (Post Build)
@@ -117,7 +116,7 @@ jobs:
       run: |
         $signFiles = @("EM.HostsManager.Infrastructure.dll", "EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
         $signDir = "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
-        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
+        $signArgs = " sign /f '${{ secrets.PFX_CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
@@ -142,7 +141,7 @@ jobs:
       run: |
         $signFiles = @("EM.HostsManager.Installer.${{ steps.gitversion.outputs.MajorMinorPatch }}.exe")
         $signDir = "${{ env.INSTALLER_DIR }}\Output\"
-        $signArgs = " sign /f '${{ env.CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
+        $signArgs = " sign /f '${{ secrets.PFX_CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
         Foreach ($fileToSign in $signFiles)
         {
           $signArgsAndFile = $signArgs + "'" + $signDir + $fileToSign + "'"
@@ -155,7 +154,7 @@ jobs:
       shell: powershell
       working-directory: "./src"
       continue-on-error: true
-      run: Remove-Item -Verbose -Path ${{ env.CERT_FILENAME }}
+      run: Remove-Item -Verbose -Path ${{ secrets.PFX_CERT_FILENAME }}
 
     - name: Copy Build Files (1 of 3)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
