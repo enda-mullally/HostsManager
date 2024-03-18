@@ -4,11 +4,13 @@
 
 namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 {
-    public class NotepadPP : IEditor
+    public class NotepadPP() : BaseEditor()
     {
-        public string Key => "NotepadPP";
+        public override string Key => "NotepadPP";
 
-        public bool Open()
+        public override string DisplayName => "Notepad++";
+
+        public override bool Open()
         {
             var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
 

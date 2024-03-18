@@ -1,22 +1,34 @@
 ﻿namespace EM.HostsManager.Infrastructure.PreferredEditor
 {
-    public class PreferredEditorManager
+    public class PreferredEditorManager : IPreferredEditorManager
     {
-        private readonly Dictionary<string, IEditor> _editors = [];
-        
-        public void RegisterEditor(string key, IEditor editor)
+        private readonly List<IEditor?> _editors = [];
+
+        public void RegisterEditor(IEditor? editor)
         {
-            _editors.TryAdd(key, editor);
+            if (_editors.Contains(editor))
+            {
+                return;
+            }
+
+            _editors.Add(editor);
         }
 
         public bool Open(string key)
         {
-            if (_editors.TryGetValue(key, out var editor))
-            {
-                return editor.Open();
-            };
+            var editor = _editors.FirstOrDefault(e => e != null && e.Key.Equals(key));
 
-            return false;
+            return editor != null && editor.Open();
+        }
+
+        public IReadOnlyList<IEditor?> GetEditors()
+        {
+            return _editors;
+        }
+
+        public string GetDefaultEditorKey()
+        {
+            return _editors.FirstOrDefault(e => e is { IsDefault: true })?.Key ?? string.Empty;
         }
     }
 }

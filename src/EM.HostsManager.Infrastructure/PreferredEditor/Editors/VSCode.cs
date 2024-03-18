@@ -1,12 +1,14 @@
 ﻿using EM.HostsManager.Infrastructure.Hosts;
 
+// ReSharper disable InconsistentNaming
+
 namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 {
-    public class Default(bool isDefault = false) : BaseEditor(isDefault)
+    public class VSCode : BaseEditor
     {
-        public override string Key => "Default";
+        public override string Key => "VSCode";
 
-        public override string DisplayName => "Default";
+        public override string DisplayName => "Visual Studio Code";
 
         public override bool Open()
         {
@@ -17,7 +19,7 @@ namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
                 return false;
             }
 
-            const string fileName = "notepad.exe";
+            const string fileName = "code";
 
             var startInfo = new ProcessStartInfo
             {
