@@ -24,8 +24,6 @@ public partial class MainForm : AboutSysMenuForm
     private bool _aboutShown;
     private bool _requestingClose;
 
-    //private enum PreferredEditor { Default, NotepadPP, VSCode }
-
     private readonly IHostsFile _hostsFile;
     private readonly IRegistry _registry;
     private readonly IAutoStartManager _autoStartManager;

@@ -186,7 +186,7 @@ namespace EM.HostsManager.App.UI
             uxlblEnabled.AutoSize = true;
             uxlblEnabled.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold);
             uxlblEnabled.ForeColor = System.Drawing.Color.WhiteSmoke;
-            uxlblEnabled.Location = new System.Drawing.Point(86, 14);
+            uxlblEnabled.Location = new System.Drawing.Point(103, 14);
             uxlblEnabled.Name = "uxlblEnabled";
             uxlblEnabled.Size = new System.Drawing.Size(188, 25);
             uxlblEnabled.TabIndex = 0;
@@ -197,7 +197,7 @@ namespace EM.HostsManager.App.UI
             uxlblHostNames.AutoSize = true;
             uxlblHostNames.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblHostNames.ForeColor = System.Drawing.Color.WhiteSmoke;
-            uxlblHostNames.Location = new System.Drawing.Point(89, 54);
+            uxlblHostNames.Location = new System.Drawing.Point(106, 54);
             uxlblHostNames.Name = "uxlblHostNames";
             uxlblHostNames.Size = new System.Drawing.Size(41, 15);
             uxlblHostNames.TabIndex = 1;
@@ -208,7 +208,7 @@ namespace EM.HostsManager.App.UI
             uxlblHostsCount.AutoSize = true;
             uxlblHostsCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblHostsCount.ForeColor = System.Drawing.Color.WhiteSmoke;
-            uxlblHostsCount.Location = new System.Drawing.Point(184, 54);
+            uxlblHostsCount.Location = new System.Drawing.Point(201, 54);
             uxlblHostsCount.Name = "uxlblHostsCount";
             uxlblHostsCount.Size = new System.Drawing.Size(105, 15);
             uxlblHostsCount.TabIndex = 2;
@@ -219,7 +219,7 @@ namespace EM.HostsManager.App.UI
             uxlblHostsFileSize.AutoSize = true;
             uxlblHostsFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblHostsFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            uxlblHostsFileSize.Location = new System.Drawing.Point(184, 78);
+            uxlblHostsFileSize.Location = new System.Drawing.Point(201, 78);
             uxlblHostsFileSize.Name = "uxlblHostsFileSize";
             uxlblHostsFileSize.Size = new System.Drawing.Size(63, 15);
             uxlblHostsFileSize.TabIndex = 4;
@@ -230,7 +230,7 @@ namespace EM.HostsManager.App.UI
             uxlblFileSize.AutoSize = true;
             uxlblFileSize.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             uxlblFileSize.ForeColor = System.Drawing.Color.WhiteSmoke;
-            uxlblFileSize.Location = new System.Drawing.Point(89, 78);
+            uxlblFileSize.Location = new System.Drawing.Point(106, 78);
             uxlblFileSize.Name = "uxlblFileSize";
             uxlblFileSize.Size = new System.Drawing.Size(53, 15);
             uxlblFileSize.TabIndex = 3;
@@ -290,7 +290,7 @@ namespace EM.HostsManager.App.UI
             // uxOpenWith
             // 
             uxOpenWith.Name = "uxTrayMenu";
-            uxOpenWith.Size = new System.Drawing.Size(181, 26);
+            uxOpenWith.Size = new System.Drawing.Size(61, 4);
             // 
             // uxbtnFlushDNS
             // 

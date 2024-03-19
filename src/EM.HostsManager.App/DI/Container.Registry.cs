@@ -48,9 +48,11 @@ namespace EM.HostsManager.App.DI
                 new PreferredEditorManager(provider.GetRequiredService<IRegistry>(), Consts.AppRegPath,
                     Consts.PreferredEditorKey);
 
-            preferredEditorManager.RegisterEditor(new Default(true));
-            preferredEditorManager.RegisterEditor(new NotepadPP());
-            preferredEditorManager.RegisterEditor(new VSCode());
+            var fileName = HostsFile.GetHostsFilename();
+
+            preferredEditorManager.RegisterEditor(new Default(fileName, true));
+            preferredEditorManager.RegisterEditor(new NotepadPP(fileName));
+            preferredEditorManager.RegisterEditor(new VSCode(fileName));
 
             preferredEditorManager.LoadSelectedEditor();
 

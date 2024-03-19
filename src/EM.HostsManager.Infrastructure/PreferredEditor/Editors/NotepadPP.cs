@@ -1,10 +1,8 @@
-﻿using EM.HostsManager.Infrastructure.Hosts;
-
-// ReSharper disable InconsistentNaming
+﻿// ReSharper disable InconsistentNaming
 
 namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 {
-    public class NotepadPP() : BaseEditor()
+    public class NotepadPP(string fileName) : BaseEditor(fileName)
     {
         public override string Key => "NotepadPP";
 
@@ -12,21 +10,16 @@ namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 
         public override bool Open()
         {
-            var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
+            var workingDirectory = Directory.GetParent(FileName)?.FullName;
 
-            if (workingDirectory == null)
-            {
-                return false;
-            }
-
-            const string fileName = "notepad++.exe";
+            const string applicationName = "notepad++.exe";
 
             var startInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
                 WorkingDirectory = workingDirectory,
-                FileName = fileName,
-                Arguments = HostsFile.GetHostsFilename(),
+                FileName = applicationName,
+                Arguments = FileName,
                 Verb = "open"
             };
 
