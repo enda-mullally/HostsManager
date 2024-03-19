@@ -1,10 +1,8 @@
-﻿using EM.HostsManager.Infrastructure.Hosts;
-
-// ReSharper disable InconsistentNaming
+﻿// ReSharper disable InconsistentNaming
 
 namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 {
-    public class VSCode : BaseEditor
+    public class VSCode(string fileName) : BaseEditor(fileName)
     {
         public override string Key => "VSCode";
 
@@ -12,21 +10,16 @@ namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 
         public override bool Open()
         {
-            var workingDirectory = Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
+            var workingDirectory = Directory.GetParent(FileName)?.FullName;
 
-            if (workingDirectory == null)
-            {
-                return false;
-            }
-
-            const string fileName = "code";
+            const string applicationName = "code";
 
             var startInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
                 WorkingDirectory = workingDirectory,
-                FileName = fileName,
-                Arguments = HostsFile.GetHostsFilename(),
+                FileName = applicationName,
+                Arguments = FileName,
                 Verb = "open",
                 WindowStyle = ProcessWindowStyle.Hidden, // Fix for VSCode, prevent code console window from displaying
             };

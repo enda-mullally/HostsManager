@@ -2,8 +2,27 @@
 
 namespace EM.HostsManager.Infrastructure.PreferredEditor
 {
-    public abstract class BaseEditor(bool isDefault = false) : IEditor
+    public abstract class BaseEditor(string fileName, bool isDefault = false) : IEditor
     {
+        public virtual string FileName
+        {
+            get => fileName;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(fileName))
+                {
+                    throw new ArgumentNullException(nameof(fileName));
+                }
+
+                if (File.Exists(fileName))
+                {
+                    throw new FileNotFoundException(nameof(fileName), fileName);
+                }
+
+                fileName = value;
+            }
+        }
+
         public virtual string Key => "";
 
         public virtual string DisplayName => "";
