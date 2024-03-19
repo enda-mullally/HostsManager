@@ -6,6 +6,7 @@ using EM.HostsManager.App.Properties;
 using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
+using EM.HostsManager.Infrastructure.PreferredEditor;
 using EM.HostsManager.Infrastructure.Registry;
 using EM.HostsManager.Infrastructure.UI.CustomForms;
 using EM.HostsManager.Infrastructure.Version;
@@ -23,20 +24,22 @@ public partial class MainForm : AboutSysMenuForm
     private bool _aboutShown;
     private bool _requestingClose;
 
-    private enum PreferredEditor { Default, NotepadPP, VSCode }
+    //private enum PreferredEditor { Default, NotepadPP, VSCode }
 
     private readonly IHostsFile _hostsFile;
     private readonly IRegistry _registry;
     private readonly IAutoStartManager _autoStartManager;
     private readonly IAppUninstaller _uninstaller;
     private readonly IAppVersion _appVersion;
+    private readonly IPreferredEditorManager _preferredEditorManager;
 
     public MainForm(
         IHostsFile hostsFile,
         IRegistry registry,
         IAutoStartManager autoStartManager,
         IAppUninstaller uninstaller,
-        IAppVersion appVersion) :
+        IAppVersion appVersion,
+        IPreferredEditorManager preferredEditorManager) :
         base(Resources.About_Label, App.WmActivateApp, App.WmQuitApp, App.WmUninstallApp)
     {
         _hostsFile = hostsFile;
@@ -44,13 +47,15 @@ public partial class MainForm : AboutSysMenuForm
         _autoStartManager = autoStartManager;
         _uninstaller = uninstaller;
         _appVersion = appVersion;
+        _preferredEditorManager = preferredEditorManager;
 
         InitializeComponent();
 
         SysAboutMenuClicked += OnSysAboutMenuClicked;
         CustomMessageReceived += OnCustomMessageReceived;
 
-        UxGetPreferredEditor();
+        UxSetupPreferredEditors();
+        UxRefreshPreferredEditor();
         UxFixButtonText();
         UxFixHeight();
         UxRefresh();
@@ -58,17 +63,36 @@ public partial class MainForm : AboutSysMenuForm
 
     #region Ux
 
-    private void UxGetPreferredEditor()
+    private void UxSetupPreferredEditors()
     {
-        uxOpenWithDefault.Tag = nameof(PreferredEditor.Default);
-        uxOpenWithNotepadpp.Tag = nameof(PreferredEditor.NotepadPP);
-        uxOpenWithVSCode.Tag = nameof(PreferredEditor.VSCode);
+        if (uxOpenWith.Items.Count != 0)
+        {
+            return;
+        }
 
-        var currentPreferredEditor = _registry.GetRegString(
-            Microsoft.Win32.Registry.CurrentUser,
-            Consts.AppRegPath,
-            Consts.PreferredEditorKey,
-            nameof(PreferredEditor.Default));
+        var preferredEditors = _preferredEditorManager.GetEditors();
+
+        foreach (var editor in preferredEditors)
+        {
+            var preferredEditorMenuItem = new ToolStripMenuItem
+            {
+                Checked = editor.IsSelected,
+                CheckState = (editor.IsSelected) ? CheckState.Checked : CheckState.Unchecked,
+                Name = $"uxOpenWith_{editor.Key}",
+                Size = new System.Drawing.Size(180, 22),
+                Tag = editor.Key,
+                Text = editor.DisplayName
+            };
+
+            preferredEditorMenuItem.Click += uxOpenWith_Click;
+
+            uxOpenWith.Items.Add(preferredEditorMenuItem);
+        }
+    }
+
+    private void UxRefreshPreferredEditor()
+    {
+        var currentPreferredEditor = _preferredEditorManager.GetSelectedEditorKey();
 
         foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
         {
@@ -76,13 +100,6 @@ public partial class MainForm : AboutSysMenuForm
                 string.Equals(menuItem.Tag as string, currentPreferredEditor,
                     StringComparison.InvariantCultureIgnoreCase);
         }
-
-        // Write it again anyway, if it was defaulted above.
-        _registry.SetRegString(
-            Microsoft.Win32.Registry.CurrentUser,
-            Consts.AppRegPath,
-            Consts.PreferredEditorKey,
-            currentPreferredEditor);
     }
 
     private void UxFixHeight()
@@ -222,64 +239,19 @@ public partial class MainForm : AboutSysMenuForm
 
     private void uxbtnEdit_Click(object sender, EventArgs e)
     {
-        var workingDirectory =
-            Directory.GetParent(HostsFile.GetHostsFilename())?.FullName;
-
-        if (workingDirectory == null)
+        if (_preferredEditorManager.Open())
         {
             return;
         }
 
-        var editor = Enum.Parse<PreferredEditor>(
-            _registry.GetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.AppRegPath,
-                Consts.PreferredEditorKey,
-                nameof(PreferredEditor.Default)));
+        // We failed to open with the selected editor (non default).
+        // Reset to Default and try again...
+        _preferredEditorManager.SaveSelectedEditor(
+            _preferredEditorManager.GetDefaultEditorKey());
+            
+        UxRefreshPreferredEditor();
 
-        var fileName = editor switch
-        {
-            PreferredEditor.Default => "notepad.exe",
-            PreferredEditor.NotepadPP => "notepad++",
-            PreferredEditor.VSCode => "code",
-            _ => "notepad.exe"
-        };
-
-        var startInfo = new ProcessStartInfo
-        {
-            UseShellExecute = true,
-            WorkingDirectory = workingDirectory,
-            FileName = fileName,
-            Arguments = HostsFile.GetHostsFilename(),
-            Verb = "open"
-        };
-
-        try
-        {
-            Process.Start(startInfo);
-        }
-        catch (Exception exception)
-        {
-            Debug.WriteLine(exception.Message);
-
-            if (editor == PreferredEditor.Default)
-            {
-                return;
-            }
-
-            // We failed to open with the selected editor (non default) so reset
-            // to Default and try again...
-
-            _registry.SetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                Consts.AppRegPath,
-                Consts.PreferredEditorKey,
-                nameof(PreferredEditor.Default));
-
-            UxGetPreferredEditor();
-
-            uxbtnEdit_Click(sender, EventArgs.Empty);
-        }
+        uxbtnEdit_Click(sender, EventArgs.Empty);
     }
 
     private void uxbtnFlushDNS_Click(object sender, EventArgs e)
@@ -426,24 +398,26 @@ public partial class MainForm : AboutSysMenuForm
         UxRefresh();
     }
 
-    private void uxOpenWith_Click(object sender, EventArgs e)
+    private void uxOpenWith_Click(object? sender, EventArgs e)
     {
         foreach (ToolStripMenuItem menuItem in uxOpenWith.Items)
         {
             menuItem.Checked = false;
         }
 
-        var selectedOpenWith = (ToolStripMenuItem)sender;
+        if (sender is not ToolStripMenuItem selectedOpenWith)
+        {
+            return;
+        }
 
         selectedOpenWith.Checked = true;
 
-        var preferredEditor = selectedOpenWith.Tag as string;
-
-        _registry.SetRegString(
-            Microsoft.Win32.Registry.CurrentUser,
-            Consts.AppRegPath,
-            Consts.PreferredEditorKey,
-            preferredEditor ?? nameof(PreferredEditor.Default));
+        var preferredEditorKey = selectedOpenWith.Tag as string;
+        
+        if (!string.IsNullOrWhiteSpace(preferredEditorKey))
+        {
+            _preferredEditorManager.SaveSelectedEditor(preferredEditorKey);
+        }
     }
 
     private void uxMenuRunAtStartup_Click(object sender, EventArgs e)

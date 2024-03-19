@@ -57,13 +57,9 @@ namespace EM.HostsManager.App.UI
             uxbtnEnableHostsFile = new SplitButton();
             uxbtnEdit = new SplitButton();
             uxOpenWith = new ContextMenuStrip(components);
-            uxOpenWithDefault = new ToolStripMenuItem();
-            uxOpenWithNotepadpp = new ToolStripMenuItem();
-            uxOpenWithVSCode = new ToolStripMenuItem();
             uxbtnFlushDNS = new SplitButton();
             uxTrayMenu.SuspendLayout();
             ((ISupportInitialize)uxAppIcon).BeginInit();
-            uxOpenWith.SuspendLayout();
             SuspendLayout();
             // 
             // uxbtnRunAsAdmin
@@ -293,35 +289,8 @@ namespace EM.HostsManager.App.UI
             // 
             // uxOpenWith
             // 
-            uxOpenWith.Items.AddRange(new ToolStripItem[] { uxOpenWithDefault, uxOpenWithNotepadpp, uxOpenWithVSCode });
             uxOpenWith.Name = "uxTrayMenu";
-            uxOpenWith.Size = new System.Drawing.Size(174, 70);
-            // 
-            // uxOpenWithDefault
-            // 
-            uxOpenWithDefault.Checked = true;
-            uxOpenWithDefault.CheckState = CheckState.Checked;
-            uxOpenWithDefault.Name = "uxOpenWithDefault";
-            uxOpenWithDefault.Size = new System.Drawing.Size(173, 22);
-            uxOpenWithDefault.Tag = "DEFAULT";
-            uxOpenWithDefault.Text = "Default";
-            uxOpenWithDefault.Click += uxOpenWith_Click;
-            // 
-            // uxOpenWithNotepadpp
-            // 
-            uxOpenWithNotepadpp.Name = "uxOpenWithNotepadpp";
-            uxOpenWithNotepadpp.Size = new System.Drawing.Size(173, 22);
-            uxOpenWithNotepadpp.Tag = "NOTEPAD++";
-            uxOpenWithNotepadpp.Text = "Notepad++";
-            uxOpenWithNotepadpp.Click += uxOpenWith_Click;
-            // 
-            // uxOpenWithVSCode
-            // 
-            uxOpenWithVSCode.Name = "uxOpenWithVSCode";
-            uxOpenWithVSCode.Size = new System.Drawing.Size(173, 22);
-            uxOpenWithVSCode.Tag = "VSCODE";
-            uxOpenWithVSCode.Text = "Visual Studio Code";
-            uxOpenWithVSCode.Click += uxOpenWith_Click;
+            uxOpenWith.Size = new System.Drawing.Size(181, 26);
             // 
             // uxbtnFlushDNS
             // 
@@ -370,7 +339,6 @@ namespace EM.HostsManager.App.UI
             Resize += MainForm_Resize;
             uxTrayMenu.ResumeLayout(false);
             ((ISupportInitialize)uxAppIcon).EndInit();
-            uxOpenWith.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -395,9 +363,6 @@ namespace EM.HostsManager.App.UI
         private ToolStripSeparator uxMenuSeperator1;
         private SplitButton uxbtnFlushDNS;
         private ContextMenuStrip uxOpenWith;
-        private ToolStripMenuItem uxOpenWithDefault;
-        private ToolStripMenuItem uxOpenWithNotepadpp;
-        private ToolStripMenuItem uxOpenWithVSCode;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem uxMenuAutoStart;
         private ToolStripSeparator toolStripSeparator2;

@@ -3,6 +3,8 @@ using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.IO;
+using EM.HostsManager.Infrastructure.PreferredEditor;
+using EM.HostsManager.Infrastructure.PreferredEditor.Editors;
 using EM.HostsManager.Infrastructure.Process;
 using EM.HostsManager.Infrastructure.Registry;
 using EM.HostsManager.Infrastructure.Version;
@@ -15,28 +17,44 @@ namespace EM.HostsManager.App.DI
     {
         private Container RegisterServices()
         {
-            _container.AddScoped<App>();
-            _container.AddScoped<MainForm>();
-            _container.AddScoped<IFile, File>();
-            _container.AddScoped<IHostsFile, HostsFile>();
-            _container.AddScoped<IRegistry, Registry>();
-            _container.AddScoped<IAppUninstaller, AppUninstaller>();
+            _container.AddTransient<App>();
+            _container.AddTransient<MainForm>();
+            _container.AddTransient<IFile, File>();
+            _container.AddTransient<IHostsFile, HostsFile>();
+            _container.AddTransient<IRegistry, Registry>();
+            _container.AddTransient<IAppUninstaller, AppUninstaller>();
 
             var exe = Application
                 .ExecutablePath
                 .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
 
-            _container.AddScoped<IAutoStartManager, AutoStartManager>(provider =>
+            _container.AddTransient<IAutoStartManager, AutoStartManager>(provider =>
                 new AutoStartManager(provider.GetRequiredService<IRegistry>(), exe, Consts.MinArg,
                     Consts.ApplicationName));
 
-            _container.AddSingleton<IAppVersion, AppVersion>(provider =>
-                new AppVersion(Assembly.GetExecutingAssembly()));
+            _container.AddSingleton<IAppVersion, AppVersion>(_ => new AppVersion(Assembly.GetExecutingAssembly()));
 
-            _container.AddSingleton<ISingleInstance, SingleInstance>(provider =>
-                new SingleInstance(Consts.AppInstanceId));
+            _container.AddSingleton<ISingleInstance, SingleInstance>(_ => new SingleInstance(Consts.AppInstanceId));
+
+            // Preferred Editor Manager
+            _container.AddTransient<IPreferredEditorManager, PreferredEditorManager>(CreatePreferredEditorManager);
 
             return this;
+        }
+
+        private static PreferredEditorManager CreatePreferredEditorManager(IServiceProvider provider)
+        {
+            var preferredEditorManager =
+                new PreferredEditorManager(provider.GetRequiredService<IRegistry>(), Consts.AppRegPath,
+                    Consts.PreferredEditorKey);
+
+            preferredEditorManager.RegisterEditor(new Default(true));
+            preferredEditorManager.RegisterEditor(new NotepadPP());
+            preferredEditorManager.RegisterEditor(new VSCode());
+
+            preferredEditorManager.LoadSelectedEditor();
+
+            return preferredEditorManager;
         }
     }
 }
