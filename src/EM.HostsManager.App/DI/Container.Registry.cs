@@ -23,7 +23,7 @@ namespace EM.HostsManager.App.DI
             _container.AddTransient<IHostsFile, HostsFile>();
             _container.AddTransient<IRegistry, Registry>();
             _container.AddTransient<IAppUninstaller, AppUninstaller>();
-            
+
             var exe = Application
                 .ExecutablePath
                 .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
@@ -32,21 +32,29 @@ namespace EM.HostsManager.App.DI
                 new AutoStartManager(provider.GetRequiredService<IRegistry>(), exe, Consts.MinArg,
                     Consts.ApplicationName));
 
-            _container.AddSingleton<IAppVersion, AppVersion>(_ =>
-                new AppVersion(Assembly.GetExecutingAssembly()));
+            _container.AddSingleton<IAppVersion, AppVersion>(_ => new AppVersion(Assembly.GetExecutingAssembly()));
 
-            _container.AddSingleton<ISingleInstance, SingleInstance>(_ =>
-                new SingleInstance(Consts.AppInstanceId));
+            _container.AddSingleton<ISingleInstance, SingleInstance>(_ => new SingleInstance(Consts.AppInstanceId));
 
-            // Preferred Editors
-            var preferredEditorManager = new PreferredEditorManager();
+            // Preferred Editor Manager
+            _container.AddTransient<IPreferredEditorManager, PreferredEditorManager>(CreatePreferredEditorManager);
+
+            return this;
+        }
+
+        private static PreferredEditorManager CreatePreferredEditorManager(IServiceProvider provider)
+        {
+            var preferredEditorManager =
+                new PreferredEditorManager(provider.GetRequiredService<IRegistry>(), Consts.AppRegPath,
+                    Consts.PreferredEditorKey);
+
             preferredEditorManager.RegisterEditor(new Default(true));
             preferredEditorManager.RegisterEditor(new NotepadPP());
             preferredEditorManager.RegisterEditor(new VSCode());
 
-            _container.AddTransient<IPreferredEditorManager, PreferredEditorManager>(_ => preferredEditorManager);
+            preferredEditorManager.LoadSelectedEditor();
 
-            return this;
+            return preferredEditorManager;
         }
     }
 }

@@ -6,9 +6,9 @@ public interface IEditor
 
     public string DisplayName { get; }
 
-    public bool IsDefault{ get; }
+    public bool IsDefault { get; }
 
-    public bool IsSelected { get; }
+    public bool IsSelected { get; set; }
 
     public bool Open();
 }

@@ -2,11 +2,13 @@
 
 public interface IPreferredEditorManager
 {
-    void RegisterEditor(IEditor? editor);
+    bool Open();
 
-    bool Open(string key);
-
-    IReadOnlyList<IEditor?> GetEditors();
+    IReadOnlyList<IEditor> GetEditors();
 
     public string GetDefaultEditorKey();
+
+    public void SaveSelectedEditor(string key);
+
+    public string GetSelectedEditorKey();
 }

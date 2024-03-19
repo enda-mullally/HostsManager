@@ -27,7 +27,8 @@ namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
                 WorkingDirectory = workingDirectory,
                 FileName = fileName,
                 Arguments = HostsFile.GetHostsFilename(),
-                Verb = "open"
+                Verb = "open",
+                WindowStyle = ProcessWindowStyle.Hidden, // Fix for VSCode, prevent code console window from displaying
             };
 
             try
