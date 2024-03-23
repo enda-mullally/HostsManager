@@ -7,14 +7,19 @@ namespace EM.HostsManager.Infrastructure.PreferredEditor
     {
         private readonly List<IEditor> _editors = [];
 
-        public void RegisterEditor(IEditor editor)
+        public PreferredEditorManager RegisterEditors(IEditor[] editors)
         {
-            if (_editors.Contains(editor))
+            if (editors.Length == 0)
             {
-                return;
+                return this;
             }
 
-            _editors.Add(editor);
+            _editors.Clear();
+            _editors.AddRange(editors);
+
+            LoadSelectedEditor();
+
+            return this;
         }
 
         public bool Open()
@@ -53,7 +58,7 @@ namespace EM.HostsManager.Infrastructure.PreferredEditor
                 key);
         }
 
-        public void LoadSelectedEditor()
+        private void LoadSelectedEditor()
         {
             var key = registry.GetRegString(
                 Microsoft.Win32.Registry.CurrentUser,

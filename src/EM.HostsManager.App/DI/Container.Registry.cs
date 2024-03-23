@@ -44,19 +44,18 @@ namespace EM.HostsManager.App.DI
 
         private static PreferredEditorManager CreatePreferredEditorManager(IServiceProvider provider)
         {
-            var preferredEditorManager =
-                new PreferredEditorManager(provider.GetRequiredService<IRegistry>(), Consts.AppRegPath,
-                    Consts.PreferredEditorKey);
-
             var fileName = HostsFile.GetHostsFilename();
 
-            preferredEditorManager.RegisterEditor(new Default(fileName, true));
-            preferredEditorManager.RegisterEditor(new NotepadPP(fileName));
-            preferredEditorManager.RegisterEditor(new VSCode(fileName));
-
-            preferredEditorManager.LoadSelectedEditor();
-
-            return preferredEditorManager;
+            return
+                new PreferredEditorManager(provider.GetRequiredService<IRegistry>(),
+                    Consts.AppRegPath,
+                    Consts.PreferredEditorKey).RegisterEditors(
+                    [
+                        new Default(fileName, true),
+                        new NotepadPP(fileName),
+                        new VSCode(fileName)
+                    ]
+                );
         }
     }
 }
