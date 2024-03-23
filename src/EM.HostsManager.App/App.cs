@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using EM.HostsManager.App.UI;
+﻿using EM.HostsManager.App.UI;
 using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.Process;
 
