@@ -27,7 +27,7 @@ namespace EM.HostsManager.Infrastructure.UI.CustomForms
             CustomMessageReceived?.Invoke(this, e);
         }
 
-        private readonly List<int> _customMessages = new();
+        private readonly List<int> _customMessages = [];
 
         // Note: We need an empty constructor to support the winforms designer
         public AboutSysMenuForm()

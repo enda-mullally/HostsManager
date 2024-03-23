@@ -15,7 +15,7 @@ public class HostsFile(IFile file) : IHostsFile
     private const string DisabledHostFileEntry1 = @"# Hosts Manager";
     private const string DisabledHostFileEntry2 = @"# Disabled Hosts File";
 
-    public static string GetHostsFilename()
+    public string GetHostsFilename()
     {
         return GetEnabledOrDisabledHostsFilename();
     }
@@ -98,7 +98,7 @@ public class HostsFile(IFile file) : IHostsFile
 
     #region Private
 
-    private static bool HostsContainsDisabledMarker()
+    private bool HostsContainsDisabledMarker()
     {
         var hostsFile = GetHostsFilename();
 
