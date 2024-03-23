@@ -65,8 +65,8 @@ Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\Microsoft.E
 ; Deps
 Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
 
-; Currently 8.0.1
-Source: "windowsdesktop-runtime-8.0.1-win_x64.exe"; Flags: dontcopy noencryption
+; Currently 8.0.3
+Source: "windowsdesktop-runtime-8.0.3-win_x64.exe"; Flags: dontcopy noencryption
 
 [Run]
 Filename: {app}\EM.HostsManager.App.exe; Description: {cm:LaunchProgram,{cm:AppName}}; Flags: nowait postinstall skipifsilent
@@ -93,7 +93,7 @@ begin
   //
   // Special thanks to all the contributors @ https://github.com/DomGries/InnoDependencyInstaller !
 
-  ExtractTemporaryFile('windowsdesktop-runtime-8.0.1-win_x64.exe');
+  ExtractTemporaryFile('windowsdesktop-runtime-8.0.3-win_x64.exe');
 
   Dependency_AddDotNet80Desktop;
   
