@@ -2,6 +2,8 @@
 
 public interface IHostsFile
 {
+    public string GetHostsFilename();
+
     bool IsEnabled();
 
     int HostsCount();

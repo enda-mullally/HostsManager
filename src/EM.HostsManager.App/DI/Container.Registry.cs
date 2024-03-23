@@ -44,7 +44,9 @@ namespace EM.HostsManager.App.DI
 
         private static PreferredEditorManager CreatePreferredEditorManager(IServiceProvider provider)
         {
-            var fileName = HostsFile.GetHostsFilename();
+            var fileName = provider
+                .GetRequiredService<IHostsFile>()
+                .GetHostsFilename();
 
             return
                 new PreferredEditorManager(provider.GetRequiredService<IRegistry>(),
