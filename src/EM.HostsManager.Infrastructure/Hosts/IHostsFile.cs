@@ -2,7 +2,7 @@
 
 public interface IHostsFile
 {
-    public string GetHostsFilename();
+    string GetHostsFilename();
 
     bool IsEnabled();
 
