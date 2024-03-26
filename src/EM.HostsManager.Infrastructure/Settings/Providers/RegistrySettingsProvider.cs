@@ -19,7 +19,7 @@ namespace EM.HostsManager.Infrastructure.Settings.Providers
                 case nameof(String):
                 {
                     var registryValue = reg.GetValue(key, defaultValue as string ?? string.Empty);
-                    return (T)(object)registryValue;
+                    return (T)registryValue;
                 }
                 default:
                     throw new NotImplementedException("Type not available yet");
