@@ -18,7 +18,7 @@ public sealed class Registry : IRegistry
             }
 
             var o = regKey.GetValue(keyName);
-                
+
             if (o != null)
             {
                 var value = (o as string);
@@ -73,7 +73,7 @@ public sealed class Registry : IRegistry
             regKey = rootRegistryKey.OpenSubKey(path, true);
 
             regKey?.DeleteValue(key);
-            
+
             return true;
         }
         catch

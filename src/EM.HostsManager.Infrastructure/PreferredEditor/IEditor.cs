@@ -1,4 +1,8 @@
-﻿namespace EM.HostsManager.Infrastructure.PreferredEditor;
+﻿//
+// Copyright © 2024 Enda Mullally.
+//
+
+namespace EM.HostsManager.Infrastructure.PreferredEditor;
 
 public interface IEditor
 {

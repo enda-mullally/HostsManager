@@ -3,24 +3,23 @@
 //
 
 using EM.HostsManager.Infrastructure.AutoStart;
-using EM.HostsManager.Infrastructure.Registry;
+using EM.HostsManager.Infrastructure.Settings;
 
 namespace EM.HostsManager.App.Uninstall
 {
     public class AppUninstaller(
-        IRegistry registry,
+        ISettingsProvider settings,
         IAutoStartManager autoStartManager) : IAppUninstaller
     {
+        public const string FirstRunShownForKey = @"FirstRunShownForVersion";
+
         public void Uninstall()
         {
             try
             {
                 autoStartManager.DeleteAutoRunAtStartup();
 
-                registry.DeleteRegString(
-                    Microsoft.Win32.Registry.CurrentUser,
-                    Consts.AppRegPath,
-                    Consts.FirstRunShownForKey);
+                settings.DeleteValue(FirstRunShownForKey);
             }
             catch
             {

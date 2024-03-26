@@ -1,4 +1,8 @@
-﻿namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
+﻿//
+// Copyright © 2024 Enda Mullally.
+//
+
+namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 {
     public class Default(string fileName, bool isDefault = false) : BaseEditor(fileName, isDefault)
     {

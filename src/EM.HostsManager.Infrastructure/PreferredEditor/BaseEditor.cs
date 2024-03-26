@@ -1,4 +1,8 @@
-﻿using NotImplementedException = System.NotImplementedException;
+﻿//
+// Copyright © 2024 Enda Mullally.
+//
+
+using NotImplementedException = System.NotImplementedException;
 
 namespace EM.HostsManager.Infrastructure.PreferredEditor
 {

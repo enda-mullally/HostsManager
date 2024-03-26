@@ -1,11 +1,15 @@
-﻿using EM.HostsManager.Infrastructure.Registry;
+﻿//
+// Copyright © 2024 Enda Mullally.
+//
+
+using EM.HostsManager.Infrastructure.Settings;
 
 namespace EM.HostsManager.Infrastructure.PreferredEditor
 {
-    public class PreferredEditorManager(IRegistry registry, string appRegPath, string preferredEditorKey)
-        : IPreferredEditorManager
+    public class PreferredEditorManager(ISettingsProvider settings) : IPreferredEditorManager
     {
         private readonly List<IEditor> _editors = [];
+        private const string PreferredEditorKey = @"PreferredEditor";
 
         public PreferredEditorManager RegisterEditors(IEditor[] editors)
         {
@@ -51,20 +55,12 @@ namespace EM.HostsManager.Infrastructure.PreferredEditor
                 editor.IsSelected = editor.Key.Equals(key);
             }
 
-            registry.SetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                appRegPath,
-                preferredEditorKey,
-                key);
+            settings.SetValue(PreferredEditorKey, key);
         }
 
         private void LoadSelectedEditor()
         {
-            var key = registry.GetRegString(
-                Microsoft.Win32.Registry.CurrentUser,
-                appRegPath,
-                preferredEditorKey,
-                GetDefaultEditorKey());
+            var key = settings.GetValue(PreferredEditorKey, GetDefaultEditorKey());
 
             foreach (var editor in _editors)
             {
