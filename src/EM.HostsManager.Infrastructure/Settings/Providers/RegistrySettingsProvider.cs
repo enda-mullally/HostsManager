@@ -9,20 +9,27 @@ namespace EM.HostsManager.Infrastructure.Settings.Providers
         public T GetValue<T>(string key, T defaultValue = default!)
         {
             var reg = rootRegistryKey.OpenSubKey(regPath);
-            if (reg == null)
+            try
             {
-                return defaultValue;
-            }
-
-            switch (typeof(T).Name)
-            {
-                case nameof(String):
+                if (reg == null)
                 {
-                    var registryValue = reg.GetValue(key, defaultValue as string ?? string.Empty);
-                    return (T)registryValue;
+                    return defaultValue;
                 }
-                default:
-                    throw new NotImplementedException("Type not available yet");
+
+                switch (typeof(T).Name)
+                {
+                    case nameof(String):
+                    {
+                        var registryValue = reg.GetValue(key, defaultValue as string ?? string.Empty);
+                        return (T)registryValue;
+                    }
+                    default:
+                        throw new NotImplementedException("Type not available yet");
+                }
+            }
+            finally
+            {
+                reg?.Close();
             }
         }
 
@@ -31,15 +38,22 @@ namespace EM.HostsManager.Infrastructure.Settings.Providers
             var reg =
                 rootRegistryKey.OpenSubKey(regPath, true) ?? rootRegistryKey.CreateSubKey(key);
 
-            switch (typeof(T).Name)
+            try
             {
-                case nameof(String):
+                switch (typeof(T).Name)
                 {
-                    reg.SetValue(key, value as string ?? string.Empty);
-                    return true;
+                    case nameof(String):
+                    {
+                        reg.SetValue(key, value as string ?? string.Empty);
+                        return true;
+                    }
+                    default:
+                        throw new NotImplementedException("Type not available yet");
                 }
-                default:
-                    throw new NotImplementedException("Type not available yet");
+            }
+            finally
+            {
+                reg.Close();
             }
         }
 
