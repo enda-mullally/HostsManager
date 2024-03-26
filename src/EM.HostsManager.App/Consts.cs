@@ -16,8 +16,6 @@
 
         public const string FirstRunShownForKey = @"FirstRunShownForVersion";
 
-        public const string PreferredEditorKey = @"PreferredEditor";
-
         public const string ApplicationName = @"Hosts Manager";
     }
 }

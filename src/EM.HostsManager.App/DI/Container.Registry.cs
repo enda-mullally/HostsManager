@@ -7,6 +7,8 @@ using EM.HostsManager.Infrastructure.PreferredEditor;
 using EM.HostsManager.Infrastructure.PreferredEditor.Editors;
 using EM.HostsManager.Infrastructure.Process;
 using EM.HostsManager.Infrastructure.Registry;
+using EM.HostsManager.Infrastructure.Settings;
+using EM.HostsManager.Infrastructure.Settings.Providers;
 using EM.HostsManager.Infrastructure.Version;
 using Microsoft.Extensions.DependencyInjection;
 using File = EM.HostsManager.Infrastructure.IO.File;
@@ -24,6 +26,9 @@ namespace EM.HostsManager.App.DI
             _container.AddTransient<IRegistry, Registry>();
             _container.AddTransient<IAppUninstaller, AppUninstaller>();
 
+            _container.AddTransient<ISettingsProvider, RegistrySettingsProvider>(_ =>
+                new RegistrySettingsProvider(Microsoft.Win32.Registry.CurrentUser, Consts.AppRegPath));
+            
             var exe = Application
                 .ExecutablePath
                 .Replace(".dll", ".exe", StringComparison.InvariantCultureIgnoreCase);
@@ -49,9 +54,7 @@ namespace EM.HostsManager.App.DI
                 .GetHostsFilename();
 
             return
-                new PreferredEditorManager(provider.GetRequiredService<IRegistry>(),
-                    Consts.AppRegPath,
-                    Consts.PreferredEditorKey).RegisterEditors(
+                new PreferredEditorManager(provider.GetRequiredService<ISettingsProvider>()).RegisterEditors(
                     [
                         new Default(fileName, true),
                         new NotepadPP(fileName),

@@ -7,7 +7,7 @@ using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.AutoStart;
 using EM.HostsManager.Infrastructure.Hosts;
 using EM.HostsManager.Infrastructure.PreferredEditor;
-using EM.HostsManager.Infrastructure.Registry;
+using EM.HostsManager.Infrastructure.Settings;
 using EM.HostsManager.Infrastructure.UI.CustomForms;
 using EM.HostsManager.Infrastructure.Version;
 using EM.HostsManager.Infrastructure.Win32;
@@ -25,7 +25,7 @@ public partial class MainForm : AboutSysMenuForm
     private bool _requestingClose;
 
     private readonly IHostsFile _hostsFile;
-    private readonly IRegistry _registry;
+    private readonly ISettingsProvider _settings;
     private readonly IAutoStartManager _autoStartManager;
     private readonly IAppUninstaller _uninstaller;
     private readonly IAppVersion _appVersion;
@@ -33,7 +33,7 @@ public partial class MainForm : AboutSysMenuForm
 
     public MainForm(
         IHostsFile hostsFile,
-        IRegistry registry,
+        ISettingsProvider settings,
         IAutoStartManager autoStartManager,
         IAppUninstaller uninstaller,
         IAppVersion appVersion,
@@ -41,7 +41,7 @@ public partial class MainForm : AboutSysMenuForm
         base(Resources.About_Label, App.WmActivateApp, App.WmQuitApp, App.WmUninstallApp)
     {
         _hostsFile = hostsFile;
-        _registry = registry;
+        _settings = settings;
         _autoStartManager = autoStartManager;
         _uninstaller = uninstaller;
         _appVersion = appVersion;
@@ -523,11 +523,7 @@ public partial class MainForm : AboutSysMenuForm
         var appVersion = _appVersion.GetAppVersion();
 
         var firstRun =
-            !_registry.GetRegString(
-                    Microsoft.Win32.Registry.CurrentUser,
-                    Consts.AppRegPath,
-                    Consts.FirstRunShownForKey,
-                    string.Empty)
+            !_settings.GetValue(Consts.FirstRunShownForKey, string.Empty)
                 .ToLowerInvariant()
                 .Equals(appVersion);
 
@@ -542,11 +538,7 @@ public partial class MainForm : AboutSysMenuForm
         uxMenuRunAtStartup.Checked = EnableRunAtStartup(true);
         //..
 
-        _registry.SetRegString(
-            Microsoft.Win32.Registry.CurrentUser,
-            Consts.AppRegPath,
-            Consts.FirstRunShownForKey,
-            appVersion);
+        _settings.SetValue(Consts.FirstRunShownForKey, appVersion);
 
         MessageBox.Show(
             this,

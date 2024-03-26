@@ -1,4 +1,8 @@
-﻿// ReSharper disable InconsistentNaming
+﻿//
+// // Copyright © 2024 Enda Mullally.
+//
+
+// ReSharper disable InconsistentNaming
 
 namespace EM.HostsManager.Infrastructure.PreferredEditor.Editors
 {
