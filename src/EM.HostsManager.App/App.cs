@@ -1,4 +1,8 @@
-﻿using EM.HostsManager.App.UI;
+﻿//
+// Copyright © 2021-2024 Enda Mullally.
+//
+
+using EM.HostsManager.App.UI;
 using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.Infrastructure.Process;
 
