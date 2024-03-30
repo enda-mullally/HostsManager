@@ -6,7 +6,7 @@ namespace EM.HostsManager.App
 {
     public partial class App(
         IAppUninstaller uninstaller,
-        ISingleInstance singleInstance,
+        IAppSingleInstance singleInstance,
         // ReSharper disable once SuggestBaseTypeForParameterInConstructor
         MainForm mainForm)
     {

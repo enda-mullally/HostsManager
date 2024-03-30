@@ -39,7 +39,7 @@ namespace EM.HostsManager.App.DI
 
             _container.AddSingleton<IAppVersion, AppVersion>(_ => new AppVersion(Assembly.GetExecutingAssembly()));
 
-            _container.AddSingleton<ISingleInstance, SingleInstance>(_ => new SingleInstance(Consts.AppInstanceId));
+            _container.AddSingleton<IAppSingleInstance, AppSingleInstance>(_ => new AppSingleInstance(Consts.AppInstanceId));
 
             // Preferred Editor Manager
             _container.AddTransient<IPreferredEditorManager, PreferredEditorManager>(CreatePreferredEditorManager);
@@ -54,13 +54,14 @@ namespace EM.HostsManager.App.DI
                 .GetHostsFilename();
 
             return
-                new PreferredEditorManager(provider.GetRequiredService<ISettingsProvider>()).RegisterEditors(
-                    [
-                        new Default(fileName, true),
-                        new NotepadPP(fileName),
-                        new VSCode(fileName)
-                    ]
-                );
+                new PreferredEditorManager(provider.GetRequiredService<ISettingsProvider>())
+                    .RegisterEditors(
+                        [
+                            new Default(fileName, true),
+                            new NotepadPP(fileName),
+                            new VSCode(fileName)
+                        ]
+                    );
         }
     }
 }
