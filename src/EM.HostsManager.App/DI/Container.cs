@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿//
+// Copyright © 2024 Enda Mullally.
+//
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EM.HostsManager.App.DI
 {

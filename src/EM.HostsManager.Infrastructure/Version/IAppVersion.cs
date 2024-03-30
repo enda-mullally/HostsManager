@@ -1,4 +1,8 @@
-﻿namespace EM.HostsManager.Infrastructure.Version;
+﻿//
+// Copyright © 2021-2024 Enda Mullally.
+//
+
+namespace EM.HostsManager.Infrastructure.Version;
 
 public interface IAppVersion
 {

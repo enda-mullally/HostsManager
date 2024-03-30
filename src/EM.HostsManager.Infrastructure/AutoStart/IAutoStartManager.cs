@@ -1,4 +1,8 @@
-﻿namespace EM.HostsManager.Infrastructure.AutoStart;
+﻿//
+// Copyright © 2024 Enda Mullally.
+//
+
+namespace EM.HostsManager.Infrastructure.AutoStart;
 
 public interface IAutoStartManager
 {
