@@ -1,5 +1,5 @@
 ﻿//
-// // Copyright © 2024 Enda Mullally.
+// Copyright © 2024 Enda Mullally.
 //
 
 // ReSharper disable InconsistentNaming

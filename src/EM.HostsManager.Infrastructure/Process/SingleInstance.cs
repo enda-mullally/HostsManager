@@ -8,12 +8,12 @@ namespace EM.HostsManager.Infrastructure.Process;
 
 using Procs = System.Diagnostics.Process;
 
-public sealed class SingleInstance : ISingleInstance
+public sealed class AppSingleInstance : IAppSingleInstance
 {
     private readonly Mutex _processSync;
     private bool _owned;
 
-    public SingleInstance(string identifier)
+    public AppSingleInstance(string identifier)
     {
         _processSync = new Mutex(
             true,
@@ -21,7 +21,7 @@ public sealed class SingleInstance : ISingleInstance
             out _owned);
     }
 
-    ~SingleInstance()
+    ~AppSingleInstance()
     {
         Release();
     }

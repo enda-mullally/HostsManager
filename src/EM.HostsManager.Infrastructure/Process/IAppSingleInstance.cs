@@ -1,6 +1,6 @@
 namespace EM.HostsManager.Infrastructure.Process;
 
-public interface ISingleInstance : IDisposable
+public interface IAppSingleInstance : IDisposable
 {
     bool IsSingleInstance();
 

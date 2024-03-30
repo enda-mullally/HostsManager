@@ -48,15 +48,15 @@ namespace EM.HostsManager.Infrastructure.UI.CustomForms
         {
             base.OnHandleCreated(e);
 
-            var systemMenuHandle = User32.GetSystemMenu(Handle, false);
+            var systemMenuHandle = GetSystemMenu(Handle, false);
 
             // Add a separator
-            User32.AppendMenu(systemMenuHandle, User32.MfSeparator, 0, string.Empty);
+            AppendMenu(systemMenuHandle, MfSeparator, 0, string.Empty);
 
             // Add the About menu item
-            User32.AppendMenu(
+            AppendMenu(
                 systemMenuHandle,
-                User32.MfString,
+                MfString,
                 SysMenuAboutId,
                 string.IsNullOrWhiteSpace(_aboutMenuText) ? "&About" : _aboutMenuText);
 
@@ -69,7 +69,7 @@ namespace EM.HostsManager.Infrastructure.UI.CustomForms
 
             foreach (var customMessage in _customMessages)
             {
-                User32.ChangeWindowMessageFilterEx(
+                ChangeWindowMessageFilterEx(
                     Handle,
                     customMessage,
                     ChangeWindowMessageFilterExAction.Allow);
@@ -82,7 +82,7 @@ namespace EM.HostsManager.Infrastructure.UI.CustomForms
 
             switch (m.Msg)
             {
-                case User32.WmSysCommand when (int)m.WParam == SysMenuAboutId:
+                case WmSysCommand when (int)m.WParam == SysMenuAboutId:
 
                     OnSysAboutMenuClicked(EventArgs.Empty);
 
