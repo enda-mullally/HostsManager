@@ -36,7 +36,7 @@ namespace EM.HostsManager.Infrastructure.Settings.Providers
         public bool SetValue<T>(string key, T value)
         {
             var reg =
-                rootRegistryKey.OpenSubKey(regPath, true) ?? rootRegistryKey.CreateSubKey(key);
+                rootRegistryKey.OpenSubKey(regPath, true) ?? rootRegistryKey.CreateSubKey(regPath);
 
             try
             {
