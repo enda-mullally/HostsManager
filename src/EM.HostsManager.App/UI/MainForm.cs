@@ -4,13 +4,13 @@
 
 using EM.HostsManager.App.Properties;
 using EM.HostsManager.App.Uninstall;
-using EM.HostsManager.Infrastructure.AutoStart;
-using EM.HostsManager.Infrastructure.Hosts;
-using EM.HostsManager.Infrastructure.PreferredEditor;
-using EM.HostsManager.Infrastructure.Settings;
-using EM.HostsManager.Infrastructure.UI.CustomForms;
-using EM.HostsManager.Infrastructure.Version;
-using EM.HostsManager.Infrastructure.Win32;
+using EM.HostsManager.AutoStart;
+using EM.HostsManager.Hosts;
+using EM.HostsManager.PreferredEditor;
+using EM.HostsManager.Settings;
+using EM.HostsManager.UI.CustomForms;
+using EM.HostsManager.Version;
+using EM.HostsManager.Win32;
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming
@@ -270,7 +270,7 @@ public partial class MainForm : AboutSysMenuForm
                 Verb = "open"
             };
 
-            var process = Process.Start(startInfo);
+            var process = System.Diagnostics.Process.Start(startInfo);
             var error = true;
             if (process != null)
             {

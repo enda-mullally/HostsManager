@@ -61,7 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EM.HostsManager.Infrastructure\EM.HostsManager.Infrastructure.csproj" />
+    <ProjectReference Include="..\EM.HostsManager\EM.HostsManager.csproj" />
   </ItemGroup>
 
 </Project>

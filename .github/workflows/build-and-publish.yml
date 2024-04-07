@@ -114,7 +114,7 @@ jobs:
       working-directory: "./src"
       shell: powershell
       run: |
-        $signFiles = @("EM.HostsManager.Infrastructure.dll", "EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
+        $signFiles = @("EM.HostsManager.dll", "EM.HostsManager.App.exe", "EM.HostsManager.App.dll")
         $signDir = "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\"
         $signArgs = " sign /f '${{ secrets.PFX_CERT_FILENAME }}' /p '${{ secrets.Pfx_Password }}' /t '${{ env.TIMESTAMP_URL }}' /fd sha256 "
         Foreach ($fileToSign in $signFiles)
@@ -172,10 +172,10 @@ jobs:
         cd Binaries
         if not exist Deploy mkdir Deploy
         cd ..
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
-        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.Infrastructure.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\Microsoft.Extensions.DependencyInjection.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\Microsoft.Extensions.DependencyInjection.Abstractions.dll" "Binaries\Deploy"
 
