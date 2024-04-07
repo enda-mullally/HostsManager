@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EM.HostsManager.App", "EM.HostsManager.App\EM.HostsManager.App.csproj", "{014D346F-73EC-4060-9095-D8028E0FBD67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EM.HostsManager.Infrastructure", "EM.HostsManager.Infrastructure\EM.HostsManager.Infrastructure.csproj", "{EFC8F105-4534-4E19-BBA1-5DF2E5004172}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EM.HostsManager", "EM.HostsManager\EM.HostsManager.csproj", "{EFC8F105-4534-4E19-BBA1-5DF2E5004172}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EM.HostsManager.Installer", "EM.HostsManager.Installer", "{2606C2C6-2BEE-43CC-B934-DF1BA3A2F012}"
 	ProjectSection(SolutionItems) = preProject

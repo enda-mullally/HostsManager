@@ -2,8 +2,8 @@
 // Copyright © 2021-2024 Enda Mullally.
 //
 
-using EM.HostsManager.Infrastructure.AutoStart;
-using EM.HostsManager.Infrastructure.Settings;
+using EM.HostsManager.AutoStart;
+using EM.HostsManager.Settings;
 
 namespace EM.HostsManager.App.Uninstall
 {

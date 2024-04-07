@@ -4,18 +4,18 @@
 
 using EM.HostsManager.App.UI;
 using EM.HostsManager.App.Uninstall;
-using EM.HostsManager.Infrastructure.AutoStart;
-using EM.HostsManager.Infrastructure.Hosts;
-using EM.HostsManager.Infrastructure.IO;
-using EM.HostsManager.Infrastructure.PreferredEditor;
-using EM.HostsManager.Infrastructure.PreferredEditor.Editors;
-using EM.HostsManager.Infrastructure.Process;
-using EM.HostsManager.Infrastructure.Registry;
-using EM.HostsManager.Infrastructure.Settings;
-using EM.HostsManager.Infrastructure.Settings.Providers;
-using EM.HostsManager.Infrastructure.Version;
+using EM.HostsManager.AutoStart;
+using EM.HostsManager.Hosts;
+using EM.HostsManager.IO;
+using EM.HostsManager.PreferredEditor;
+using EM.HostsManager.PreferredEditor.Editors;
+using EM.HostsManager.Process;
+using EM.HostsManager.Registry;
+using EM.HostsManager.Settings;
+using EM.HostsManager.Settings.Providers;
+using EM.HostsManager.Version;
 using Microsoft.Extensions.DependencyInjection;
-using File = EM.HostsManager.Infrastructure.IO.File;
+using File = EM.HostsManager.IO.File;
 
 namespace EM.HostsManager.App.DI
 {
@@ -27,7 +27,7 @@ namespace EM.HostsManager.App.DI
             _container.AddTransient<MainForm>();
             _container.AddTransient<IFile, File>();
             _container.AddTransient<IHostsFile, HostsFile>();
-            _container.AddTransient<IRegistry, Registry>();
+            _container.AddTransient<IRegistry, Registry.Registry>();
             _container.AddTransient<IAppUninstaller, AppUninstaller>();
 
             _container.AddTransient<ISettingsProvider, RegistrySettingsProvider>(_ =>
