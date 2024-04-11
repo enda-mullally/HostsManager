@@ -68,6 +68,10 @@ Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
 ; Currently 8.0.3
 Source: "windowsdesktop-runtime-8.0.3-win_x64.exe"; Flags: dontcopy noencryption
 
+; Clean-up previous file name(s).
+[InstallDelete]
+Type: files; Name: "{app}\EM.HostsManager.Infrastructure.dll"
+
 [Run]
 Filename: {app}\EM.HostsManager.App.exe; Description: {cm:LaunchProgram,{cm:AppName}}; Flags: nowait postinstall skipifsilent
 
