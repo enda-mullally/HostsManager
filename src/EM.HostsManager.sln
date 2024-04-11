@@ -14,9 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EM.HostsManager.Installer",
 		EM.HostsManager.Installer\HostsManager.ico = EM.HostsManager.Installer\HostsManager.ico
 		EM.HostsManager.Installer\License.txt = EM.HostsManager.Installer\License.txt
 		EM.HostsManager.Installer\Licenses-ThirdParty.txt = EM.HostsManager.Installer\Licenses-ThirdParty.txt
-		EM.HostsManager.Installer\netcorecheck_x64.exe = EM.HostsManager.Installer\netcorecheck_x64.exe
 		EM.HostsManager.Installer\SetupIcon.bmp = EM.HostsManager.Installer\SetupIcon.bmp
-		EM.HostsManager.Installer\windowsdesktop-runtime-8.0.4-win_x64.exe = EM.HostsManager.Installer\windowsdesktop-runtime-8.0.4-win_x64.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{FCD3B95B-76EB-4709-8632-40B853382365}"
+	ProjectSection(SolutionItems) = preProject
+		EM.HostsManager.Installer\deploy\netcorecheck_x64.exe = EM.HostsManager.Installer\deploy\netcorecheck_x64.exe
+		EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.4-win_x64.exe = EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.4-win_x64.exe
 	EndProjectSection
 EndProject
 Global
@@ -36,6 +40,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FCD3B95B-76EB-4709-8632-40B853382365} = {2606C2C6-2BEE-43CC-B934-DF1BA3A2F012}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {54EC2078-CEC5-429C-B85E-6716F140D381}

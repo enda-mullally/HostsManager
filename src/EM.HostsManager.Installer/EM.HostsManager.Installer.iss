@@ -63,10 +63,10 @@ Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\Microsoft.E
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\Microsoft.Extensions.DependencyInjection.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 
 ; Deps
-Source: "netcorecheck_x64.exe"; Flags: dontcopy noencryption
+Source: "deploy\NetCoreCheck_x64.exe"; Flags: dontcopy noencryption
 
 ; Currently 8.0.4
-Source: "windowsdesktop-runtime-8.0.4-win_x64.exe"; Flags: dontcopy noencryption
+Source: "deploy\windowsdesktop-runtime-8.0.4-win_x64.exe"; Flags: dontcopy noencryption
 
 ; Clean-up previous file name(s).
 [InstallDelete]
