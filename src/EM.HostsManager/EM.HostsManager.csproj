@@ -6,6 +6,10 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Authors>Enda Mullally</Authors>
+	<Company />
+	<Copyright>© 2021-2024 Enda Mullally</Copyright>
+	<Product>Hosts Manager</Product>
   </PropertyGroup>
 
   <ItemGroup>
