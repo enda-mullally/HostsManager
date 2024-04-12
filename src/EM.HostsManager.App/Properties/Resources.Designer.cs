@@ -72,7 +72,7 @@ namespace EM.HostsManager.App.Properties {
         /// <summary>
         ///   Looks up a localized string similar to == Hosts Manager ==
         ///
-        ///https://github.com/enda-mullally/hostsmanager
+        ///https://github.com/enda-mullally/HostsManager
         ///
         ///Version: {appVersion}
         ///Commit: {commitId}
