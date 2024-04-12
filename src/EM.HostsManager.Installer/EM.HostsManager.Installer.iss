@@ -35,6 +35,10 @@ Compression=lzma2
 SetupIconFile=HostsManager.ico
 WizardSmallImageFile=SetupIcon.bmp
 AlwaysRestart=no
+VersionInfoCompany=Enda Mullally
+VersionInfoProductTextVersion={#InstallerVersion}
+VersionInfoVersion={#InstallerVersion}
+VersionInfoProductName=https://github.com/enda-mullally/HostsManager
 
 [Icons]
 Name: "{group}\Hosts Manager"; Filename: "{app}\EM.HostsManager.App.exe"
