@@ -22,7 +22,7 @@ jobs:
       TIMESTAMP_URL: "http://timestamp.digicert.com"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Fetch all history and tags
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
@@ -54,7 +54,7 @@ jobs:
         Write-Output "==============================================================================================================================================="
 
     - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
