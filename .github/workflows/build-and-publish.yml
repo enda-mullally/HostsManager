@@ -58,6 +58,12 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    - name: Run Unit Tests
+      run: dotnet test "./src" --configuration Release --filter Category=Unit
+  
+    - name: Clean
+      run: dotnet clean "./src"
+
     - name: Patch BuildDateAttribute
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       shell: powershell

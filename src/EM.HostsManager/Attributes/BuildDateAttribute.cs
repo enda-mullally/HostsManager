@@ -7,5 +7,5 @@ namespace EM.HostsManager.Attributes;
 [AttributeUsage(AttributeTargets.Assembly)]
 public class BuildDateAttribute(string buildDateString) : Attribute
 {
-    public string BuildDate { get; set; } = buildDateString;
+    public string BuildDate { get; init; } = buildDateString;
 }
