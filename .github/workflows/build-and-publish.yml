@@ -62,13 +62,13 @@ jobs:
       run: dotnet build "./src" --configuration Debug
 
     - name: Run Tests [Unit]
-      run: dotnet test "./src" --verbosity normal --filter Category=Unit
+      run: dotnet test "./src" --configuration Debug --verbosity normal --filter Category=Unit
   
     - name: Run Tests [Integration]
-      run: dotnet test "./src" --configuration Release --filter Category=Integration
+      run: dotnet test "./src" --configuration Debug --verbosity normal --filter Category=Integration
     
     - name: Run Tests [Mock]
-      run: dotnet test "./src" --configuration Release --filter Category=Mock
+      run: dotnet test "./src" --configuration Debug --verbosity normal --filter Category=Mock
 
     - name: Clean
       run: dotnet clean "./src"
