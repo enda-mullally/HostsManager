@@ -66,8 +66,8 @@ jobs:
     #- name: Run Tests [Integration]
     #  run: dotnet test "./src" --configuration Release --filter Category=Integration
 
-    #- name: Run Tests [Mock]
-    #  run: dotnet test "./src" --configuration Release --filter Category=Mock
+    - name: Run Tests [Mock]
+      run: dotnet test "./src" --configuration Release --filter Category=Mock
 
     - name: Clean
       run: dotnet clean "./src"
