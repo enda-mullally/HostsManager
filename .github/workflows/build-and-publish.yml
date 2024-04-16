@@ -58,16 +58,17 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Run Tests [Unit]
-      run: dotnet test "./src" --verbosity normal --filter Category=Unit
-  
-    # Not Sure about this yet?
-    #
-    #- name: Run Tests [Integration]
-    #  run: dotnet test "./src" --configuration Release --filter Category=Integration
+    - name: Debug Build (For Tests)
+      run: dotnet build "./src" --configuration Debug
 
-    #- name: Run Tests [Mock]
-    #  run: dotnet test "./src" --configuration Release --filter Category=Mock
+    - name: Run Tests [Unit]
+      run: dotnet test "./src" --configuration Debug --verbosity normal --filter Category=Unit
+  
+    - name: Run Tests [Integration]
+      run: dotnet test "./src" --configuration Debug --verbosity normal --filter Category=Integration
+    
+    - name: Run Tests [Mock]
+      run: dotnet test "./src" --configuration Debug --verbosity normal --filter Category=Mock
 
     - name: Clean
       run: dotnet clean "./src"
@@ -106,11 +107,11 @@ jobs:
         Write-Output "CommitIdAttribute written..."
         Write-Output "==============================================================================================================================================="
 
-    - name: Build HostsManager (Check)
+    - name: Release Build (Check)
       if: (github.ref != 'refs/heads/main' && !inputs.fullbuild)
       run: dotnet build "./src" --configuration Release
     
-    - name: Build HostsManager with Version (Full Build)
+    - name: Release Build with Version (Full Build)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
 
