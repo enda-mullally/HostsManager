@@ -58,8 +58,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Restore
-      run: dotnet restore "./src"
+    - name: Debug Build (For Tests)
+      run: dotnet build "./src" --configuration Debug
 
     - name: Run Tests [Unit]
       run: dotnet test "./src" --verbosity normal --filter Category=Unit
@@ -107,11 +107,11 @@ jobs:
         Write-Output "CommitIdAttribute written..."
         Write-Output "==============================================================================================================================================="
 
-    - name: Build HostsManager (Check)
+    - name: Release Build (Check)
       if: (github.ref != 'refs/heads/main' && !inputs.fullbuild)
       run: dotnet build "./src" --configuration Release
     
-    - name: Build HostsManager with Version (Full Build)
+    - name: Release Build with Version (Full Build)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: dotnet build "./src" --configuration Release -p:Version=${{ steps.gitversion.outputs.MajorMinorPatch }} -p:FileVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
 
