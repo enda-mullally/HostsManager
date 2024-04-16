@@ -58,9 +58,17 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Run Unit Tests
+    - name: Run Tests [Unit]
       run: dotnet test "./src" --configuration Release --filter Category=Unit
   
+    # Not Sure about this yet?
+    #
+    #- name: Run Tests [Integration]
+    #  run: dotnet test "./src" --configuration Release --filter Category=Integration
+
+    #- name: Run Tests [Mock]
+    #  run: dotnet test "./src" --configuration Release --filter Category=Mock
+
     - name: Clean
       run: dotnet clean "./src"
 
