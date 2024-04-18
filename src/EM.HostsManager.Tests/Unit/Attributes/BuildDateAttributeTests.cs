@@ -1,16 +1,15 @@
-﻿namespace EM.HostsManager.Tests.Unit.Attributes
+﻿namespace EM.HostsManager.Tests.Unit.Attributes;
+
+[Trait("Category", "Unit")]
+public class BuildDateAttributeTests
 {
-    [Trait("Category", "Unit")]
-    public class BuildDateAttributeTests
+    [Fact]
+    public void BuildDateAttribute_Properties_Work()
     {
-        [Fact]
-        public void BuildDateAttribute_Properties_Work()
-        {
-            const string buildDateString = "test build date";
+        const string buildDateString = "test build date";
 
-            var sut = new BuildDateAttribute(buildDateString);
+        var sut = new BuildDateAttribute(buildDateString);
 
-            sut.BuildDate.Should().BeEquivalentTo(buildDateString);
-        }
+        sut.BuildDate.Should().BeEquivalentTo(buildDateString);
     }
 }
