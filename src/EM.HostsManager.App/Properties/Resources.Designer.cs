@@ -187,7 +187,7 @@ namespace EM.HostsManager.App.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to | Open &amp;hosts file.
+        ///   Looks up a localized string similar to | View &amp;hosts file.
         /// </summary>
         internal static string MainForm_UxFixButtonText_ {
             get {

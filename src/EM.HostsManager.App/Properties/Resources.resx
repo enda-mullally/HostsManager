@@ -154,7 +154,7 @@
     <value>Hosts file is </value>
   </data>
   <data name="MainForm_UxFixButtonText_" xml:space="preserve">
-    <value>| Open &amp;hosts file</value>
+    <value>| View &amp;hosts file</value>
   </data>
   <data name="AboutMessage" xml:space="preserve">
     <value>== Hosts Manager ==
