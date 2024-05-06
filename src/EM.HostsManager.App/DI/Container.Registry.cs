@@ -5,6 +5,7 @@
 using EM.HostsManager.App.UI;
 using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.AutoStart;
+using EM.HostsManager.DNS;
 using EM.HostsManager.Hosts;
 using EM.HostsManager.IO;
 using EM.HostsManager.PreferredEditor;
@@ -29,6 +30,7 @@ namespace EM.HostsManager.App.DI
             _container.AddTransient<IHostsFile, HostsFile>();
             _container.AddTransient<IRegistry, Registry.Registry>();
             _container.AddTransient<IAppUninstaller, AppUninstaller>();
+            _container.AddTransient<IDNSHelper, DNSHelper>();
 
             _container.AddTransient<ISettingsProvider, RegistrySettingsProvider>(_ =>
                 new RegistrySettingsProvider(Microsoft.Win32.Registry.CurrentUser, Consts.AppRegPath));
