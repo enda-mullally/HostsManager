@@ -5,6 +5,7 @@
 using EM.HostsManager.App.Properties;
 using EM.HostsManager.App.Uninstall;
 using EM.HostsManager.AutoStart;
+using EM.HostsManager.DNS;
 using EM.HostsManager.Hosts;
 using EM.HostsManager.PreferredEditor;
 using EM.HostsManager.Settings;
@@ -30,6 +31,7 @@ public partial class MainForm : AboutSysMenuForm
     private readonly IAppUninstaller _uninstaller;
     private readonly IAppVersion _appVersion;
     private readonly IPreferredEditorManager _preferredEditorManager;
+    private readonly IDNSHelper _dnsHelper;
 
     public MainForm(
         IHostsFile hostsFile,
@@ -37,7 +39,8 @@ public partial class MainForm : AboutSysMenuForm
         IAutoStartManager autoStartManager,
         IAppUninstaller uninstaller,
         IAppVersion appVersion,
-        IPreferredEditorManager preferredEditorManager) :
+        IPreferredEditorManager preferredEditorManager,
+        IDNSHelper dnsHelper) :
         base(Resources.About_Label, App.WmActivateApp, App.WmQuitApp, App.WmUninstallApp)
     {
         _hostsFile = hostsFile;
@@ -46,6 +49,7 @@ public partial class MainForm : AboutSysMenuForm
         _uninstaller = uninstaller;
         _appVersion = appVersion;
         _preferredEditorManager = preferredEditorManager;
+        _dnsHelper = dnsHelper;
 
         InitializeComponent();
 
@@ -258,26 +262,7 @@ public partial class MainForm : AboutSysMenuForm
         {
             uxbtnFlushDNS.Enabled = false;
 
-            // run "ipconfig /flushdns"
-            var startInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                CreateNoWindow = true,
-                WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.System),
-                FileName = "ipconfig.exe",
-                Arguments = "/flushdns",
-                Verb = "open"
-            };
-
-            var process = System.Diagnostics.Process.Start(startInfo);
-            var error = true;
-            if (process != null)
-            {
-                process.WaitForExit();
-                var exitCode = process.ExitCode;
-                error = exitCode != 0;
-            }
+            var error = _dnsHelper.FlushDns();
 
             if (error)
             {
