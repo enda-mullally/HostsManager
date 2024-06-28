@@ -431,13 +431,13 @@ end;
 procedure Dependency_AddDotNet80Desktop;
 begin
   // https://dotnet.microsoft.com/download/dotnet/8.0
-  if not Dependency_IsNetCoreInstalled('Microsoft.WindowsDesktop.App 8.0.4') then begin
-    Dependency_Add('windowsdesktop-runtime-8.0.4-win' + Dependency_ArchSuffix + '.exe',
+  if not Dependency_IsNetCoreInstalled('Microsoft.WindowsDesktop.App 8.0.6') then begin
+    Dependency_Add('windowsdesktop-runtime-8.0.6-win' + Dependency_ArchSuffix + '.exe',
       '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
-      '.NET Desktop Runtime 8.0.4' + Dependency_ArchTitle,
+      '.NET Desktop Runtime 8.0.6' + Dependency_ArchTitle,
       Dependency_String(
-        'https://download.visualstudio.microsoft.com/download/pr/1fbf5c5f-9770-402d-8971-83da662d8cf9/4e37b3c24bcb6004875b9f8b08024303/windowsdesktop-runtime-8.0.4-win-x86.exe',
-        'https://download.visualstudio.microsoft.com/download/pr/c1d08a81-6e65-4065-b606-ed1127a954d3/14fe55b8a73ebba2b05432b162ab3aa8/windowsdesktop-runtime-8.0.4-win-x64.exe'),
+        'https://download.visualstudio.microsoft.com/download/pr/fb4a2e70-0c24-42f8-a549-4ea2b6e16831/e7bf08360f9c96ad3a90b0eb2edf96c0/windowsdesktop-runtime-8.0.6-win-x86.exe',
+        'https://download.visualstudio.microsoft.com/download/pr/76e5dbb2-6ae3-4629-9a84-527f8feb709c/09002599b32d5d01dc3aa5dcdffcc984/windowsdesktop-runtime-8.0.6-win-x64.exe'),
         '',
         False,
         False);
