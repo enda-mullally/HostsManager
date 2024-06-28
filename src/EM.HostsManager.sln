@@ -21,9 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{FCD3B9
 	ProjectSection(SolutionItems) = preProject
 		EM.HostsManager.Installer\deploy\netcorecheck_x64.exe = EM.HostsManager.Installer\deploy\netcorecheck_x64.exe
 		EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.4-win_x64.exe = EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.4-win_x64.exe
+		EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.6-win_x64.exe = EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.6-win_x64.exe
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EM.HostsManager.Tests", "EM.HostsManager.Tests\EM.HostsManager.Tests.csproj", "{55ACCCC2-6DBE-4B61-A516-9DAA754DDB89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EM.HostsManager.Tests", "EM.HostsManager.Tests\EM.HostsManager.Tests.csproj", "{55ACCCC2-6DBE-4B61-A516-9DAA754DDB89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
