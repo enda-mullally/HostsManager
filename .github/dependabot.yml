@@ -10,7 +10,8 @@ updates:
     schedule:
       interval: "weekly"
 
- - package-ecosystem: "nuget" # See documentation for possible values
+  - package-ecosystem: "nuget" # See documentation for possible values
     directory: "/src" # Location of package manifests
     schedule:
       interval: "monthly"
+      
