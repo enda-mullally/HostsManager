@@ -9,6 +9,9 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: 'FluentAssertions'
+        versions: ['8.*']
 
   - package-ecosystem: "nuget" # See documentation for possible values
     directory: "/src" # Location of package manifests
