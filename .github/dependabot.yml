@@ -11,7 +11,7 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: 'FluentAssertions'
-        versions: ['8.*']
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: "nuget" # See documentation for possible values
     directory: "/src" # Location of package manifests
