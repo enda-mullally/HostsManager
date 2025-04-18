@@ -32,7 +32,7 @@ AppCopyright=Copyright 2021-2025 Enda Mullally
 DisableProgramGroupPage=true
 DisableDirPage=true
 Compression=lzma2
-SetupIconFile=HostsManager.ico
+SetupIconFile=EM.HostsManager.App.ico
 WizardSmallImageFile=SetupIcon.bmp
 AlwaysRestart=no
 VersionInfoCompany=Enda Mullally
@@ -58,10 +58,9 @@ Root: HKLM; SubKey: "Software\Enda Mullally\Hosts Manager"; ValueType: string; V
 [Files]
 Source: "License.txt"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "Licenses-ThirdParty.txt"; DestDir: {app}; Flags: ignoreversion noencryption
-Source: "HostsManager.ico"; DestDir: {app}; Flags: ignoreversion noencryption
+Source: "EM.HostsManager.App.ico"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
-Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.ico"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\Microsoft.Extensions.DependencyInjection.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption

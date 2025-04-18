@@ -10,8 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EM.HostsManager.Installer", "EM.HostsManager.Installer", "{2606C2C6-2BEE-43CC-B934-DF1BA3A2F012}"
 	ProjectSection(SolutionItems) = preProject
 		EM.HostsManager.Installer\CodeDependencies.iss = EM.HostsManager.Installer\CodeDependencies.iss
+		EM.HostsManager.Installer\EM.HostsManager.App.ico = EM.HostsManager.Installer\EM.HostsManager.App.ico
 		EM.HostsManager.Installer\EM.HostsManager.Installer.iss = EM.HostsManager.Installer\EM.HostsManager.Installer.iss
-		EM.HostsManager.Installer\HostsManager.ico = EM.HostsManager.Installer\HostsManager.ico
 		EM.HostsManager.Installer\License.txt = EM.HostsManager.Installer\License.txt
 		EM.HostsManager.Installer\Licenses-ThirdParty.txt = EM.HostsManager.Installer\Licenses-ThirdParty.txt
 		EM.HostsManager.Installer\SetupIcon.bmp = EM.HostsManager.Installer\SetupIcon.bmp

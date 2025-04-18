@@ -31,10 +31,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="EM.HostsManager.App.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="EM.HostsManager.App.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

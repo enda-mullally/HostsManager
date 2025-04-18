@@ -12,6 +12,8 @@ using EM.HostsManager.Settings;
 using EM.HostsManager.UI.CustomForms;
 using EM.HostsManager.Version;
 using EM.HostsManager.Win32;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming
@@ -32,6 +34,14 @@ public partial class MainForm : AboutSysMenuForm
     private readonly IAppVersion _appVersion;
     private readonly IPreferredEditorManager _preferredEditorManager;
     private readonly IDNSHelper _dnsHelper;
+
+    // Constants for setting icons
+    private const int WM_SETICON = 0x0080;
+    private const int ICON_SMALL = 0;
+    private const int ICON_BIG = 1;
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, IntPtr lParam);
 
     public MainForm(
         IHostsFile hostsFile,
@@ -61,6 +71,13 @@ public partial class MainForm : AboutSysMenuForm
         UxFixButtonText();
         UxFixHeight();
         UxRefresh();
+
+        // Testing - Workaround for (Win+Tab) / (Alt+Tab) icon issue
+        var icon = new Icon("EM.HostsManager.App.ico");
+        
+        // Set both small and big icons
+        SendMessage(this.Handle, WM_SETICON, ICON_SMALL, icon.Handle);
+        SendMessage(this.Handle, WM_SETICON, ICON_BIG, icon.Handle);
     }
 
     #region Ux

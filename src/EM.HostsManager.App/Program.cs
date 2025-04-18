@@ -20,7 +20,7 @@ internal static class Program
         Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-
+        
         var app =
             ServiceProvider.GetService<App>() ??
                 throw new NullReferenceException("Could not create " + nameof(App));
