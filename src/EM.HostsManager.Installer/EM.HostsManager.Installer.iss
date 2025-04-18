@@ -1,6 +1,6 @@
 ;
 ; Hosts Maneger InnoSetup Installer Script.
-; Copyright (c) 2022-2024 Enda Mullally.
+; Copyright (c) 2022-2025 Enda Mullally.
 ;
 
 #ifndef InstallerVersion
@@ -28,7 +28,7 @@ DefaultGroupName=Hosts Manager
 PrivilegesRequired=admin
 LicenseFile=License.txt
 AppVersion={#InstallerVersion}
-AppCopyright=Copyright 2021-2024 Enda Mullally
+AppCopyright=Copyright 2021-2025 Enda Mullally
 DisableProgramGroupPage=true
 DisableDirPage=true
 Compression=lzma2

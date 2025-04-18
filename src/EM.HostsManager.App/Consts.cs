@@ -1,12 +1,12 @@
 ﻿//
-// Copyright © 2021-2024 Enda Mullally.
+// Copyright © 2021-2025 Enda Mullally.
 //
 
 namespace EM.HostsManager.App
 {
     public static class Consts
     {
-        public const string AppInstanceId = "Enda-Mullally|Hosts-Manager|2021-2024|V1|Single.Instance";
+        public const string AppInstanceId = "Enda-Mullally|Hosts-Manager|V1|Single.Instance";
 
         public const string QuitArg = "/quit";
 

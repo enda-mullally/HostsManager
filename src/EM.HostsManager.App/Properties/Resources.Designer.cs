@@ -78,7 +78,7 @@ namespace EM.HostsManager.App.Properties {
         ///Commit: {commitId}
         ///Date: {buildDate}
         ///
-        ///Copyright © 2021-2024 Enda Mullally.
+        ///Copyright © 2021-2025 Enda Mullally.
         /// </summary>
         internal static string AboutMessage {
             get {
