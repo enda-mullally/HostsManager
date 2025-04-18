@@ -61,6 +61,7 @@ Source: "Licenses-ThirdParty.txt"; DestDir: {app}; Flags: ignoreversion noencryp
 Source: "HostsManager.ico"; DestDir: {app}; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.exe"; DestDir: "{app}"; Flags: ignoreversion noencryption
+Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.ico"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\EM.HostsManager.App.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion noencryption
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\Microsoft.Extensions.DependencyInjection.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
