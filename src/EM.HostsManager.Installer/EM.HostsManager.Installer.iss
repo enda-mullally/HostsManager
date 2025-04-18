@@ -10,7 +10,7 @@
 #define public Dependency_NoExampleSetup
 #include "CodeDependencies.iss"
 
-#define DotNetVersionBuildDir "net8.0-windows7.0"
+#define DotNetVersionBuildDir "net9.0-windows7.0"
 
 [Setup]
 ArchitecturesAllowed=x64
