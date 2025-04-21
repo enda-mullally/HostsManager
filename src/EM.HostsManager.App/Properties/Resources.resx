@@ -165,7 +165,7 @@ Version: {appVersion}
 Commit: {commitId}
 Date: {buildDate}
 
-Copyright © 2021-2024 Enda Mullally</value>
+Copyright © 2021-2025 Enda Mullally</value>
   </data>
   <data name="About_Label" xml:space="preserve">
     <value>&amp;About</value>

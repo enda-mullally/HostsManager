@@ -1,5 +1,5 @@
 //
-// Copyright © 2021-2024 Enda Mullally.
+// Copyright © 2021-2025 Enda Mullally.
 //
 
 using EM.HostsManager.App.DI;
@@ -20,7 +20,7 @@ internal static class Program
         Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-
+        
         var app =
             ServiceProvider.GetService<App>() ??
                 throw new NullReferenceException("Could not create " + nameof(App));

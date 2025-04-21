@@ -56,6 +56,7 @@ namespace EM.HostsManager.App.UI.Controls
         #region Properties
 
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override ContextMenuStrip ContextMenuStrip
         {
             get => SplitMenuStrip;

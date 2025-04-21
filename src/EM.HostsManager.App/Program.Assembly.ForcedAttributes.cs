@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2024 Enda Mullally.
+// Copyright © 2021-2025 Enda Mullally.
 //
 
 // Forced "Title" attribute (fixing an issue where the assembly filename was

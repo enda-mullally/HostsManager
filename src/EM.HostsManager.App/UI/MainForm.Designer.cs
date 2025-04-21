@@ -270,7 +270,6 @@ namespace EM.HostsManager.App.UI
             // uxbtnEdit
             // 
             uxbtnEdit.BackColor = System.Drawing.SystemColors.Control;
-            uxbtnEdit.ContextMenuStrip = uxTrayMenu;
             uxbtnEdit.Enabled = false;
             uxbtnEdit.FlatAppearance.BorderSize = 0;
             uxbtnEdit.Font = new System.Drawing.Font("Segoe UI", 9.75F);

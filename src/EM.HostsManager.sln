@@ -10,8 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EM.HostsManager.Installer", "EM.HostsManager.Installer", "{2606C2C6-2BEE-43CC-B934-DF1BA3A2F012}"
 	ProjectSection(SolutionItems) = preProject
 		EM.HostsManager.Installer\CodeDependencies.iss = EM.HostsManager.Installer\CodeDependencies.iss
+		EM.HostsManager.Installer\EM.HostsManager.App.ico = EM.HostsManager.Installer\EM.HostsManager.App.ico
 		EM.HostsManager.Installer\EM.HostsManager.Installer.iss = EM.HostsManager.Installer\EM.HostsManager.Installer.iss
-		EM.HostsManager.Installer\HostsManager.ico = EM.HostsManager.Installer\HostsManager.ico
 		EM.HostsManager.Installer\License.txt = EM.HostsManager.Installer\License.txt
 		EM.HostsManager.Installer\Licenses-ThirdParty.txt = EM.HostsManager.Installer\Licenses-ThirdParty.txt
 		EM.HostsManager.Installer\SetupIcon.bmp = EM.HostsManager.Installer\SetupIcon.bmp
@@ -20,8 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{FCD3B95B-76EB-4709-8632-40B853382365}"
 	ProjectSection(SolutionItems) = preProject
 		EM.HostsManager.Installer\deploy\netcorecheck_x64.exe = EM.HostsManager.Installer\deploy\netcorecheck_x64.exe
-		EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.4-win_x64.exe = EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.4-win_x64.exe
-		EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.6-win_x64.exe = EM.HostsManager.Installer\deploy\windowsdesktop-runtime-8.0.6-win_x64.exe
+		EM.HostsManager.Installer\deploy\windowsdesktop-runtime-9.0.4-win_x64.exe = EM.HostsManager.Installer\deploy\windowsdesktop-runtime-9.0.4-win_x64.exe
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EM.HostsManager.Tests", "EM.HostsManager.Tests\EM.HostsManager.Tests.csproj", "{55ACCCC2-6DBE-4B61-A516-9DAA754DDB89}"

@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-2022
     env:
       BUILD_CONFIG: "Release"
-      DOTNET_VER: "net8.0-windows7.0"
+      DOTNET_VER: "net9.0-windows7.0"
       APP_DIR: "EM.HostsManager.App"
       INSTALLER_DIR: "EM.HostsManager.Installer"
       SIGNTOOL: "C:/Program Files (x86)/Windows Kits/10/bin/10.0.22621.0/x86/signtool.exe"  # See list of installed Windows SDK's @ https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
@@ -53,10 +53,10 @@ jobs:
         Write-Output "Version : ${{ steps.gitversion.outputs.MajorMinorPatch }}"
         Write-Output "==============================================================================================================================================="
 
-    - name: Setup .NET 8.0
+    - name: Setup .NET 9.0
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
 
     - name: Debug Build (For Tests)
       run: dotnet build "./src" --configuration Debug
@@ -189,6 +189,7 @@ jobs:
         cd ..
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.exe" "Binaries\Deploy"
+        copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.ico" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.dll" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\EM.HostsManager.App.runtimeconfig.json" "Binaries\Deploy"
         copy "${{ env.APP_DIR }}\bin\${{ env.BUILD_CONFIG }}\${{ env.DOTNET_VER }}\Microsoft.Extensions.DependencyInjection.dll" "Binaries\Deploy"
