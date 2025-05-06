@@ -7,14 +7,13 @@
   #define InstallerVersion "0.0.0"
 #endif
 
-#define public Dependency_NoExampleSetup
-#include "CodeDependencies.iss"
+;#define public Dependency_NoExampleSetup
+;#include "CodeDependencies.iss"
 
 #define DotNetVersionBuildDir "net9.0-windows7.0"
 
 [Setup]
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x86compatible and arm64 and x64compatible
 AppId=Hosts_Manager_10e26e4d
 AppVerName=Hosts Manager v{#InstallerVersion}
 UninstallDisplayName=Hosts Manager {#InstallerVersion}
@@ -67,10 +66,10 @@ Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\Microsoft.E
 Source: "..\EM.HostsManager.App\bin\Release\{#DotNetVersionBuildDir}\Microsoft.Extensions.DependencyInjection.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion noencryption
 
 ; Deps
-Source: "deploy\NetCoreCheck_x64.exe"; Flags: dontcopy noencryption
+;Source: "deploy\NetCoreCheck_x64.exe"; Flags: dontcopy noencryption
 
 ; Currently 9.0.4
-Source: "deploy\windowsdesktop-runtime-9.0.4-win_x64.exe"; Flags: dontcopy noencryption
+;Source: "deploy\windowsdesktop-runtime-9.0.4-win_x64.exe"; Flags: dontcopy noencryption
 
 ; Clean-up previous file name(s).
 [InstallDelete]
@@ -101,9 +100,9 @@ begin
   //
   // Special thanks to all the contributors @ https://github.com/DomGries/InnoDependencyInstaller !
 
-  ExtractTemporaryFile('windowsdesktop-runtime-9.0.4-win_x64.exe');
+  //ExtractTemporaryFile('windowsdesktop-runtime-9.0.4-win_x64.exe');
 
-  Dependency_AddDotNet90Desktop;
+  //Dependency_AddDotNet90Desktop;
   
   // ...
 
