@@ -31,15 +31,15 @@ jobs:
 
     - name: Install GitVersion
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
-      uses: gittools/actions/gitversion/setup@v3.2.1
+      uses: gittools/actions/gitversion/setup@v4.0.0
       with:
-        versionSpec: '5.x'
+        versionSpec: '6.x'
         includePrerelease: false
   
     - name: Determine Version
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       id: gitversion
-      uses: gittools/actions/gitversion/execute@v3.2.1
+      uses: gittools/actions/gitversion/execute@v4.0.0
       with:
         useConfigFile: true
         configFilePath: 'GitVersion.yml'
