@@ -22,7 +22,7 @@ jobs:
       TIMESTAMP_URL: "http://timestamp.digicert.com"
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     
     - name: Fetch all history and tags
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
